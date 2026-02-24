@@ -2,32 +2,30 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function ThankYou() {
   return (
     <main className="relative min-h-svh overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+      <motion.div
+        initial={{ scale: 1.05 }}
+        animate={{ scale: 1.12 }}
+        transition={{ duration: 30, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url(/bg.jpg)" }}
       />
-      <div className="absolute inset-0 bg-black/50" />
 
-      <div className="relative z-10 min-h-svh grid grid-rows-[1fr_auto] px-8 sm:px-12 md:px-16 py-10">
-        <div className="flex flex-col justify-center max-w-xl">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-            className="text-[13px] sm:text-sm font-medium tracking-[0.2em] uppercase text-white/60 mb-6"
-          >
-            Wonder Dog
-          </motion.p>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/60" />
 
+      <div className="relative z-10 min-h-svh flex flex-col items-center justify-between px-6 py-8 sm:py-10">
+        <div />
+
+        <div className="flex flex-col items-center text-center">
           <motion.h1
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
-            className="text-[28px] sm:text-[36px] md:text-[42px] font-medium tracking-[-0.02em] leading-[1.1] text-white"
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold tracking-[-0.02em] text-white"
           >
             Thank you.
           </motion.h1>
@@ -35,8 +33,8 @@ export default function ThankYou() {
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
-            className="mt-5 text-[15px] sm:text-base font-medium text-white/60 leading-relaxed max-w-sm"
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-2 text-[15px] sm:text-[17px] text-white"
           >
             We&apos;ll be in touch very soon.
           </motion.p>
@@ -44,25 +42,26 @@ export default function ThankYou() {
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35, ease: [0.25, 0.4, 0.25, 1] }}
-            className="mt-10"
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8"
           >
-            <Link
-              href="/"
-              className="inline-block h-11 leading-[44px] px-6 border border-white/80 text-white text-[13px] font-medium tracking-[0.04em] uppercase hover:bg-white/10 transition-colors"
+            <Button
+              asChild
+              variant="outline"
+              className="h-10 px-6 bg-white/10 border-white/30 text-white rounded-md hover:bg-white/20 cursor-pointer"
             >
-              Back
-            </Link>
+              <Link href="/">Back</Link>
+            </Button>
           </motion.div>
         </div>
 
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex items-end justify-between text-[11px] tracking-[0.08em] uppercase text-white/30 pb-1"
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="text-[11px] text-white"
         >
-          <span>&copy; 2026 Wonder Dog</span>
+          &copy; 2026 Wonder Dog
         </motion.footer>
       </div>
     </main>
