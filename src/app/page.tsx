@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,9 +22,9 @@ export default function Home() {
         body: JSON.stringify({ email }),
       });
     } catch {
-      // still redirect — we don't want to block the UX
+      // don't block the UX
     }
-    router.push("/thank-you");
+    setSubmitted(true);
   };
 
   return (
@@ -68,26 +67,43 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mt-8 w-full max-w-sm"
           >
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-3"
-            >
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="h-10 bg-white/10 border-white/30 text-white placeholder:text-white/50 backdrop-blur-sm rounded-md focus-visible:ring-white/30 focus-visible:border-white"
-              />
-              <Button
-                type="submit"
-                disabled={loading}
-                className="h-10 w-full bg-white text-black font-medium rounded-md hover:bg-white/90 cursor-pointer disabled:opacity-60"
-              >
-                {loading ? "..." : "Join Waitlist"}
-              </Button>
-            </form>
+            <AnimatePresence mode="wait">
+              {!submitted ? (
+                <motion.form
+                  key="form"
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-3"
+                >
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="h-10 bg-white/10 border-white/30 text-white placeholder:text-white/50 backdrop-blur-sm rounded-md focus-visible:ring-white/30 focus-visible:border-white"
+                  />
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="h-10 w-full bg-white text-black font-medium rounded-md hover:bg-white/90 cursor-pointer disabled:opacity-60"
+                  >
+                    {loading ? "..." : "Join Waitlist"}
+                  </Button>
+                </motion.form>
+              ) : (
+                <motion.p
+                  key="thanks"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-[15px] sm:text-[17px] text-white"
+                >
+                  Thank you! We&apos;ll be in touch very soon.
+                </motion.p>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
 
