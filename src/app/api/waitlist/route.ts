@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     }
 
     await resend.emails.send({
-      from: "Wonder Dog Waitlist <waitlist@wonder.dog>",
+      from: "Wonder Dog <onboarding@resend.dev>",
       to: "hr@wonder.dog",
       subject: "New Waitlist Signup",
       text: `New waitlist signup: ${email}`,
