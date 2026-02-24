@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -28,7 +30,6 @@ export default function Home() {
 
   return (
     <main className="relative min-h-svh overflow-hidden">
-      {/* Background with slow Ken Burns drift */}
       <motion.div
         initial={{ scale: 1.05 }}
         animate={{ scale: 1.12 }}
@@ -37,14 +38,11 @@ export default function Home() {
         style={{ backgroundImage: "url(/bg.jpg)" }}
       />
 
-      {/* Gradient overlay — darker at bottom for footer, warm tint */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/60" />
 
       <div className="relative z-10 min-h-svh flex flex-col items-center justify-between px-6 py-8 sm:py-10">
-        {/* Spacer */}
         <div />
 
-        {/* Center content */}
         <div className="flex flex-col items-center text-center">
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
@@ -68,32 +66,31 @@ export default function Home() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-10 w-full max-w-[360px]"
+            className="mt-8 w-full max-w-sm"
           >
             <form
               onSubmit={handleSubmit}
-              className="flex"
+              className="flex flex-col gap-3"
             >
-              <input
+              <Input
                 type="email"
-                placeholder="Your email"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-[46px] flex-1 min-w-0 bg-white/[0.07] backdrop-blur-sm border border-white border-r-0 px-4 text-[14px] text-white placeholder:text-white/60 focus:outline-none focus:bg-white/[0.12] transition-all duration-300"
+                className="h-10 bg-white/10 border-white/30 text-white placeholder:text-white/50 backdrop-blur-sm rounded-md focus-visible:ring-white/30 focus-visible:border-white"
               />
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className="h-[46px] px-7 bg-white text-[#1a1a1a] text-[13px] font-semibold tracking-[0.01em] border border-white hover:bg-white/90 transition-all duration-300 cursor-pointer shrink-0 disabled:opacity-60"
+                className="h-10 w-full bg-white text-black font-medium rounded-md hover:bg-white/90 cursor-pointer disabled:opacity-60"
               >
                 {loading ? "..." : "Join Waitlist"}
-              </button>
+              </Button>
             </form>
           </motion.div>
         </div>
 
-        {/* Footer */}
         <motion.footer
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
