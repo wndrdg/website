@@ -137,8 +137,14 @@ export default function NowHiring() {
           </p>
         </motion.div>
 
-        <footer className="mt-12 text-[11px] text-[oklch(0.4_0_0)]">
-          &copy; 2026 Wonder Dog
+        <footer className="mt-12 flex flex-col gap-4 border-t border-[oklch(1_0_0_/_10%)] pt-8">
+          <div className="flex gap-4 text-[12px] text-[oklch(0.5_0_0)]">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+          </div>
+          <p className="text-[11px] text-[oklch(0.4_0_0)]">
+            &copy; 2026 Wonder Dog
+          </p>
         </footer>
       </div>
     </main>

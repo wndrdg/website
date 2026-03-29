@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -111,9 +112,13 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="text-[11px] text-white"
+          className="flex flex-col items-center gap-2 text-[11px] text-white/60"
         >
-          &copy; 2026 Wonder Dog
+          <div className="flex gap-3">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+          </div>
+          <span>&copy; 2026 Wonder Dog</span>
         </motion.footer>
       </div>
     </main>
