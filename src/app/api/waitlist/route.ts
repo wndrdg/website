@@ -1,40 +1,8 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-import { put, list } from "@vercel/blob";
+import { put } from "@vercel/blob";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const BLOB_PATHNAME = "waitlist.json";
-
-type Entry = {
-  name?: string;
-  zip?: string;
-  email: string;
-  date: string;
-};
-
-async function readWaitlist(): Promise<Entry[]> {
-  try {
-    const { blobs } = await list({ prefix: BLOB_PATHNAME, limit: 1 });
-    const blob = blobs.find((b) => b.pathname === BLOB_PATHNAME);
-    if (!blob) return [];
-    const res = await fetch(blob.url, { cache: "no-store" });
-    if (!res.ok) return [];
-    return (await res.json()) as Entry[];
-  } catch {
-    return [];
-  }
-}
-
-async function appendWaitlist(entry: Omit<Entry, "date">) {
-  const entries = await readWaitlist();
-  entries.push({ ...entry, date: new Date().toISOString() });
-  await put(BLOB_PATHNAME, JSON.stringify(entries, null, 2), {
-    access: "private",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
-}
 
 export async function POST(request: Request) {
   try {
@@ -44,14 +12,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    // Save to Vercel Blob — don't block the user-facing flow on storage errors
+    const entry = {
+      email,
+      name: name || undefined,
+      zip: zip || undefined,
+      date: new Date().toISOString(),
+    };
+
+    // Append-only: each signup gets its own blob under signups/. No read-modify-write,
+    // so no race conditions and no CDN cache headaches. Use the timestamp + email hash
+    // for the pathname so it sorts naturally and is uniquely addressable.
     try {
-      await appendWaitlist({ name, zip, email });
+      const safeEmail = email.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      const pathname = `signups/${entry.date}-${safeEmail}.json`;
+      await put(pathname, JSON.stringify(entry, null, 2), {
+        access: "private",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        contentType: "application/json",
+      });
     } catch (err) {
       console.error("Blob write failed:", err);
     }
 
-    // Send notification email via Resend
+    // Send notification email via Resend (verified wonder.dog domain)
     const details = [
       `Email: ${email}`,
       name ? `Name: ${name}` : null,
@@ -60,12 +44,16 @@ export async function POST(request: Request) {
       .filter(Boolean)
       .join("\n");
 
-    await resend.emails.send({
-      from: "Wonder Dog <onboarding@resend.dev>",
-      to: "hr@wonder.dog",
-      subject: "New Waitlist Signup",
-      text: `New waitlist signup:\n${details}`,
-    });
+    try {
+      await resend.emails.send({
+        from: "Wonder Dog <noreply@wonder.dog>",
+        to: "hr@wonder.dog",
+        subject: "New Waitlist Signup",
+        text: `New waitlist signup:\n${details}`,
+      });
+    } catch (err) {
+      console.error("Resend send failed:", err);
+    }
 
     return NextResponse.json({ success: true });
   } catch {

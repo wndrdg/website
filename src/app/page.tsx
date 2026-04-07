@@ -45,30 +45,61 @@ export default function Home() {
 
   return (
     <>
-    {/* Full-bleed video background — sized to the LARGEST viewport (h-lvh), so it covers the
-        entire screen including behind iOS Safari's URL bar / status bar / home indicator. */}
-    <div className="fixed top-0 left-0 w-screen h-[100lvh] -z-10 overflow-hidden bg-black">
+    {/* Full-bleed video background. Container is sized to 100vh / 100vw via inline styles
+        (modern Safari treats 100vh as the largest viewport, equivalent to lvh) so we cover
+        behind the iOS URL bar. Video uses the "YouTube-cover" centering pattern with
+        min-width/min-height 100% so it always overflows the container and gets cropped,
+        guaranteeing zero black bars regardless of aspect mismatch. */}
+    <div
+      className="fixed inset-0 -z-10 overflow-hidden bg-black"
+      style={{ width: "100vw", height: "100vh" }}
+    >
       {/* Desktop video */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover hidden md:block"
+        preload="auto"
+        className="hidden md:block"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          minWidth: "100%",
+          minHeight: "100%",
+          width: "auto",
+          height: "auto",
+          objectFit: "cover",
+        }}
       >
         <source src="/reel-desktop.webm" type="video/webm" />
         <source src="/reel-desktop.mp4" type="video/mp4" />
       </video>
-      {/* Mobile video */}
+      {/* Mobile video — MP4 listed first so iOS Safari grabs the universally-supported
+          H.264 stream instead of potentially-flaky VP9 WebM decode. */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover md:hidden"
+        preload="auto"
+        className="md:hidden"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          minWidth: "100%",
+          minHeight: "100%",
+          width: "auto",
+          height: "auto",
+          objectFit: "cover",
+        }}
       >
-        <source src="/reel-mobile.webm" type="video/webm" />
         <source src="/reel-mobile.mp4" type="video/mp4" />
+        <source src="/reel-mobile.webm" type="video/webm" />
       </video>
     </div>
 
