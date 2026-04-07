@@ -1,44 +1,70 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
+import { put, list } from "@vercel/blob";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const DATA_FILE = path.join(process.cwd(), "waitlist.json");
+const BLOB_PATHNAME = "waitlist.json";
 
-async function saveEmail(email: string) {
-  let emails: { email: string; date: string }[] = [];
+type Entry = {
+  name?: string;
+  zip?: string;
+  email: string;
+  date: string;
+};
+
+async function readWaitlist(): Promise<Entry[]> {
   try {
-    const data = await fs.readFile(DATA_FILE, "utf-8");
-    emails = JSON.parse(data);
+    const { blobs } = await list({ prefix: BLOB_PATHNAME, limit: 1 });
+    const blob = blobs.find((b) => b.pathname === BLOB_PATHNAME);
+    if (!blob) return [];
+    const res = await fetch(blob.url, { cache: "no-store" });
+    if (!res.ok) return [];
+    return (await res.json()) as Entry[];
   } catch {
-    // file doesn't exist yet
+    return [];
   }
-  emails.push({ email, date: new Date().toISOString() });
-  await fs.writeFile(DATA_FILE, JSON.stringify(emails, null, 2));
+}
+
+async function appendWaitlist(entry: Omit<Entry, "date">) {
+  const entries = await readWaitlist();
+  entries.push({ ...entry, date: new Date().toISOString() });
+  await put(BLOB_PATHNAME, JSON.stringify(entries, null, 2), {
+    access: "private",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    contentType: "application/json",
+  });
 }
 
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json();
+    const { name, zip, email } = await request.json();
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    // Save locally
+    // Save to Vercel Blob — don't block the user-facing flow on storage errors
     try {
-      await saveEmail(email);
-    } catch {
-      // don't block on file write errors (e.g. serverless)
+      await appendWaitlist({ name, zip, email });
+    } catch (err) {
+      console.error("Blob write failed:", err);
     }
 
-    // Send notification
+    // Send notification email via Resend
+    const details = [
+      `Email: ${email}`,
+      name ? `Name: ${name}` : null,
+      zip ? `Zip: ${zip}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
     await resend.emails.send({
       from: "Wonder Dog <onboarding@resend.dev>",
       to: "hr@wonder.dog",
       subject: "New Waitlist Signup",
-      text: `New waitlist signup: ${email}`,
+      text: `New waitlist signup:\n${details}`,
     });
 
     return NextResponse.json({ success: true });

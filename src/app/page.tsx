@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -10,6 +10,21 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  // Lock body scroll while the splash is mounted (so the page feels intentional, no scrolling)
+  useEffect(() => {
+    const prevHtml = document.documentElement.style.overflow;
+    const prevBody = document.body.style.overflow;
+    const prevOverscroll = document.body.style.overscrollBehavior;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "none";
+    return () => {
+      document.documentElement.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+      document.body.style.overscrollBehavior = prevOverscroll;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +44,10 @@ export default function Home() {
   };
 
   return (
-    <main className="relative h-svh overflow-hidden bg-black">
+    <>
+    {/* Full-bleed video background — sized to the LARGEST viewport (h-lvh), so it covers the
+        entire screen including behind iOS Safari's URL bar / status bar / home indicator. */}
+    <div className="fixed top-0 left-0 w-screen h-[100lvh] -z-10 overflow-hidden bg-black">
       {/* Desktop video */}
       <video
         autoPlay
@@ -52,6 +70,10 @@ export default function Home() {
         <source src="/reel-mobile.webm" type="video/webm" />
         <source src="/reel-mobile.mp4" type="video/mp4" />
       </video>
+    </div>
+
+    {/* Content layer — sized to the visible viewport (h-dvh) so it stays out of the browser UI */}
+    <main className="fixed inset-0 h-dvh w-screen overflow-hidden">
 
       {/* === DESKTOP LAYOUT === */}
       <div className="relative z-10 hidden md:flex h-full">
@@ -69,7 +91,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.1 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/wd-logo.svg" alt="Wonderdog" className="h-12 w-auto" />
+              <img src="/wd-logo.svg" alt="Wonderdog" className="h-11 w-auto" />
             </motion.div>
 
             {/* Headline + Form */}
@@ -106,14 +128,14 @@ export default function Home() {
                           placeholder="Name"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                         />
                         <input
                           type="text"
                           placeholder="Zip Code"
                           value={zip}
                           onChange={(e) => setZip(e.target.value)}
-                          className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                         />
                       </div>
                       <input
@@ -122,7 +144,7 @@ export default function Home() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                        className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                       />
                       <button
                         type="submit"
@@ -172,7 +194,7 @@ export default function Home() {
           className="pt-7 pb-3 text-center"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/wd-logo.svg" alt="Wonderdog" className="h-10 w-auto inline-block" />
+          <img src="/wd-logo.svg" alt="Wonderdog" className="h-9 w-auto inline-block" />
         </motion.div>
 
         {/* Spacer + headline in the middle-lower area */}
@@ -213,14 +235,14 @@ export default function Home() {
                       placeholder="Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                     />
                     <input
                       type="text"
                       placeholder="Zip Code"
                       value={zip}
                       onChange={(e) => setZip(e.target.value)}
-                      className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                     />
                   </div>
                   <input
@@ -229,7 +251,7 @@ export default function Home() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                    className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                   />
                   <button
                     type="submit"
@@ -261,5 +283,6 @@ export default function Home() {
         </motion.div>
       </div>
     </main>
+    </>
   );
 }
