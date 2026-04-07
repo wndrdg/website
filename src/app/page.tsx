@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function Home() {
+  const [name, setName] = useState("");
+  const [zip, setZip] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -20,7 +20,7 @@ export default function Home() {
       await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ name, zip, email }),
       });
     } catch {
       // don't block the UX
@@ -29,45 +29,175 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-svh overflow-hidden">
-      <motion.div
-        initial={{ scale: 1.05 }}
-        animate={{ scale: 1.12 }}
-        transition={{ duration: 30, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url(/bg.jpg)" }}
-      />
+    <main className="relative h-svh overflow-hidden bg-black">
+      {/* Desktop video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover hidden md:block"
+      >
+        <source src="/reel-desktop.webm" type="video/webm" />
+        <source src="/reel-desktop.mp4" type="video/mp4" />
+      </video>
+      {/* Mobile video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover md:hidden"
+      >
+        <source src="/reel-mobile.webm" type="video/webm" />
+        <source src="/reel-mobile.mp4" type="video/mp4" />
+      </video>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/60" />
+      {/* === DESKTOP LAYOUT === */}
+      <div className="relative z-10 hidden md:flex h-full">
+        {/* Frosted glass left panel */}
+        <div className="relative w-[52%] h-full flex flex-col justify-between">
+          {/* Glass backdrop */}
+          <div className="absolute inset-0 backdrop-blur-[30px] bg-black/10" />
 
-      <div className="relative z-10 min-h-svh flex flex-col items-center justify-between px-6 py-8 sm:py-10">
-        <div />
+          {/* Content */}
+          <div className="relative z-10 flex flex-col justify-between h-full px-10 lg:px-14 py-10">
+            {/* Logo */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/wd-logo.svg" alt="Wonderdog" className="h-12 w-auto" />
+            </motion.div>
 
-        <div className="flex flex-col items-center text-center">
+            {/* Headline + Form */}
+            <div>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="font-serif text-[clamp(40px,5vw,72px)] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8]"
+              >
+                We tell you what
+                <br />
+                your dog can&rsquo;t.
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-10 max-w-md"
+              >
+                <AnimatePresence mode="wait">
+                  {!submitted ? (
+                    <motion.form
+                      key="form"
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.25 }}
+                      onSubmit={handleSubmit}
+                      className="flex flex-col gap-3"
+                    >
+                      <div className="flex gap-3">
+                        <input
+                          type="text"
+                          placeholder="Name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Zip Code"
+                          value={zip}
+                          onChange={(e) => setZip(e.target.value)}
+                          className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                        />
+                      </div>
+                      <input
+                        type="email"
+                        placeholder="Email Address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      />
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="mt-3 h-12 w-48 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
+                      >
+                        {loading ? "..." : "Join Waitlist"}
+                      </button>
+                    </motion.form>
+                  ) : (
+                    <motion.p
+                      key="thanks"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                      className="text-[17px] text-white"
+                    >
+                      Thank you! We&apos;ll be in touch very soon.
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </div>
+
+            {/* Footer */}
+            <motion.footer
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="flex gap-3 text-[11px] text-white/50"
+            >
+              <Link href="/privacy" className="hover:text-white/80 transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white/80 transition-colors">Terms</Link>
+              <span>&copy; 2026 Wonderdog</span>
+            </motion.footer>
+          </div>
+        </div>
+      </div>
+
+      {/* === MOBILE LAYOUT === */}
+      <div className="relative z-10 flex flex-col h-full md:hidden">
+        {/* Top logo */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="pt-7 pb-3 text-center"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/wd-logo.svg" alt="Wonderdog" className="h-10 w-auto inline-block" />
+        </motion.div>
+
+        {/* Spacer + headline in the middle-lower area */}
+        <div className="flex-1 flex flex-col justify-end px-6">
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold tracking-[-0.02em] text-white"
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="font-serif text-[44px] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8] text-center mb-8"
           >
-            Wonder Dog
+            We tell you what
+            <br />
+            your dog can&rsquo;t.
           </motion.h1>
+        </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 text-[15px] sm:text-[17px] text-white"
-          >
-            Helping dogs live longer, healthier lives.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 w-full max-w-sm"
-          >
+        {/* Frosted glass bottom panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="relative"
+        >
+          <div className="absolute inset-0 backdrop-blur-[30px] bg-black/10" />
+          <div className="relative z-10 px-6 pt-7 pb-8">
             <AnimatePresence mode="wait">
               {!submitted ? (
                 <motion.form
@@ -77,21 +207,37 @@ export default function Home() {
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-3"
                 >
-                  <Input
+                  <div className="flex gap-3">
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Zip Code"
+                      value={zip}
+                      onChange={(e) => setZip(e.target.value)}
+                      className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                    />
+                  </div>
+                  <input
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="Email Address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-10 bg-white/10 border-white/30 text-white placeholder:text-white/50 backdrop-blur-sm rounded-md focus-visible:ring-white/30 focus-visible:border-white"
+                    className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[15px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                   />
-                  <Button
+                  <button
                     type="submit"
                     disabled={loading}
-                    className="h-10 w-full bg-white text-black font-medium rounded-md hover:bg-white/90 cursor-pointer disabled:opacity-60"
+                    className="mt-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
                   >
                     {loading ? "..." : "Join Waitlist"}
-                  </Button>
+                  </button>
                 </motion.form>
               ) : (
                 <motion.p
@@ -99,27 +245,20 @@ export default function Home() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="text-[15px] sm:text-[17px] text-white"
+                  className="text-[16px] text-white text-center py-4"
                 >
                   Thank you! We&apos;ll be in touch very soon.
                 </motion.p>
               )}
             </AnimatePresence>
-          </motion.div>
-        </div>
 
-        <motion.footer
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="flex flex-col items-center gap-2 text-[11px] text-white/60"
-        >
-          <div className="flex gap-3">
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <div className="mt-5 flex justify-center gap-4 text-[12px] text-white/50">
+              <Link href="/privacy" className="hover:text-white/80 transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white/80 transition-colors">Terms</Link>
+              <span>&copy; 2026 Wonderdog</span>
+            </div>
           </div>
-          <span>&copy; 2026 Wonder Dog</span>
-        </motion.footer>
+        </motion.div>
       </div>
     </main>
   );

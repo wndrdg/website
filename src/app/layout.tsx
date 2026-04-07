@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Wonder Dog — Coming Soon",
-  description: "Helping dogs live longer, healthier lives. Join the waitlist.",
+  title: "Wonderdog — We tell you what your dog can't",
+  description: "We tell you what your dog can't. Join the waitlist.",
 };
 
 export default function RootLayout({
