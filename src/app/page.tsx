@@ -1,8 +1,60 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+
+/**
+ * Scene color timeline for the mobile video reel.
+ * Each entry: [startTime in seconds, hex color for Safari status bar].
+ * These should match the dominant top-of-frame color at each scene cut.
+ * Tune these by watching reel-mobile.mp4 and sampling colors.
+ */
+const SCENE_COLORS: [number, string][] = [
+  [0,    "#1a1a1a"],   // Scene 1 — dark opening
+  [3.5,  "#2d4a3a"],   // Scene 2 — greenish outdoor
+  [7,    "#3a2a1e"],   // Scene 3 — warm indoor / golden
+  [10.5, "#1e3040"],   // Scene 4 — blue/cool tone
+  [14,   "#3d2b1a"],   // Scene 5 — warm amber
+  [17.5, "#1a2a1a"],   // Scene 6 — dark green / park
+  [20,   "#1a1a1a"],   // Loop back to dark
+];
+
+/**
+ * Hook: sync Safari status bar (theme-color meta tag) to video scene cuts.
+ * Polls the mobile video's currentTime and updates the meta tag when scenes change.
+ */
+function useVideoThemeColor() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const currentColorRef = useRef<string>(SCENE_COLORS[0][1]);
+
+  const updateThemeColor = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const t = video.currentTime;
+    // Find the active scene (last entry where startTime <= currentTime)
+    let color = SCENE_COLORS[0][1];
+    for (const [start, c] of SCENE_COLORS) {
+      if (t >= start) color = c;
+      else break;
+    }
+
+    if (color !== currentColorRef.current) {
+      currentColorRef.current = color;
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", color);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Poll every 200ms — fast enough for scene cuts, cheap enough to not matter
+    const interval = setInterval(updateThemeColor, 200);
+    return () => clearInterval(interval);
+  }, [updateThemeColor]);
+
+  return videoRef;
+}
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -10,6 +62,7 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const mobileVideoRef = useVideoThemeColor();
 
   // Lock body scroll while the splash is mounted (so the page feels intentional, no scrolling)
   useEffect(() => {
@@ -80,6 +133,7 @@ export default function Home() {
       {/* Mobile video — MP4 listed first so iOS Safari grabs the universally-supported
           H.264 stream instead of potentially-flaky VP9 WebM decode. */}
       <video
+        ref={mobileVideoRef}
         autoPlay
         loop
         muted
