@@ -8,19 +8,24 @@ export default function ColorTest() {
   const [colorIndex, setColorIndex] = useState(0);
 
   useEffect(() => {
-    // Cycle through neon colors every 2 seconds
+    // Set initial
+    document.documentElement.style.backgroundColor = COLORS[0];
+    document.body.style.backgroundColor = COLORS[0];
+
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", COLORS[0]);
+
     const interval = setInterval(() => {
       setColorIndex((i) => {
         const next = (i + 1) % COLORS.length;
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute("content", COLORS[next]);
+        // Update EVERYTHING — body bg, html bg, and theme-color
+        document.documentElement.style.backgroundColor = COLORS[next];
+        document.body.style.backgroundColor = COLORS[next];
+        const m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute("content", COLORS[next]);
         return next;
       });
     }, 2000);
-
-    // Set initial color immediately
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", COLORS[0]);
 
     return () => clearInterval(interval);
   }, []);
@@ -28,12 +33,15 @@ export default function ColorTest() {
   return (
     <div style={{
       background: COLORS[colorIndex],
-      minHeight: "100vh",
+      minHeight: "100dvh",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
       transition: "background 0.3s",
+      // Extend into safe area
+      paddingTop: "env(safe-area-inset-top)",
+      paddingBottom: "env(safe-area-inset-bottom)",
     }}>
       <h1 style={{ fontSize: 48, fontWeight: "bold", color: "#000" }}>
         {COLORS[colorIndex]}
