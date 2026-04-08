@@ -42,6 +42,8 @@ function useVideoThemeColor() {
 
     if (color !== currentColorRef.current) {
       currentColorRef.current = color;
+      document.documentElement.style.backgroundColor = color;
+      document.body.style.backgroundColor = color;
       const meta = document.querySelector('meta[name="theme-color"]');
       if (meta) meta.setAttribute("content", color);
     }
