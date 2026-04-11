@@ -210,16 +210,7 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-4 text-[18px] leading-[1.4] text-white/80 max-w-md"
               >
-                Early disease detection through at-home blood work, powered by AI.
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-2 text-[14px] font-medium tracking-wide uppercase text-[#D9FF66]/80"
-              >
-                Currently in private beta
+                Early disease detection through at-home blood work, powered by AI. Currently in private beta.
               </motion.p>
 
               <motion.div
@@ -348,17 +339,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-3 text-[16px] leading-[1.4] text-white/80 text-center px-4"
+            className="mt-3 mb-6 text-[16px] leading-[1.4] text-white/80 text-center px-4"
           >
-            Early disease detection through at-home blood work, powered by AI.
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-2 mb-6 text-[12px] font-medium tracking-wide uppercase text-[#D9FF66]/80 text-center"
-          >
-            Currently in private beta
+            Early disease detection through at-home blood work, powered by AI. Currently in private beta.
           </motion.p>
         </div>
 
