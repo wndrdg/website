@@ -62,9 +62,11 @@ export default function Home() {
   const [name, setName] = useState("");
   const [zip, setZip] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const mobileVideoRef = useVideoThemeColor();
+  const [smsConsent, setSmsConsent] = useState(false);
 
   // Lock body scroll while the splash is mounted (so the page feels intentional, no scrolling)
   useEffect(() => {
@@ -83,14 +85,14 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || !smsConsent) return;
 
     setLoading(true);
     try {
       await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, zip, email }),
+        body: JSON.stringify({ name, zip, email, phone, smsConsent }),
       });
     } catch {
       // don't block the UX
@@ -233,9 +235,28 @@ export default function Home() {
                         required
                         className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                       />
+                      <input
+                        type="tel"
+                        placeholder="Phone Number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      />
+                      <label className="flex items-start gap-3 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={smsConsent}
+                          onChange={(e) => setSmsConsent(e.target.checked)}
+                          required
+                          className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
+                        />
+                        <span className="text-[13px] text-white/60 leading-snug">
+                          I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
+                        </span>
+                      </label>
                       <button
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || !smsConsent}
                         className="mt-3 h-12 w-48 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
                       >
                         {loading ? "..." : "Join Waitlist"}
@@ -340,9 +361,28 @@ export default function Home() {
                     required
                     className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                   />
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                  />
+                  <label className="flex items-start gap-3 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={smsConsent}
+                      onChange={(e) => setSmsConsent(e.target.checked)}
+                      required
+                      className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
+                    />
+                    <span className="text-[12px] text-white/60 leading-snug">
+                      I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
+                    </span>
+                  </label>
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !smsConsent}
                     className="mt-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
                   >
                     {loading ? "..." : "Join Waitlist"}

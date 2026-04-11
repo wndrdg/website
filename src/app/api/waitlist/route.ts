@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const { name, zip, email } = await request.json();
+    const { name, zip, email, phone, smsConsent } = await request.json();
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -16,6 +16,8 @@ export async function POST(request: Request) {
       email,
       name: name || undefined,
       zip: zip || undefined,
+      phone: phone || undefined,
+      smsConsent: !!smsConsent,
       date: new Date().toISOString(),
     };
 
@@ -39,7 +41,9 @@ export async function POST(request: Request) {
     const details = [
       `Email: ${email}`,
       name ? `Name: ${name}` : null,
+      phone ? `Phone: ${phone}` : null,
       zip ? `Zip: ${zip}` : null,
+      `SMS Consent: ${smsConsent ? "Yes" : "No"}`,
     ]
       .filter(Boolean)
       .join("\n");
