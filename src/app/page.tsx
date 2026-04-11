@@ -204,11 +204,29 @@ export default function Home() {
                 your dog can&rsquo;t.
               </motion.h1>
 
+              <motion.p
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-4 text-[18px] leading-[1.4] text-white/80 max-w-md"
+              >
+                Early disease detection through at-home blood work, powered by AI.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-2 text-[14px] font-medium tracking-wide uppercase text-[#D9FF66]/80"
+              >
+                Currently in private beta
+              </motion.p>
+
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-10 max-w-md"
+                className="mt-8 max-w-md"
               >
                 <AnimatePresence mode="wait">
                   {!submitted ? (
@@ -321,12 +339,28 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-[44px] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8] text-center mb-8"
+            className="font-serif text-[44px] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8] text-center"
           >
             We tell you what
             <br />
             your dog can&rsquo;t.
           </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-3 text-[16px] leading-[1.4] text-white/80 text-center px-4"
+          >
+            Early disease detection through at-home blood work, powered by AI.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-2 mb-6 text-[12px] font-medium tracking-wide uppercase text-[#D9FF66]/80 text-center"
+          >
+            Currently in private beta
+          </motion.p>
         </div>
 
         {/* Frosted glass bottom panel */}
