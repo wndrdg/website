@@ -83,6 +83,14 @@ export default function Home() {
     };
   }, []);
 
+  const formatPhone = (value: string) => {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+    if (digits.length === 0) return "";
+    if (digits.length <= 3) return `(${digits}`;
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !smsConsent) return;
@@ -227,21 +235,23 @@ export default function Home() {
                           className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                         />
                       </div>
-                      <input
-                        type="email"
-                        placeholder="Email Address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                      />
-                      <input
-                        type="tel"
-                        placeholder="Phone Number"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                      />
+                      <div className="flex gap-3">
+                        <input
+                          type="email"
+                          placeholder="Email Address"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                        />
+                        <input
+                          type="tel"
+                          placeholder="Phone Number"
+                          value={phone}
+                          onChange={(e) => setPhone(formatPhone(e.target.value))}
+                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                        />
+                      </div>
                       <label className="flex items-start gap-3 cursor-pointer select-none">
                         <input
                           type="checkbox"
@@ -353,21 +363,23 @@ export default function Home() {
                       className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                     />
                   </div>
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Phone Number"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                  />
+                  <div className="flex gap-3">
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                    />
+                    <input
+                      type="tel"
+                      placeholder="Phone"
+                      value={phone}
+                      onChange={(e) => setPhone(formatPhone(e.target.value))}
+                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                    />
+                  </div>
                   <label className="flex items-start gap-3 cursor-pointer select-none">
                     <input
                       type="checkbox"
