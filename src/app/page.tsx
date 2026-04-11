@@ -93,7 +93,7 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !smsConsent) return;
+    if (!email) return;
 
     setLoading(true);
     try {
@@ -275,7 +275,6 @@ export default function Home() {
                           type="checkbox"
                           checked={smsConsent}
                           onChange={(e) => setSmsConsent(e.target.checked)}
-                          required
                           className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
                         />
                         <span className="text-[13px] text-white/60 leading-snug">
@@ -284,7 +283,7 @@ export default function Home() {
                       </label>
                       <button
                         type="submit"
-                        disabled={loading || !smsConsent}
+                        disabled={loading}
                         className="mt-3 h-12 w-48 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
                       >
                         {loading ? "..." : "Join Waitlist"}
@@ -428,7 +427,7 @@ export default function Home() {
                   </label>
                   <button
                     type="submit"
-                    disabled={loading || !smsConsent}
+                    disabled={loading}
                     className="mt-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
                   >
                     {loading ? "..." : "Join Waitlist"}
