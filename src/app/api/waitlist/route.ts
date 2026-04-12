@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
     try {
       await resend.emails.send({
-        from: "Wonder Dog <noreply@wonder.dog>",
+        from: "Wonderdog <noreply@wonder.dog>",
         to: "hr@wonder.dog",
         subject: "New Waitlist Signup",
         text: `New waitlist signup:\n${details}`,

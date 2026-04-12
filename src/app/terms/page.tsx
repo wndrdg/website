@@ -5,16 +5,16 @@ import Link from "next/link";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const termsHTML = `<p>Welcome to Wonder Dog. Wonder Dog Inc., a Delaware corporation
-(<strong>\u201cWonder Dog,\u201d \u201cus,\u201d \u201cwe,\u201d</strong> or <strong>\u201cour\u201d</strong>)
+const termsHTML = `<p>Welcome to Wonderdog. Wonderdog Health, Inc., a Delaware corporation
+(<strong>\u201cWonderdog,\u201d \u201cus,\u201d \u201cwe,\u201d</strong> or <strong>\u201cour\u201d</strong>)
 recommends that you read these Terms and Conditions
 (<strong>\u201cTerms\u201d</strong>) carefully before using our website,
 communicating with us, or obtaining our veterinary telehealth,
 diagnostics, and preventive health services (together, or individually,
 the <strong>\u201cService\u201d</strong>).</p>
-<p>These Terms constitute a legally binding agreement between Wonder Dog
+<p>These Terms constitute a legally binding agreement between Wonderdog
 and you concerning your use of the Service (the \u201cAgreement\u201d), including
-binding dispute resolution terms between you and Wonder Dog. We
+binding dispute resolution terms between you and Wonderdog. We
 encourage you to print these Terms or save them to your device for
 reference. Your access to and use of the Service is conditioned upon
 your acceptance of and compliance with these Terms. These Terms apply to
@@ -36,7 +36,7 @@ least eighteen (18) years old or older, competent to enter into
 contracts, and authorized to make Appointments on behalf of any party or
 company subject to the Appointment.</p>
 <h1>Dispute Resolution</h1>
-<p>This section outlines how you and Wonder Dog will handle disputes
+<p>This section outlines how you and Wonderdog will handle disputes
 arising from these Terms, the Privacy Policy, or the Service. It is
 crucial that you read this section carefully.</p>
 <h2>Claims and Governing Law</h2>
@@ -176,14 +176,14 @@ specific part shall be severed from the agreement. The remaining
 portions of the agreement will continue to be valid and enforceable to
 the fullest extent permitted by law.</p>
 <h1>Privacy</h1>
-<p>Your use of the Service is subject to Wonder Dog\u2019s Privacy Policy,
+<p>Your use of the Service is subject to Wonderdog\u2019s Privacy Policy,
 which forms a part of these Terms. Please review our Privacy Policy,
 which also governs the Service and informs users of our data collection
 practices, including the collection and use of longitudinal canine
 health data and biomarker results. We encourage you to frequently check
 the Privacy Policy for changes.</p>
 <h1>Health Data and Ownership</h1>
-<h2>Wonder Dog\u2019s Ownership of Platform Data</h2>
+<h2>Wonderdog\u2019s Ownership of Platform Data</h2>
 <p>All data generated through your use of the Service \u2014 including but
 not limited to blood biomarker results, AI-generated health analyses,
 longitudinal health trend data, Televet consultation notes, Vet Tech
@@ -191,13 +191,13 @@ observation records, intake form responses, and aggregate
 population-level data derived from member pets (collectively, \u201cPlatform
 Data\u201d) \u2014 is and shall remain the sole and exclusive property of Wonder
 Dog Inc. By using the Service, you irrevocably and perpetually assign to
-Wonder Dog all right, title, and interest in and to Platform Data, to
+Wonderdog all right, title, and interest in and to Platform Data, to
 the fullest extent permitted by applicable law.</p>
 <h2>License to Your Pet\u2019s Personal Health Information</h2>
-<p>Wonder Dog acknowledges that certain information collected through
+<p>Wonderdog acknowledges that certain information collected through
 the Service, such as your pet\u2019s name, species, breed, age, and
 individually identifiable biomarker results (\u201cPet Health Information\u201d),
-is personal to you and your pet. Wonder Dog does not claim ownership of
+is personal to you and your pet. Wonderdog does not claim ownership of
 Pet Health Information. However, by using the Service, you grant Wonder
 Dog a perpetual, irrevocable, worldwide, royalty-free, sublicensable
 license to use, store, process, and analyze Pet Health Information for
@@ -205,17 +205,17 @@ the following purposes:</p>
 <ul>
 <li><p>Delivering the Service to you, including generating Diagnostic
 Results and health trend reports.</p></li>
-<li><p>Improving Wonder Dog\u2019s AI diagnostic models, reference range
+<li><p>Improving Wonderdog\u2019s AI diagnostic models, reference range
 calibration, and predictive health algorithms, using de-identified or
 aggregated data.</p></li>
 <li><p>Conducting internal research and development to advance canine
 preventive health and to otherwise enhance the Service and any other
-current or future business offerings of Wonder Dog.</p></li>
+current or future business offerings of Wonderdog.</p></li>
 <li><p>Complying with applicable legal, regulatory, and veterinary
 recordkeeping obligations.</p></li>
 </ul>
 <h2>De-Identification and Research Use</h2>
-<p>Wonder Dog may de-identify your pet\u2019s health data in accordance with
+<p>Wonderdog may de-identify your pet\u2019s health data in accordance with
 applicable privacy standards and use such de-identified data for
 research, product development, publication, and commercial purposes
 without restriction and without compensation to you. De-identified data
@@ -225,18 +225,18 @@ consent.</p>
 <p>Notwithstanding the above, veterinary clinical records created by a
 licensed Televet in connection with your Appointment are subject to
 applicable state veterinary practice acts governing recordkeeping and
-patient record access. Wonder Dog will maintain and provide access to
+patient record access. Wonderdog will maintain and provide access to
 clinical records in accordance with those applicable requirements. Your
 right to request a copy of your pet\u2019s clinical records is governed by
 the laws of the state in which the Televet is licensed.</p>
 <h2>Data Security</h2>
-<p>Wonder Dog uses commercially reasonable technical and organizational
+<p>Wonderdog uses commercially reasonable technical and organizational
 measures to protect Platform Data and Pet Health Information from
 unauthorized access, disclosure, or loss. However, no system is
-perfectly secure, and Wonder Dog cannot guarantee the absolute security
+perfectly secure, and Wonderdog cannot guarantee the absolute security
 of your data. In the event of a data breach affecting your Pet Health
-Information, Wonder Dog will notify you in accordance with applicable
-law. To the maximum extent permitted by applicable law, Wonder Dog\u2019s
+Information, Wonderdog will notify you in accordance with applicable
+law. To the maximum extent permitted by applicable law, Wonderdog\u2019s
 liability arising out of or related to any data breach, unauthorized
 access, or loss of Pet Health Information shall be subject to and
 limited by the Aggregate Liability Cap set forth in the Limitation of
@@ -247,7 +247,7 @@ diagnostic panels, AI-driven health reports, and telehealth
 availability. We may experience delays in updating information on the
 Service and in our advertising on other websites. The information found
 on the Service may contain errors or inaccuracies and may not be
-complete or current. While Wonder Dog reserves the right to remove
+complete or current. While Wonderdog reserves the right to remove
 content from the Service, such as for errors, it does not assume any
 obligation to do so and disclaims any liability for failing to do
 so.</p>
@@ -283,7 +283,7 @@ create or use an account without proper authorization.</p>
 <p>You are granted a non-exclusive, non-transferable, limited, revocable
 license to access and use the Service subject to your strict compliance
 with these Terms. As a condition of your use of the Service, you warrant
-to Wonder Dog that you will not use the Service for any purpose that is
+to Wonderdog that you will not use the Service for any purpose that is
 unlawful or prohibited by these Terms or applicable law. You may not use
 the Service in any manner which could damage, disable, overburden, or
 impair the Service, or interfere with any other party\u2019s use and
@@ -291,7 +291,7 @@ enjoyment of the Service. You may not obtain or attempt to obtain any
 materials or information through any means not intentionally made
 available through the Service.</p>
 <p>The Service and its features and functionality \u2014 including but not
-limited to Wonder Dog\u2019s AI diagnostic platform, longitudinal health data
+limited to Wonderdog\u2019s AI diagnostic platform, longitudinal health data
 infrastructure, biomarker analysis models, and the Liquid Gold
 supplement line \u2014 are and will remain the exclusive property of Wonder
 Dog Inc. and its licensors. The Service is protected by copyright,
@@ -321,7 +321,7 @@ requirement that such communications be in writing. You also agree to
 communications from us by phone and SMS/text message if they are
 transactional or if you consent to them.</p>
 <p>By gibing your consent to such communications, you agree that no
-communications by Wonder Dog to you shall violate the CAN-SPAM Act, the
+communications by Wonderdog to you shall violate the CAN-SPAM Act, the
 Telephone Consumer Protection Act, or any other applicable laws. You are
 responsible for paying any voice, message, and data fees, rates,
 charges, and taxes that may apply to you.</p>
@@ -339,7 +339,7 @@ provisions, warranty disclaimers, indemnity, miscellaneous terms, and
 limitations of liability.</p>
 <h1>Appointments</h1>
 <p>An <strong>\u201cAppointment\u201d</strong> occurs when you utilize the booking
-mechanism on the Wonder Dog website or application, complete the member
+mechanism on the Wonderdog website or application, complete the member
 intake form, and receive a confirmed appointment time with a Wonder
 Dog-affiliated licensed veterinarian (\u201cTelevet\u201d) and/or veterinary
 technician (\u201cVet Tech\u201d). If you request an Appointment, you agree that
@@ -376,7 +376,7 @@ reason are non-refundable, except in our sole discretion.</p>
 photograph your pet and use those photographs for marketing purposes,
 including on social media. By using the Service, you consent to have
 your pet photographed and acknowledge that any such photographs will be
-the sole and exclusive property of Wonder Dog, and that we may publish
+the sole and exclusive property of Wonderdog, and that we may publish
 these to third parties (including on social media) in our sole
 discretion, pursuant to the provisions of our Privacy Policy. You may
 opt out of having your pet\u2019s photograph taken during the Appointment by
@@ -389,18 +389,18 @@ but is not limited to, stress, bruising, hematoma at the venipuncture
 site, skin irritation, nausea, allergic reactions, or activation of
 previously unknown or inactive conditions. In our sole discretion, we
 may determine that the Appointment cannot be completed as scheduled.</p>
-<p>Wonder Dog may be required (such as by state or local laws) to report
+<p>Wonderdog may be required (such as by state or local laws) to report
 to the applicable authorities if certain issues arise during an
 Appointment. By using the Service, you acknowledge and understand that
 if your pet causes injury to a person or another animal (or there is
 another issue requiring reporting), we may report this to the relevant
 authorities.</p>
 <h2>Televet and Vet Tech Scope of Services</h2>
-<p>Wonder Dog delivers its Service through a coordinated model involving
+<p>Wonderdog delivers its Service through a coordinated model involving
 two distinct roles, each operating within their respective licensed
 scope of practice under applicable state law:</p>
 <ul>
-<li><p>A licensed veterinarian affiliated with Wonder Dog operating via
+<li><p>A licensed veterinarian affiliated with Wonderdog operating via
 telehealth (\u201cTelevet\u201d) conducts remote consultations, reviews Diagnostic
 Results, establishes or maintains a valid VCPR where required by
 applicable state law, makes clinical assessments, and exercises all
@@ -419,7 +419,7 @@ diagnose, prescribe, or make independent clinical decisions.</p></li>
 <li><p>The delegation of physical examination tasks to a Vet Tech under
 live, synchronous Televet supervision is consistent with applicable
 veterinary practice acts and the standard of care in the jurisdiction
-where Services are rendered. Wonder Dog makes no representation that
+where Services are rendered. Wonderdog makes no representation that
 this model is authorized in jurisdictions outside its active operating
 markets.</p></li>
 <li><p>The Vet Tech performing services at your home is acting within
@@ -427,28 +427,28 @@ the scope of tasks delegated by the supervising Televet. Any
 instructions given by the Vet Tech during the Appointment reflect the
 Televet\u2019s clinical direction and do not constitute independent
 veterinary advice.</p></li>
-<li><p>Wonder Dog\u2019s Televets are licensed in the jurisdiction in which
+<li><p>Wonderdog\u2019s Televets are licensed in the jurisdiction in which
 they provide Services and comply with applicable telehealth VCPR
 requirements. The specific VCPR standard applicable to your Appointment
 may vary by state. By using the Service, you consent to the telehealth
 model of care delivery as authorized under the laws of your
 state.</p></li>
-<li><p>Wonder Dog does not guarantee that a Vet Tech will be available
+<li><p>Wonderdog does not guarantee that a Vet Tech will be available
 for in-home visits in all service areas. In some cases, Services may be
 provided via telehealth consultation only, without an in-person Vet Tech
 component, to the extent permitted by applicable law.</p></li>
 </ul>
 <h1>Membership and Diagnostic Services</h1>
-<p>Wonder Dog offers an annual membership (the
+<p>Wonderdog offers an annual membership (the
 <strong>\u201cMembership\u201d</strong>) that provides access to our longitudinal
 blood biomarker testing, AI-driven health analysis, and telehealth
 veterinary consultations. Membership terms, pricing, and included
 services are described on our website and may be updated from time to
-time in Wonder Dog\u2019s sole discretion.</p>
+time in Wonderdog\u2019s sole discretion.</p>
 <h2>Membership Billing, Renewal, and Cancellation</h2>
 <p>Memberships. Memberships are billed on an annual basis at the
 then-current rate displayed on our website at the time of purchase or
-renewal. By enrolling in a Membership, you authorize Wonder Dog to
+renewal. By enrolling in a Membership, you authorize Wonderdog to
 charge the applicable annual fee to your payment method on file. All
 Membership fees are charged in advance and are non-refundable except as
 expressly stated in these Terms.</p>
@@ -472,7 +472,7 @@ any blood draw, diagnostic, or Televet consultation services included in
 your Membership, you may request a full refund by contacting
 legal@wonder.dog. This seven-day refund right does not apply to
 Membership renewals.</p>
-<p>Wonder Dog reserves the right to modify Membership pricing upon
+<p>Wonderdog reserves the right to modify Membership pricing upon
 reasonable notice. Price changes will take effect at your next renewal
 date. If you do not agree to a price change, you must cancel your
 Membership before the renewal date on which the new price takes effect.
@@ -484,7 +484,7 @@ analyses provided through the Service (collectively, \u201cDiagnostic
 Results\u201d) are intended solely for informational and preventive health
 monitoring purposes. Diagnostic Results do not constitute a definitive
 veterinary diagnosis, a prescription, or a recommended course of
-treatment, and must not be relied upon as such. Wonder Dog\u2019s biomarker
+treatment, and must not be relied upon as such. Wonderdog\u2019s biomarker
 panels are designed to identify trends and flag potential areas of
 concern over time \u2014 they are not a substitute for a comprehensive
 in-person veterinary examination.</p>
@@ -494,7 +494,7 @@ in-person veterinary examination.</p>
 negatives. A result outside a reference range does not confirm the
 presence of disease, and a result within a reference range does not
 confirm the absence of disease.</p></li>
-<li><p>Reference ranges used in Wonder Dog\u2019s panels are population-based
+<li><p>Reference ranges used in Wonderdog\u2019s panels are population-based
 estimates and may not reflect the normal baseline for your individual
 pet. Breed, age, sex, medication use, recent activity, and other factors
 can affect biomarker values.</p></li>
@@ -503,7 +503,7 @@ thymidine kinase 1 (TK1), and oncology screening panels, are screening
 tools only. A positive or elevated result requires follow-up evaluation
 by a licensed veterinarian and does not constitute a diagnosis of kidney
 disease, cancer, or any other condition.</p></li>
-<li><p>Wonder Dog\u2019s AI-powered analysis is a decision-support tool
+<li><p>Wonderdog\u2019s AI-powered analysis is a decision-support tool
 designed to assist licensed veterinarians in identifying patterns across
 longitudinal data. It does not replace, and must not be substituted for,
 professional veterinary clinical judgment. You acknowledge and agree
@@ -516,7 +516,7 @@ made in consultation with a licensed veterinarian who has conducted an
 appropriate physical examination and established a valid
 veterinarian-client-patient relationship (VCPR) in accordance with
 applicable state law.</p></li>
-<li><p>You hereby agree that Wonder Dog is not responsible for any
+<li><p>You hereby agree that Wonderdog is not responsible for any
 outcome \u2014 including delayed diagnosis, misdiagnosis, or treatment
 decisions \u2014 arising from your reliance on Diagnostic Results without
 appropriate follow-up veterinary care.</p></li>
@@ -530,7 +530,7 @@ to make your pet available at the scheduled appointment time.</p>
 <h1>Indemnification</h1>
 <p>To the maximum extent permitted by law, you agree to indemnify,
 defend (with counsel reasonably acceptable to us), and hold harmless
-Wonder Dog Inc. and its licensees and licensors, and our/their
+Wonderdog Health, Inc. and its licensees and licensors, and our/their
 employees, contractors, agents, officers, and managers, from and against
 any and all claims, damages, obligations, losses, liabilities, costs or
 debt, and expenses (including but not limited to attorney\u2019s fees),
@@ -541,7 +541,7 @@ including about your pet\u2019s vaccination status, health history, or
 behavioral history.</p>
 <p>Additionally, to the maximum extent permitted by law, you agree to
 indemnify, defend (with counsel reasonably acceptable to us), and hold
-harmless Wonder Dog Inc. and its licensees and licensors, and our/their
+harmless Wonderdog Health, Inc. and its licensees and licensors, and our/their
 employees, contractors, agents, officers, and managers, from and against
 any and all claims, damages, obligations, losses, liabilities, costs or
 debt, and expenses (including but not limited to attorney\u2019s fees)
@@ -553,7 +553,7 @@ nuisances, quarantine expenses, or other costs created by your pet;
 and/or e) your violation of the conditions of these Terms (including,
 without limitation, the prohibited conduct set forth herein).</p>
 <h1>Limitation of Liability</h1>
-<p><strong>IN NO EVENT SHALL WONDER DOG INC., NOR ITS MANAGERS,
+<p><strong>IN NO EVENT SHALL WONDERDOG HEALTH, INC., NOR ITS MANAGERS,
 EMPLOYEES, PARTNERS, AGENTS, SUPPLIERS, LICENSORS, OR AFFILIATES, BE
 LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE
 DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE,
@@ -566,7 +566,7 @@ TRANSMISSIONS OR CONTENT, WHETHER BASED ON WARRANTY, CONTRACT, TORT
 HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE, AND EVEN IF A
 REMEDY SET FORTH HEREIN IS FOUND TO HAVE FAILED ITS ESSENTIAL
 PURPOSE.</strong></p>
-<p><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WONDER DOG
+<p><strong>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WONDERDOG
 INC. ASSUMES NO LIABILITY OR RESPONSIBILITY FOR (I) ANY ERRORS,
 MISTAKES, OR INACCURACIES OF CONTENT OR DIAGNOSTIC RESULTS; (II) ANY
 PERSONAL INJURY OR PROPERTY DAMAGE OF ANY NATURE WHATSOEVER RESULTING
@@ -587,19 +587,19 @@ PROVIDE YOUR PET WITH CARE IN THE EVENT OF AN EMERGENCY; AND/OR (X) THE
 LOSS AND/OR DEATH OF YOUR PET WHILE IN OUR CARE.</strong></p>
 <p><strong>THIS LIMITATION OF LIABILITY SECTION APPLIES WHETHER THE
 ALLEGED LIABILITY IS BASED ON CONTRACT, TORT, NEGLIGENCE, STRICT
-LIABILITY, OR ANY OTHER BASIS, EVEN IF WONDER DOG INC. HAS BEEN ADVISED
+LIABILITY, OR ANY OTHER BASIS, EVEN IF WONDERDOG HEALTH, INC. HAS BEEN ADVISED
 OF THE POSSIBILITY OF SUCH DAMAGE. THE FOREGOING LIMITATIONS OF
 LIABILITY SHALL APPLY TO THE FULLEST EXTENT PERMITTED BY LAW IN THE
 APPLICABLE JURISDICTION.</strong></p>
 <p><strong>NOTWITHSTANDING ANY OTHER PROVISION OF THESE TERMS, IN NO
-EVENT SHALL WONDER DOG INC.\u2019S TOTAL CUMULATIVE LIABILITY TO YOU FOR ALL
+EVENT SHALL WONDERDOG HEALTH, INC.\u2019S TOTAL CUMULATIVE LIABILITY TO YOU FOR ALL
 CLAIMS ARISING OUT OF OR RELATED TO THESE TERMS OR THE SERVICE \u2014 WHETHER
 BASED ON CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY, OR ANY OTHER
 LEGAL THEORY \u2014 EXCEED THE GREATER OF: (A) THE TOTAL FEES ACTUALLY PAID
-BY YOU TO WONDER DOG IN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE
+BY YOU TO WONDERDOG IN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE
 EVENT GIVING RISE TO THE CLAIM; OR (B) ONE HUNDRED U.S. DOLLARS ($100).
 THIS CAP APPLIES TO ALL CLAIMS IN THE AGGREGATE, NOT PER CLAIM, AND
-SHALL APPLY EVEN IF WONDER DOG HAS BEEN ADVISED OF THE POSSIBILITY OF
+SHALL APPLY EVEN IF WONDERDOG HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGES AND EVEN IF A REMEDY SET FORTH HEREIN IS FOUND TO HAVE
 FAILED ITS ESSENTIAL PURPOSE. THE EXISTENCE OF MORE THAN ONE CLAIM WILL
 NOT ENLARGE THIS LIMIT.</strong></p>
@@ -612,7 +612,7 @@ PARTICULAR PURPOSE, NON-INFRINGEMENT, OR COURSE OF PERFORMANCE.
 DIAGNOSTIC RESULTS, AI-GENERATED HEALTH REPORTS, AND TELEHEALTH
 CONSULTATIONS PROVIDED THROUGH THE SERVICE ARE INTENDED TO SUPPLEMENT,
 NOT REPLACE, IN-PERSON VETERINARY CARE.</strong></p>
-<p><strong>WONDER DOG INC. AND ITS SUBSIDIARIES, AFFILIATES, AND
+<p><strong>WONDERDOG HEALTH, INC. AND ITS SUBSIDIARIES, AFFILIATES, AND
 LICENSORS DO NOT WARRANT THAT A) THE SERVICE WILL FUNCTION OR BE
 UNINTERRUPTED, SECURE, OR AVAILABLE AT ANY PARTICULAR TIME OR LOCATION;
 B) ANY ERRORS OR DEFECTS WILL BE CORRECTED; C) THE SERVICE IS FREE OF
@@ -627,24 +627,24 @@ incidental damages, so the limitations above may not apply to you.</p>
 veterinary or other emergency care for your pet if you cannot be reached
 to authorize care yourself in an emergency situation. In such case, you
 also authorize your pet\u2019s veterinarian to release your pet\u2019s veterinary
-records to us. Wonder Dog will make reasonable efforts to contact you
+records to us. Wonderdog will make reasonable efforts to contact you
 before authorizing emergency care and, where practicable, will attempt
 to obtain verbal or written authorization from you prior to incurring
 costs on your behalf. You are responsible for the costs of any medical
 or emergency care or treatment reasonably authorized for your pet on
-your behalf; provided, however, that Wonder Dog will not authorize
+your behalf; provided, however, that Wonderdog will not authorize
 emergency expenditures exceeding five hundred U.S. dollars ($500) on
 your behalf without first making reasonable attempts to reach you,
 unless the delay would, in the reasonable clinical judgment of the
 attending Televet or treating veterinarian, create an imminent risk to
 the life of your pet. Any emergency costs authorized in excess of this
 threshold will be communicated to you as promptly as practicable.</p>
-<p>In some cases, Wonder Dog\u2019s Vet Techs and/or Televets may attempt to
+<p>In some cases, Wonderdog\u2019s Vet Techs and/or Televets may attempt to
 provide guidance or care to your pet in an emergency situation, either
 in lieu of or in addition to reaching out to a veterinarian. You
 authorize us to provide such guidance on your pet\u2019s behalf.</p>
 <h1>Changes</h1>
-<p>Wonder Dog reserves the right, in its sole discretion, to modify or
+<p>Wonderdog reserves the right, in its sole discretion, to modify or
 replace these Terms at any time. When we make material changes, we will
 provide you with reasonable advance notice by sending an email to the
 address associated with your account and/or by posting a prominent
@@ -658,7 +658,7 @@ acceptance of the revised Terms. If you do not agree to the revised
 Terms, you must stop using the Service and, if applicable, cancel your
 Membership before the effective date of the changes. Cancellations made
 in response to a material change in Terms will be treated as
-cancellations made for cause; in such cases, Wonder Dog will provide a
+cancellations made for cause; in such cases, Wonderdog will provide a
 prorated refund of any prepaid but unused Membership fees covering
 periods after the effective date of the change.</p>
 <h1>DMCA Notice and Procedure for Copyright Infringement Claims</h1>
@@ -680,10 +680,10 @@ the copyright owner\u2019s behalf. We may terminate your account or use of
 the Service if you are a repeat infringer under a repeat infringer
 policy.</p>
 <p>DMCA notices may be sent to:</p>
-<p><strong>Wonder Dog Inc.</strong></p>
+<p><strong>Wonderdog Health, Inc.</strong></p>
 <p><a href="mailto:legal@wonder.dog">legal@wonder.dog</a></p>
 <p>Additional Prohibited ConductYou shall not engage in any of the
-following activities at any time with respect to the Wonder Dog website:
+following activities at any time with respect to the Wonderdog website:
 (a) the impersonation of any person or entity, (b) any act that
 infringes or otherwise violates the intellectual property, privacy, or
 publicity rights of any person or entity, (c) the reproduction of the
@@ -702,31 +702,31 @@ directory, (h) any act or the use of any software, program, or process
 to monitor, copy, disrupt, damage, or impermissibly access the website
 or its infrastructure, (i) any act that involves or concerns decrypting,
 security bypassing, hacking, data mining, or the like on or through the
-website, or (j) any other act that Wonder Dog becomes aware of and
+website, or (j) any other act that Wonderdog becomes aware of and
 believes in good faith is improper, illegal, or harmful to the website
-or its servers, or any person, entity, or property. Wonder Dog reserves
+or its servers, or any person, entity, or property. Wonderdog reserves
 the right to take down or otherwise exclude from the website, without
-notice or recourse, any content made or submitted by you that Wonder Dog
+notice or recourse, any content made or submitted by you that Wonderdog
 believes in its sole discretion to be in violation of the foregoing
-prohibited activities or that Wonder Dog otherwise considers to be
+prohibited activities or that Wonderdog otherwise considers to be
 unsuitable for the website.</p>
 <h1>Linked Technologies</h1>
-<p>The Wonder Dog website or any communications sent as a function of
+<p>The Wonderdog website or any communications sent as a function of
 the website (including, without limitation, the Service) may contain
 links to third-party websites or applications and, similarly,
-third-party websites or applications may contain links to the Wonder Dog
+third-party websites or applications may contain links to the Wonderdog
 website (collectively, the \u201c<strong>Linked Technologies</strong>\u201d). The
-Linked Technologies are not under the control of Wonder Dog or the
-Wonder Dog website, and any such communications contain the outgoing
+Linked Technologies are not under the control of Wonderdog or the
+Wonderdog website, and any such communications contain the outgoing
 links as a convenience to you.</p>
-<p><strong>Wonder Dog is not responsible for any information, goods,
+<p><strong>Wonderdog is not responsible for any information, goods,
 services, or other content that may be found on or excluded from the
 Linked Technologies (including malicious software, inaccurate
-information, and illegal content). Wonder Dog does not make any
+information, and illegal content). Wonderdog does not make any
 representations or warranties (whether express, implied, or otherwise)
 concerning the terms of use, privacy policies, agreements, information,
 goods, services, or other content that may be found on or excluded from
-the Linked Technologies. The fact that the Wonder Dog website may link
+the Linked Technologies. The fact that the Wonderdog website may link
 to or from any Linked Technologies shall not constitute an affiliation
 with, association with, or endorsement of such Linked Technologies, and
 their information, goods, services, or other content. If you decide to
@@ -747,7 +747,7 @@ these Terms is ruled to be invalid or unenforceable, the remainder of
 the Terms shall continue to be valid and enforceable, and to this end
 these Terms are severable.</p>
 <h1>Contact Us</h1>
-<p>Wonder Dog welcomes your questions or comments regarding the
+<p>Wonderdog welcomes your questions or comments regarding the
 Terms.</p>
 <p>Please contact us at <strong>legal@wonder.dog</strong>.</p>`;
 
@@ -764,7 +764,7 @@ export default function TermsAndConditions() {
             href="/"
             className="text-[13px] text-[oklch(0.708_0_0)] hover:text-white transition-colors"
           >
-            &larr; Wonder Dog
+            &larr; Wonderdog
           </Link>
 
           <h1 className="mt-8 text-[28px] sm:text-[36px] font-semibold tracking-[-0.02em]">
@@ -792,7 +792,7 @@ export default function TermsAndConditions() {
             <Link href="/terms" className="hover:text-white transition-colors">Terms and Conditions</Link>
           </div>
           <p className="text-[11px] text-[oklch(0.4_0_0)]">
-            &copy; 2026 Wonder Dog
+            &copy; 2026 Wonderdog
           </p>
         </footer>
       </div>

@@ -63,7 +63,7 @@ export default function NowHiring() {
             href="/"
             className="text-[13px] text-[oklch(0.708_0_0)] hover:text-white transition-colors"
           >
-            ← Wonder Dog
+            ← Wonderdog
           </Link>
 
           <h1 className="mt-8 text-[28px] sm:text-[36px] font-semibold tracking-[-0.02em]">
@@ -130,7 +130,7 @@ export default function NowHiring() {
           className="mt-16 border-t border-[oklch(1_0_0_/_10%)] pt-8"
         >
           <p className="text-[13px] text-[oklch(0.5_0_0)]">
-            Wonder Dog is an equal opportunity employer. We don&apos;t
+            Wonderdog is an equal opportunity employer. We don&apos;t
             discriminate based on race, religion, gender, sexual orientation,
             age, disability, or any other protected status. We just care if
             you&apos;re great at what you do and love dogs.
@@ -143,7 +143,7 @@ export default function NowHiring() {
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
           <p className="text-[11px] text-[oklch(0.4_0_0)]">
-            &copy; 2026 Wonder Dog
+            &copy; 2026 Wonderdog
           </p>
         </footer>
       </div>

@@ -5,12 +5,12 @@ import Link from "next/link";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const privacyHTML = `<p>This Privacy Policy is incorporated into Wonder Dog\u2019s Terms and
+const privacyHTML = `<p>This Privacy Policy is incorporated into Wonderdog\u2019s Terms and
 Conditions and outlines our privacy practices in connection with your
 use of our website, mobile application, and any related services
 (together, the <strong>\u201cWebsite\u201d</strong> or
 <strong>\u201cService\u201d</strong>).</p>
-<p>This Privacy Policy explains how Wonder Dog Inc. (<strong>\u201cWonder
+<p>This Privacy Policy explains how Wonderdog Health, Inc. (<strong>\u201cWonder
 Dog,\u201d \u201cwe,\u201d \u201cus,\u201d</strong> or <strong>\u201cour\u201d</strong>) collects, uses,
 and discloses personal information. It applies only to the Service and
 where we control data collection and use. It does not apply to any
@@ -36,7 +36,7 @@ clinical encounter.</p>
 <p>Like many websites, we obtain technical and device information
 automatically when you visit or use the Website. We may also collect
 information from content you make public outside of the Website, such as
-when you contact us through social media or tag Wonder Dog in a post.
+when you contact us through social media or tag Wonderdog in a post.
 Information collected off the Website may be combined with information
 collected through the Website.</p>
 <h1>What Categories of Information Do We Collect?</h1>
@@ -57,19 +57,19 @@ data, Televet consultation notes, Vet Tech physical observation records,
 and any other clinical data generated through the Service (collectively,
 \u201cPet Health Data\u201d). Pet Health Data is used to provide Diagnostic
 Results, support clinical decision-making by our Televets, train and
-improve our AI diagnostic models, and advance Wonder Dog\u2019s research and
+improve our AI diagnostic models, and advance Wonderdog\u2019s research and
 development. Please refer to the Health Data and Ownership section of
 our Terms and Conditions for a full explanation of how Pet Health Data
 is owned and licensed.</p>
-<p>Important note on data ownership: As described in Wonder Dog\u2019s Terms
+<p>Important note on data ownership: As described in Wonderdog\u2019s Terms
 and Conditions, there is a meaningful distinction between two categories
 of health-related data. First, \u201cPlatform Data\u201d \u2014 which includes
 aggregate biomarker results, AI-generated analyses, longitudinal trend
 data, and population-level data derived from member pets \u2014 is assigned
-to and owned exclusively by Wonder Dog Inc. Second, \u201cPet Health
+to and owned exclusively by Wonderdog Health, Inc. Second, \u201cPet Health
 Information\u201d \u2014 which includes individually identifiable data such as
 your pet\u2019s name, breed, age, and individually identifiable biomarker
-results \u2014 remains personal to you; Wonder Dog does not claim ownership
+results \u2014 remains personal to you; Wonderdog does not claim ownership
 of Pet Health Information but holds an irrevocable, perpetual,
 royalty-free license to use it to deliver and improve the Service. You
 retain the right to request a copy of your pet\u2019s Pet Health Information
@@ -80,12 +80,12 @@ recordings of you and/or your pet taken during an Appointment or
 provided by you in connection with the Service.</p>
 <p><strong>Commercial and Transactional Information,</strong> such as
 records of Membership purchases, Appointment bookings, supplement
-orders, and payment information. Wonder Dog uses a third-party payment
+orders, and payment information. Wonderdog uses a third-party payment
 processor for credit card transactions and does not store full payment
 card details on its servers. The payment processor\u2019s Privacy Policy is
 available here.</p>
 <p><strong>Background Information,</strong> if you apply for a position
-with Wonder Dog, including employment or contractor-related information
+with Wonderdog, including employment or contractor-related information
 provided in your application, used for HR and contractor management
 purposes. Background Information collected in the context of employment
 or contractor applications is maintained separately from member and Pet
@@ -100,11 +100,11 @@ your device IP address.</p>
 California Consumer Privacy Act as amended by the California Privacy
 Rights Act (\u201cCPRA\u201d) includes Pet Health and Diagnostic Data, precise
 geolocation data, and certain background information provided in a job
-application. Wonder Dog collects and uses Sensitive Personal Information
+application. Wonderdog collects and uses Sensitive Personal Information
 only to the extent necessary to deliver the Service, fulfill legal
 obligations, or as otherwise permitted by applicable law. California
 residents and residents of certain other jurisdictions have the right to
-limit Wonder Dog\u2019s use of Sensitive Personal Information to purposes
+limit Wonderdog\u2019s use of Sensitive Personal Information to purposes
 necessary to perform the Service. See the California and Other
 Jurisdictions\u2019 Privacy Rights section below for instructions on how to
 exercise this right.</p>
@@ -127,9 +127,9 @@ health reports, facilitate Televet consultations, coordinate Vet Tech
 visits, and provide member support.</p></li>
 <li><p><strong>Building Your Pet\u2019s Health Profile:</strong> To create
 and maintain a longitudinal record of your pet\u2019s biomarker trends over
-time, which is the core value of the Wonder Dog Service.</p></li>
+time, which is the core value of the Wonderdog Service.</p></li>
 <li><p><strong>AI Model Training and Development:</strong> To improve
-Wonder Dog\u2019s AI diagnostic algorithms, refine biomarker reference
+Wonderdog\u2019s AI diagnostic algorithms, refine biomarker reference
 ranges, and develop new predictive health tools, using de-identified or
 aggregated Pet Health Data. Before any Pet Health Data is used for AI
 model training, it undergoes a de-identification process designed to
@@ -140,8 +140,8 @@ restrictions ensuring that de-identified data is not used for purposes
 incompatible with those described in this Privacy Policy. The scope of
 biomarker data collected for each pet is determined by the ordering
 licensed veterinarian exercising independent clinical judgment and is
-reasonably necessary and proportionate to delivering Wonder Dog\u2019s
-longitudinal preventive health service. Wonder Dog conducts internal
+reasonably necessary and proportionate to delivering Wonderdog\u2019s
+longitudinal preventive health service. Wonderdog conducts internal
 assessments of its data processing activities involving Pet Health Data
 in accordance with applicable law. See our Terms and Conditions for
 details on data ownership and de-identification.</p></li>
@@ -182,20 +182,20 @@ Diagnostics), cloud hosting providers, customer support platforms,
 payment processors, and other vendors who assist us in delivering the
 Service. These parties access information only to the extent necessary
 to perform their functions and are subject to confidentiality
-obligations. Wonder Dog may also use third-party cloud computing and
+obligations. Wonderdog may also use third-party cloud computing and
 machine learning infrastructure providers to host, train, and deploy its
 AI diagnostic models. These providers may process de-identified or
 aggregated Pet Health Data as part of delivering their services to
-Wonder Dog. Such providers are bound by contractual obligations
+Wonderdog. Such providers are bound by contractual obligations
 regarding data security and confidentiality and are prohibited from
-using Wonder Dog data to train their own AI models or for any purpose
-other than performing services on behalf of Wonder Dog.</p>
+using Wonderdog data to train their own AI models or for any purpose
+other than performing services on behalf of Wonderdog.</p>
 <p><strong>To Telehealth and Clinical Partners,</strong> such as
-licensed Televets and Vet Techs affiliated with Wonder Dog\u2019s
+licensed Televets and Vet Techs affiliated with Wonderdog\u2019s
 professional corporation partners who require access to your pet\u2019s
 health information to deliver clinical services. Clinical records may be
 shared among the treating Televet, the supervising professional
-corporation, and Wonder Dog\u2019s MSO infrastructure as necessary to
+corporation, and Wonderdog\u2019s MSO infrastructure as necessary to
 coordinate care.</p>
 <p><strong>To Veterinary and Healthcare Providers,</strong> as necessary
 in the event your pet requires emergency care, follow-up treatment, or
@@ -215,7 +215,7 @@ without limitation, Google and Meta), who may receive device
 identifiers, cookie data, and other technical information \u2014 but not Pet
 Health Data or Sensitive Personal Information \u2014 for the purpose of
 delivering personalized advertisements that may be of interest to you.
-Wonder Dog does not disclose your pet\u2019s biomarker results, Diagnostic
+Wonderdog does not disclose your pet\u2019s biomarker results, Diagnostic
 Results, or individually identifiable Pet Health Data to advertising
 partners for marketing purposes. Certain disclosures of technical
 information through cookies and similar tracking technologies may
@@ -228,7 +228,7 @@ us at legal@wonder.dog.</p>
 is public \u2014 such as a review posted about us online \u2014 or if it cannot
 reasonably identify or be linked to you, such as aggregate data used to
 evaluate the Service.</p>
-<p><strong>To Related Parties in a Transaction,</strong> if Wonder Dog
+<p><strong>To Related Parties in a Transaction,</strong> if Wonderdog
 is involved in an acquisition, merger, financing, sale, or similar
 transaction, we may disclose, transfer, or assign your information to
 the relevant parties, subject to standard confidentiality
@@ -268,10 +268,10 @@ the age of 13. If we obtain actual knowledge that we have collected
 personal information about a child under the age of 13, we will delete
 that information promptly.</p>
 <p>The Service is intended solely for use by individuals who are at
-least eighteen (18) years of age. Wonder Dog does not direct the Service
+least eighteen (18) years of age. Wonderdog does not direct the Service
 at children and does not knowingly allow minors to create accounts or
 use the Service. If you are a parent or guardian and believe your child
-has provided personal information to Wonder Dog without your consent,
+has provided personal information to Wonderdog without your consent,
 please contact us at legal@wonder.dog and we will promptly delete such
 information. If you are under 18, please do not use the Service or
 submit any information to us.</p>
@@ -280,7 +280,7 @@ Children\u2019s Online Privacy Protection Act, the Federal Trade Commission\u201
 Children\u2019s Online Privacy Protection Rule(s), or any similar
 international, federal, state, or local laws, rules, or regulations.</p>
 <h1>How Is Your Information Protected and Retained?</h1>
-<p>Wonder Dog is based in the United States, and the Service is operated
+<p>Wonderdog is based in the United States, and the Service is operated
 from and data is stored in the United States. If you access the Service
 from outside the United States, please be aware that your information
 will be transferred to, processed, and stored in the United States,
@@ -290,7 +290,7 @@ Dog applies the same data protection standards described in this Privacy
 Policy to all personal information regardless of where it is processed.
 If you are located outside the United States and have questions about
 international data transfers, please contact us at legal@wonder.dog.
-Wonder Dog uses commercially reasonable technical and organizational
+Wonderdog uses commercially reasonable technical and organizational
 security measures designed to protect your information from unauthorized
 access, disclosure, alteration, or loss. However, no system or website
 can be 100% secure, and we cannot guarantee the absolute security of
@@ -300,7 +300,7 @@ are responsible for maintaining the security and confidentiality of your
 account credentials and should immediately notify us if you believe
 there has been a security breach.</p>
 <h2>Data Security Program</h2>
-<p>In accordance with applicable state data security laws, Wonder Dog
+<p>In accordance with applicable state data security laws, Wonderdog
 maintains a reasonable data security program that includes:</p>
 <p><strong>Administrative safeguards,</strong> such as designating
 employees responsible for the security program, conducting risk
@@ -316,11 +316,11 @@ practices.</p>
 infrastructure for data storage, disposal procedures for physical
 records containing personal information, and controls on physical access
 to systems that store member and pet health data.</p>
-<p>Wonder Dog reviews and updates its security program on an ongoing
+<p>Wonderdog reviews and updates its security program on an ongoing
 basis to address new and evolving risks.</p>
 <h2>Breach Notification</h2>
 <p>In the event of a security breach that compromises the security,
-confidentiality, or integrity of your personal information, Wonder Dog
+confidentiality, or integrity of your personal information, Wonderdog
 will notify affected members in accordance with applicable state breach
 notification laws.</p>
 <p>Specifically:</p>
@@ -330,24 +330,24 @@ applicable law in the member\u2019s state of residence, generally within 45
 days of discovery unless a shorter period is required by applicable
 law.</p>
 <p><strong>Method:</strong> We will notify you by email to the address
-associated with your Wonder Dog account, or by written notice if email
+associated with your Wonderdog account, or by written notice if email
 is not available. In the event of a breach affecting a large number of
 members, we may supplement direct notice with a prominent notice on our
 Website.</p>
 <p><strong>Content:</strong> Breach notifications will describe the
 nature of the breach, the categories of information affected, the steps
-Wonder Dog has taken to address and remediate the breach, and the steps
+Wonderdog has taken to address and remediate the breach, and the steps
 you can take to protect yourself.</p>
 <p><strong>Regulatory Reporting:</strong> Where required by applicable
-law, Wonder Dog will notify relevant state attorneys general and other
+law, Wonderdog will notify relevant state attorneys general and other
 applicable regulatory authorities of a breach affecting residents of
 their respective states.</p>
 <h2>Automated Decision-Making and AI Diagnostics</h2>
-<p>Wonder Dog uses artificial intelligence and machine learning models
+<p>Wonderdog uses artificial intelligence and machine learning models
 to analyze your pet\u2019s blood biomarker results and generate health trend
 reports and risk flags. It is important that you understand how this
 technology works and its limitations:</p>
-<p><strong>What the AI does:</strong> Wonder Dog\u2019s AI models compare
+<p><strong>What the AI does:</strong> Wonderdog\u2019s AI models compare
 your pet\u2019s biomarker results against population-based reference ranges,
 your pet\u2019s own longitudinal baseline, and pattern libraries developed
 from de-identified pet health data. The AI generates Diagnostic Results
@@ -361,10 +361,10 @@ before being communicated to members as part of a clinical
 consultation.</p>
 <p><strong>Televet review:</strong> Every Diagnostic Result that
 includes an AI-generated risk flag or recommendation is reviewed by a
-Wonder Dog-affiliated licensed veterinarian (Televet) prior to delivery.
+Wonderdog-affiliated licensed veterinarian (Televet) prior to delivery.
 The Televet exercises independent clinical judgment and may modify,
 contextualize, or override any AI-generated finding.</p>
-<p><strong>Your right to opt out:</strong> Wonder Dog provides you with
+<p><strong>Your right to opt out:</strong> Wonderdog provides you with
 the ability to opt out of having your pet\u2019s data processed by our AI
 diagnostic models as a matter of company policy and our commitment to
 transparency, even where not required by applicable law. If you wish to
@@ -372,7 +372,7 @@ exercise this option, contact us at legal@wonder.dog with the subject
 line \u201cOpt Out of AI Processing.\u201d Please be aware that because AI-driven
 analysis is integral to the generation of Diagnostic Results and
 longitudinal health trend reports, opting out of AI processing will
-affect Wonder Dog\u2019s ability to deliver these features of the Service. If
+affect Wonderdog\u2019s ability to deliver these features of the Service. If
 you opt out, your pet\u2019s blood biomarker results will still be processed
 by our laboratory partners, but the AI-generated trend analysis, risk
 flagging, and predictive health insights will not be available to your
@@ -391,11 +391,11 @@ and to fulfill veterinary recordkeeping obligations under applicable
 state law. De-identified or aggregated Pet Health Data derived from your
 records may be retained indefinitely for research and AI model
 development purposes. Please note that if your pet\u2019s de-identified data
-has been used to train Wonder Dog\u2019s AI models prior to a deletion or
+has been used to train Wonderdog\u2019s AI models prior to a deletion or
 opt-out request, the statistical patterns derived from that data may be
 embedded in the model\u2019s learned parameters and cannot be individually
 extracted or deleted from a trained model. Upon receipt of a valid
-deletion or opt-out request, Wonder Dog will delete or de-identify all
+deletion or opt-out request, Wonderdog will delete or de-identify all
 identifiable records of your pet\u2019s data from its active databases,
 exclude your pet\u2019s data from all future AI model training cycles, and
 use commercially reasonable efforts to incorporate your deletion
@@ -403,7 +403,7 @@ preference into the next scheduled model retraining cycle.</p>
 <p><strong>Clinical Records:</strong> Retained in accordance with the
 veterinary practice act of the state in which the treating Televet is
 licensed, which typically requires a minimum of three (3) to five (5)
-years. Wonder Dog will comply with the longest applicable retention
+years. Wonderdog will comply with the longest applicable retention
 period across its active operating states.</p>
 <p><strong>Commercial and Transactional Information:</strong> Retained
 for a minimum of five (5) years following the transaction date to
@@ -416,7 +416,7 @@ for up to two (2) years following the conclusion of a hiring or
 contractor onboarding process, or longer if required by applicable
 employment law.</p>
 <p>Where we are required by applicable law to retain information for a
-longer period, or where retention is necessary to protect Wonder Dog\u2019s
+longer period, or where retention is necessary to protect Wonderdog\u2019s
 legal interests, we will retain information accordingly. When retention
 periods expire, we will delete or de-identify the relevant information
 in accordance with our internal data management procedures.</p>
@@ -448,7 +448,7 @@ related to your Service use or legal updates.</p>
 <p><strong>Non-Discrimination</strong> for assertion of your privacy
 rights or filing a complaint.</p>
 <h1>Your Rights Regarding Pet Health Data</h1>
-<p>In addition to general privacy rights, Wonder Dog recognizes that Pet
+<p>In addition to general privacy rights, Wonderdog recognizes that Pet
 Health Data warrants specific consideration. You may:</p>
 <ul>
 <li><p>Request a copy of your pet\u2019s Diagnostic Results and longitudinal
@@ -475,7 +475,7 @@ personal information. This section generally describes those rights and
 how to exercise them. Where applicable, these rights are in addition to
 the general privacy rights described above.</p>
 <p><strong>Right to Know (12-Month Lookback):</strong> You have the
-right to request that Wonder Dog disclose the categories and specific
+right to request that Wonderdog disclose the categories and specific
 pieces of personal information we have collected about you over the past
 12 months, including the categories of sources, our business or
 commercial purpose for collecting or selling that information, and the
@@ -493,14 +493,14 @@ cross-context behavioral advertising. To exercise this right, see the
 \u201cDo Not Sell or Share My Personal Information\u201d section below, or use the
 opt-out link available on our Website.</p>
 <p><strong>Right to Limit Use of Sensitive Personal
-Information:</strong> You have the right to direct Wonder Dog to limit
+Information:</strong> You have the right to direct Wonderdog to limit
 its use and disclosure of your Sensitive Personal Information \u2014
 including Pet Health and Diagnostic Data \u2014 to purposes necessary to
 perform the Service, as permitted by the CPRA and certain other
 jurisdictions\u2019 privacy laws. To exercise this right, contact us at
 legal@wonder.dog with the subject line \u201cLimit Use of Sensitive Personal
 Information.\u201d</p>
-<p><strong>Right to Non-Discrimination:</strong> Wonder Dog will not
+<p><strong>Right to Non-Discrimination:</strong> Wonderdog will not
 discriminate against you for exercising any of your CCPA/CPRA or other
 privacy rights. We will not deny you the Service, charge you a different
 price, or provide a different level of quality because you exercised a
@@ -517,7 +517,7 @@ in the subject line of your request. We will respond to verifiable
 requests within 45 days, with one 45-day extension where reasonably
 necessary.</p>
 <h1>Do Not Sell or Share My Personal Information</h1>
-<p>Wonder Dog does not sell your personal information for monetary
+<p>Wonderdog does not sell your personal information for monetary
 compensation. However, certain disclosures of personal information to
 third-party advertising and marketing partners \u2014 including through
 cookies and similar tracking technologies \u2014 may constitute \u201csharing\u201d
@@ -531,8 +531,8 @@ Personal Information\u201d link in the footer of our Website to manage your
 cookie and tracking preferences.</p>
 <p><strong>Email opt-out:</strong> Send a request to legal@wonder.dog
 with the subject line \u201cDo Not Sell or Share\u201d and include your name and
-the email address associated with your Wonder Dog account.</p>
-<p>Once you opt out, Wonder Dog will not share your personal information
+the email address associated with your Wonderdog account.</p>
+<p>Once you opt out, Wonderdog will not share your personal information
 with third-party advertising partners for behavioral advertising
 purposes. Note that opting out of sharing does not affect our ability to
 use your information to provide the Service, send transactional
@@ -546,7 +546,7 @@ emailing us at <strong>legal@wonder.dog</strong>. We may store
 information related to your requests or communications and disclose it
 if needed to process your request.</p>
 <h1>Disclaimer of Certain State Data Privacy Laws</h1>
-<p>Wonder Dog is currently not subject to regulation under the Colorado
+<p>Wonderdog is currently not subject to regulation under the Colorado
 Consumer Privacy Act, the Connecticut Data Privacy Act, the Delaware
 Personal Data Privacy Act, the Florida Digital Bill of Rights, the Iowa
 Consumer Data Protection Act, Oregon\u2019s Consumer Privacy Act, the
@@ -557,12 +557,12 @@ Security Act, and the Virginia Consumer Data Protection Act
 (collectively, the \u201c<strong>State Data Privacy Laws</strong>\u201d).</p>
 <p>Therefore, even if you are a resident of Colorado, Connecticut,
 Delaware, Florida, Iowa, Oregon, Maryland, Montana, Nebraska, Tennessee,
-Texas, Utah, or Virginia and Wonder Dog may have personal information
+Texas, Utah, or Virginia and Wonderdog may have personal information
 about you that is the type of information subject to the State Data
 Privacy Laws, the State Data Privacy Laws are not applicable to Wonder
 Dog or to our relationship with you.</p>
 <h1>How Do We Modify Our Privacy Policy?</h1>
-<p>Wonder Dog reserves the right to modify this Privacy Policy at any
+<p>Wonderdog reserves the right to modify this Privacy Policy at any
 time. When we make material changes \u2014 such as changes to the categories
 of information we collect, how we use or share it, or your privacy
 rights \u2014 we will provide you with reasonable advance notice by sending
@@ -594,7 +594,7 @@ export default function PrivacyPolicy() {
             href="/"
             className="text-[13px] text-[oklch(0.708_0_0)] hover:text-white transition-colors"
           >
-            &larr; Wonder Dog
+            &larr; Wonderdog
           </Link>
 
           <h1 className="mt-8 text-[28px] sm:text-[36px] font-semibold tracking-[-0.02em]">
@@ -622,7 +622,7 @@ export default function PrivacyPolicy() {
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
           </div>
           <p className="text-[11px] text-[oklch(0.4_0_0)]">
-            &copy; 2026 Wonder Dog
+            &copy; 2026 Wonderdog
           </p>
         </footer>
       </div>
