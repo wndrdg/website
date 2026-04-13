@@ -1,33 +1,34 @@
 import { Resend } from "resend";
-import { promises as fs } from "fs";
-import path from "path";
+import { put } from "@vercel/blob";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const DATA_FILE = path.join(process.cwd(), "data", "responses.json");
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Load existing responses
-    let responses = [];
-    try {
-      const raw = await fs.readFile(DATA_FILE, "utf-8");
-      responses = JSON.parse(raw);
-    } catch {
-      // File doesn't exist yet, start fresh
-    }
-
-    // Add new response with ID
     const entry = {
-      id: responses.length + 1,
       ...body,
+      id: Date.now(),
     };
-    responses.push(entry);
 
-    // Ensure data directory exists, write file
-    await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-    await fs.writeFile(DATA_FILE, JSON.stringify(responses, null, 2));
+    // Save to Vercel Blob
+    const timestamp = new Date().toISOString();
+    const safeName = (body.contact?.name || "unknown")
+      .replace(/[^a-z0-9]/gi, "_")
+      .toLowerCase();
+    const pathname = `vibe-check/${timestamp}-${safeName}.json`;
+
+    try {
+      await put(pathname, JSON.stringify(entry, null, 2), {
+        access: "private",
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        contentType: "application/json",
+      });
+    } catch (blobErr) {
+      console.error("Blob write failed:", blobErr);
+    }
 
     // Send notification email via Resend
     try {
@@ -41,7 +42,8 @@ export async function POST(request: Request) {
           <p><strong>Phone:</strong> ${body.contact?.phone}</p>
           <p><strong>Timezone:</strong> ${body.contact?.timezone}</p>
           <p><strong>Text OK:</strong> ${body.contact?.canText}</p>
-          <p><strong>Salary:</strong> ${body.contact?.salary || "—"}</p>
+          <p><strong>Background:</strong> ${body.contact?.background}</p>
+          <p><strong>Salary:</strong> ${body.contact?.salary || "\u2014"}</p>
           <p><strong>Completed in:</strong> ${body.meta?.elapsed_seconds} seconds</p>
           <hr>
           <h3>Answers</h3>
@@ -57,7 +59,6 @@ export async function POST(request: Request) {
       });
     } catch (emailErr) {
       console.error("Resend error:", emailErr);
-      // Don't fail the submission if email fails
     }
 
     return Response.json({ success: true, id: entry.id });

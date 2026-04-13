@@ -51,6 +51,7 @@ export default function VibeCheckPage() {
   const [timezone, setTimezone] = useState("");
   const [canText, setCanText] = useState<boolean | null>(null);
   const [salary, setSalary] = useState("");
+  const [background, setBackground] = useState("");
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -64,6 +65,7 @@ export default function VibeCheckPage() {
     email.trim() !== "" &&
     phone.trim() !== "" &&
     timezone !== "" &&
+    background.trim() !== "" &&
     canText !== null &&
     questions.every((q) => (answers[q.key] || "").trim() !== "");
 
@@ -82,6 +84,7 @@ export default function VibeCheckPage() {
         phone: phone.trim(),
         timezone,
         canText: canText ? "Can text me" : "Call only",
+        background: background.trim(),
         salary: salary.trim() || null,
       },
       answers,
@@ -227,6 +230,18 @@ export default function VibeCheckPage() {
                 Call only
               </button>
             </div>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-[13px] text-[#999] mb-1.5">
+              Your background in one sentence
+            </label>
+            <input
+              type="text"
+              value={background}
+              onChange={(e) => setBackground(e.target.value)}
+              className={inputClass}
+            />
           </div>
 
           <div className="mt-4">
