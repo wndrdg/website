@@ -25,11 +25,9 @@ export async function GET(request: Request) {
     blobs.map(async (blob) => {
       try {
         const resp = await get(blob.url, { access: "private" });
-        const chunks: Buffer[] = [];
-        for await (const chunk of resp.stream) {
-          chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-        }
-        return JSON.parse(Buffer.concat(chunks).toString("utf-8"));
+        if (!resp) return null;
+        const text = await new Response(resp.stream).text();
+        return JSON.parse(text);
       } catch {
         return null;
       }
