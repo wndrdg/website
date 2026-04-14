@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 /**
  * Scene color timeline for the mobile video reel.
@@ -58,7 +59,8 @@ function useVideoThemeColor() {
   return videoRef;
 }
 
-export default function Home() {
+function HomeContent() {
+  const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [zip, setZip] = useState("");
   const [email, setEmail] = useState("");
@@ -67,6 +69,15 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const mobileVideoRef = useVideoThemeColor();
   const [smsConsent, setSmsConsent] = useState(false);
+  const [inviteCode, setInviteCode] = useState<string | null>(null);
+
+  // Check for invite code in URL
+  useEffect(() => {
+    const invite = searchParams.get('invite');
+    if (invite) {
+      setInviteCode(invite);
+    }
+  }, [searchParams]);
 
   // Lock body scroll while the splash is mounted (so the page feels intentional, no scrolling)
   useEffect(() => {
@@ -100,7 +111,14 @@ export default function Home() {
       await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, zip, email, phone, smsConsent }),
+        body: JSON.stringify({ 
+          name, 
+          zip, 
+          email, 
+          phone, 
+          smsConsent,
+          invite_code: inviteCode 
+        }),
       });
     } catch {
       // don't block the UX
@@ -439,5 +457,13 @@ export default function Home() {
       </div>
     </main>
     </>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
