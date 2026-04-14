@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-import { put } from "@vercel/blob";
+import { put, list } from "@vercel/blob";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -39,6 +39,19 @@ export async function POST(request: Request) {
     }
 
     // Send notification email via Resend (verified wonder.dog domain)
+    // Look up invite code description if present
+    let codeDescription = "";
+    if (invite_code) {
+      try {
+        const { blobs } = await list({ prefix: `codes/${invite_code}.json` });
+        if (blobs.length > 0) {
+          const res = await fetch(blobs[0].url);
+          const codeData = await res.json();
+          codeDescription = codeData.description || "";
+        }
+      } catch { /* ignore lookup failures */ }
+    }
+
     const details = [
       `Email: ${email}`,
       name ? `Name: ${name}` : null,
@@ -46,6 +59,7 @@ export async function POST(request: Request) {
       zip ? `Zip: ${zip}` : null,
       `SMS Consent: ${smsConsent ? "Yes" : "No"}`,
       invite_code ? `Invite Code: ${invite_code}` : null,
+      codeDescription ? `Description: ${codeDescription}` : null,
     ]
       .filter(Boolean)
       .join("\n");
