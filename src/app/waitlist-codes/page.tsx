@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 
 interface InviteCode {
   code: string;
@@ -12,21 +19,22 @@ interface InviteCode {
 
 export default function WaitlistCodes() {
   const [codes, setCodes] = useState<InviteCode[]>([]);
-  const [loading, setLoading] = useState(true);
   const [description, setDescription] = useState("");
-  const [creating, setCreating] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [showDialog, setShowDialog] = useState(false);
   const [newCode, setNewCode] = useState<InviteCode | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const fetchCodes = async () => {
     try {
-      const response = await fetch("/api/codes");
-      const data = await response.json();
+      const res = await fetch("/api/codes");
+      const data = await res.json();
       setCodes(data.codes || []);
-    } catch (error) {
-      console.error("Failed to fetch codes:", error);
+    } catch (err) {
+      console.error("Failed to fetch codes:", err);
     } finally {
-      setLoading(false);
+      setFetching(false);
     }
   };
 
@@ -34,217 +42,153 @@ export default function WaitlistCodes() {
     fetchCodes();
   }, []);
 
-  const handleCreateCode = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const createCode = async () => {
     if (!description.trim()) return;
-
-    setCreating(true);
+    setLoading(true);
     try {
-      const response = await fetch("/api/codes", {
+      const res = await fetch("/api/codes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description: description.trim() }),
       });
-
-      const result = await response.json();
-      if (result.success && result.code) {
-        setNewCode(result.code);
-        setShowModal(true);
+      const data = await res.json();
+      if (data.success) {
+        setNewCode(data.code);
+        setShowDialog(true);
         setDescription("");
-        await fetchCodes(); // Refresh the list
+        fetchCodes();
       }
-    } catch (error) {
-      console.error("Failed to create code:", error);
+    } catch (err) {
+      console.error("Failed to create code:", err);
     } finally {
-      setCreating(false);
+      setLoading(false);
     }
   };
 
-  const copyInviteUrl = (code: string) => {
-    const url = `https://wonder.dog?invite=${code}`;
-    navigator.clipboard.writeText(url);
-    // You could add a toast notification here if desired
-  };
+  const getInviteUrl = (code: string) => `https://wonder.dog?invite=${code}`;
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
+  const copyLink = (code: string) => {
+    navigator.clipboard.writeText(getInviteUrl(code));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#003A45] flex items-center justify-center">
-        <div className="text-white">Loading...</div>
-      </div>
-    );
-  }
 
   return (
-    <>
-      <div className="min-h-screen bg-[#003A45] text-white p-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Invite Codes</h1>
-            <p className="text-white/70">
-              Manage waitlist invite codes for attribution tracking.
-            </p>
-          </div>
-
-          {/* Create New Code Form */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4">Create New Code</h2>
-            <form onSubmit={handleCreateCode} className="flex gap-4">
-              <input
-                type="text"
-                placeholder="Description (e.g., 'Pat's friend Danny')"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="flex-1 h-12 rounded-xl bg-white/15 border border-white/20 px-4 text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors"
-                required
-              />
-              <button
-                type="submit"
-                disabled={creating || !description.trim()}
-                className="h-12 px-6 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold hover:bg-[#e5ff8a] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {creating ? "Creating..." : "Create Code"}
-              </button>
-            </form>
-          </div>
-
-          {/* Codes Table */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-white/5">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">
-                      Code
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">
-                      Description
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">
-                      Created
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">
-                      Signups
-                    </th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-white/90">
-                      Link
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/10">
-                  {codes.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={5}
-                        className="px-6 py-8 text-center text-white/60"
-                      >
-                        No invite codes created yet.
-                      </td>
-                    </tr>
-                  ) : (
-                    codes.map((code) => (
-                      <tr key={code.code} className="hover:bg-white/5">
-                        <td className="px-6 py-4">
-                          <span className="font-mono text-lg font-bold text-[#D9FF66]">
-                            {code.code}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-white/90">
-                          {code.description}
-                        </td>
-                        <td className="px-6 py-4 text-white/70">
-                          {formatDate(code.created)}
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#D9FF66]/20 text-[#D9FF66]">
-                            {code.signups}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <button
-                            onClick={() => copyInviteUrl(code.code)}
-                            className="inline-flex items-center px-3 py-1.5 text-sm font-medium bg-white/15 text-white rounded-lg hover:bg-white/25 transition-colors"
-                          >
-                            Copy
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-6 py-12">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Invite Codes</h1>
+          <p className="text-sm text-gray-500 mt-1">Create and manage waitlist invite codes for attribution tracking.</p>
         </div>
+
+        {/* Create Code */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-base">Create New Code</CardTitle>
+            <CardDescription>Generate an invite link to share with someone. We'll track signups from their link.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-3 items-end">
+              <div className="flex-1">
+                <Label htmlFor="description" className="text-sm text-gray-600">Description</Label>
+                <Input
+                  id="description"
+                  placeholder="e.g. Pat's friend Danny"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && createCode()}
+                  className="mt-1"
+                />
+              </div>
+              <Button onClick={createCode} disabled={loading || !description.trim()}>
+                {loading ? "Creating..." : "Create Code"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Separator className="mb-8" />
+
+        {/* Codes Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Active Codes</CardTitle>
+            <CardDescription>{codes.length} codes created</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {fetching ? (
+              <p className="text-sm text-gray-400 py-8 text-center">Loading...</p>
+            ) : codes.length === 0 ? (
+              <p className="text-sm text-gray-400 py-8 text-center">No codes yet. Create one above.</p>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[100px]">Code</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead className="w-[120px]">Created</TableHead>
+                    <TableHead className="w-[80px] text-center">Signups</TableHead>
+                    <TableHead className="w-[100px] text-right">Link</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {codes.map((code) => (
+                    <TableRow key={code.code}>
+                      <TableCell>
+                        <Badge variant="secondary" className="font-mono text-xs">{code.code}</Badge>
+                      </TableCell>
+                      <TableCell className="text-sm text-gray-700">{code.description}</TableCell>
+                      <TableCell className="text-xs text-gray-500">
+                        {new Date(code.created).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <span className="text-sm font-medium">{code.signups}</span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyLink(code.code)}
+                          className="text-xs"
+                        >
+                          Copy Link
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Success Modal */}
-      <AnimatePresence>
-        {showModal && newCode && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
-            onClick={() => setShowModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-[#003A45] border border-white/20 rounded-xl p-8 max-w-md w-full"
-              onClick={(e) => e.stopPropagation()}
+      {/* Success Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Code Created</DialogTitle>
+            <DialogDescription>Share this link to track signups from {newCode?.description}.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-2">
+            <div className="flex items-center gap-3">
+              <Badge variant="secondary" className="font-mono text-lg px-4 py-2">{newCode?.code}</Badge>
+              <span className="text-sm text-gray-500">{newCode?.description}</span>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-xs text-gray-500 mb-1">Invite Link</p>
+              <p className="text-sm font-mono break-all">{newCode ? getInviteUrl(newCode.code) : ""}</p>
+            </div>
+            <Button
+              className="w-full"
+              onClick={() => newCode && copyLink(newCode.code)}
             >
-              <div className="text-center">
-                <div className="mb-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#D9FF66]/20 rounded-full mb-4">
-                    <span className="text-2xl">✓</span>
-                  </div>
-                  <h2 className="text-2xl font-bold text-white mb-2">
-                    Code Created!
-                  </h2>
-                  <p className="text-white/70 mb-6">
-                    Your invite code <span className="font-mono text-[#D9FF66] font-bold">{newCode.code}</span> has been generated.
-                  </p>
-                </div>
-
-                <div className="bg-white/10 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-white/60 mb-2">Full invite URL:</p>
-                  <p className="font-mono text-sm bg-white/10 rounded px-3 py-2 break-all">
-                    https://wonder.dog?invite={newCode.code}
-                  </p>
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="flex-1 h-12 rounded-xl bg-white/15 text-white font-semibold hover:bg-white/25 transition-colors"
-                  >
-                    Close
-                  </button>
-                  <button
-                    onClick={() => {
-                      copyInviteUrl(newCode.code);
-                      setShowModal(false);
-                    }}
-                    className="flex-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold hover:bg-[#e5ff8a] transition-colors"
-                  >
-                    Copy Link
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+              {copied ? "Copied!" : "Copy Link"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
