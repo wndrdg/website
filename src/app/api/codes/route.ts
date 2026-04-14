@@ -20,7 +20,7 @@ async function getExistingCodes(): Promise<string[]> {
       return filename.replace('.json', '');
     });
   } catch (error) {
-    console.error('Error fetching existing codes:', error);
+    console.error('Error fetching existing codes:', error); console.error('Blob list prefix: codes/');
     return [];
   }
 }
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
     };
 
     await put(`codes/${code}.json`, JSON.stringify(codeData, null, 2), {
-      access: 'private',
+      access: 'public',
       addRandomSuffix: false,
       contentType: 'application/json',
     });
