@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-import { put, list } from "@vercel/blob";
+import { put, list, get } from "@vercel/blob";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -45,9 +45,12 @@ export async function POST(request: Request) {
       try {
         const { blobs } = await list({ prefix: `codes/${invite_code}.json` });
         if (blobs.length > 0) {
-          const res = await fetch(blobs[0].url);
-          const codeData = await res.json();
-          codeDescription = codeData.description || "";
+          const resp = await get(blobs[0].url, { access: "private" });
+          if (resp) {
+            const text = await new Response(resp.stream).text();
+            const codeData = JSON.parse(text);
+            codeDescription = codeData.description || "";
+          }
         }
       } catch { /* ignore lookup failures */ }
     }

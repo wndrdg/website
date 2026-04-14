@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
 interface InviteCode {
@@ -22,9 +22,20 @@ export default function WaitlistCodes() {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
-  const [showDialog, setShowDialog] = useState(false);
+
+  // Create dialog
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [newCode, setNewCode] = useState<InviteCode | null>(null);
   const [copied, setCopied] = useState(false);
+
+  // Edit dialog
+  const [editingCode, setEditingCode] = useState<InviteCode | null>(null);
+  const [editDescription, setEditDescription] = useState("");
+  const [editSaving, setEditSaving] = useState(false);
+
+  // Delete dialog
+  const [deletingCode, setDeletingCode] = useState<InviteCode | null>(null);
+  const [deleteSaving, setDeleteSaving] = useState(false);
 
   const fetchCodes = async () => {
     try {
@@ -54,7 +65,7 @@ export default function WaitlistCodes() {
       const data = await res.json();
       if (data.success) {
         setNewCode(data.code);
-        setShowDialog(true);
+        setShowCreateDialog(true);
         setDescription("");
         fetchCodes();
       }
@@ -62,6 +73,46 @@ export default function WaitlistCodes() {
       console.error("Failed to create code:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const saveEdit = async () => {
+    if (!editingCode || !editDescription.trim()) return;
+    setEditSaving(true);
+    try {
+      const res = await fetch(`/api/codes/${editingCode.code}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description: editDescription.trim() }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setEditingCode(null);
+        fetchCodes();
+      }
+    } catch (err) {
+      console.error("Failed to update code:", err);
+    } finally {
+      setEditSaving(false);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingCode) return;
+    setDeleteSaving(true);
+    try {
+      const res = await fetch(`/api/codes/${deletingCode.code}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        setDeletingCode(null);
+        fetchCodes();
+      }
+    } catch (err) {
+      console.error("Failed to delete code:", err);
+    } finally {
+      setDeleteSaving(false);
     }
   };
 
@@ -86,7 +137,7 @@ export default function WaitlistCodes() {
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="text-base">Create New Code</CardTitle>
-            <CardDescription>Generate an invite link to share with someone. We'll track signups from their link.</CardDescription>
+            <CardDescription>Generate an invite link to share with someone. We&apos;ll track signups from their link.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex gap-3 items-end">
@@ -129,7 +180,7 @@ export default function WaitlistCodes() {
                     <TableHead>Description</TableHead>
                     <TableHead className="w-[120px]">Created</TableHead>
                     <TableHead className="w-[80px] text-center">Signups</TableHead>
-                    <TableHead className="w-[100px] text-right">Link</TableHead>
+                    <TableHead className="w-[280px] text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -146,14 +197,35 @@ export default function WaitlistCodes() {
                         <span className="text-sm font-medium">{code.signups}</span>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => copyLink(code.code)}
-                          className="text-xs"
-                        >
-                          Copy Link
-                        </Button>
+                        <div className="flex gap-1 justify-end">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyLink(code.code)}
+                            className="text-xs"
+                          >
+                            Copy Link
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setEditingCode(code);
+                              setEditDescription(code.description);
+                            }}
+                            className="text-xs"
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDeletingCode(code)}
+                            className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            Delete
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -164,8 +236,8 @@ export default function WaitlistCodes() {
         </Card>
       </div>
 
-      {/* Success Dialog */}
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+      {/* Create Success Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Code Created</DialogTitle>
@@ -187,6 +259,63 @@ export default function WaitlistCodes() {
               {copied ? "Copied!" : "Copy Link"}
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={!!editingCode} onOpenChange={(open) => !open && setEditingCode(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Code</DialogTitle>
+            <DialogDescription>
+              Update the description for <span className="font-mono font-medium">{editingCode?.code}</span>.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 pt-2">
+            <div>
+              <Label htmlFor="edit-description" className="text-sm text-gray-600">Description</Label>
+              <Input
+                id="edit-description"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && saveEdit()}
+                className="mt-1"
+                autoFocus
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setEditingCode(null)} disabled={editSaving}>
+              Cancel
+            </Button>
+            <Button onClick={saveEdit} disabled={editSaving || !editDescription.trim()}>
+              {editSaving ? "Saving..." : "Save"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirm Dialog */}
+      <Dialog open={!!deletingCode} onOpenChange={(open) => !open && setDeletingCode(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete Code</DialogTitle>
+            <DialogDescription>
+              Delete <span className="font-mono font-medium">{deletingCode?.code}</span> ({deletingCode?.description})? This cannot be undone. Existing signups attributed to this code will keep the code in their record but the code itself will be removed.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setDeletingCode(null)} disabled={deleteSaving}>
+              Cancel
+            </Button>
+            <Button
+              onClick={confirmDelete}
+              disabled={deleteSaving}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {deleteSaving ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
