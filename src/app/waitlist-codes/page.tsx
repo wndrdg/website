@@ -248,9 +248,9 @@ export default function WaitlistCodes() {
               <Badge variant="secondary" className="font-mono text-lg px-4 py-2">{newCode?.code}</Badge>
               <span className="text-sm text-gray-500">{newCode?.description}</span>
             </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-xs text-gray-500 mb-1">Invite Link</p>
-              <p className="text-sm font-mono break-all">{newCode ? getInviteUrl(newCode.code) : ""}</p>
+            <div className="bg-muted rounded-lg p-3">
+              <p className="text-xs text-muted-foreground mb-1">Invite Link</p>
+              <p className="text-sm font-mono break-all text-foreground">{newCode ? getInviteUrl(newCode.code) : ""}</p>
             </div>
             <Button
               className="w-full"
