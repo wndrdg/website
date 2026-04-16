@@ -293,19 +293,19 @@ function HomeContent() {
                         </span>
                       </label>
                       {inviteCode ? (
-                        <div className="mt-3 rounded-2xl border-2 border-[#005352] overflow-hidden">
-                          <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-2">
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="mt-3 w-full rounded-2xl overflow-hidden cursor-pointer hover:brightness-105 transition-all disabled:opacity-60"
+                        >
+                          <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-1.5">
                             <span className="text-[12px] font-mono uppercase tracking-wider text-[#D9FF66]">Invite Code:</span>
-                            <span className="text-[14px] font-mono font-bold text-white">{inviteCode}</span>
+                            <span className="text-[12px] font-mono uppercase tracking-wider text-white">{inviteCode}</span>
                           </div>
-                          <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full h-12 bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
-                          >
+                          <div className="bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] h-12 flex items-center justify-center">
                             {loading ? "..." : "Join Friends & Family Free Pilot"}
-                          </button>
-                        </div>
+                          </div>
+                        </button>
                       ) : (
                         <button
                           type="submit"
@@ -447,19 +447,19 @@ function HomeContent() {
                     </span>
                   </label>
                   {inviteCode ? (
-                    <div className="mt-2 rounded-2xl border-2 border-[#005352] overflow-hidden">
-                      <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-2">
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="mt-2 w-full rounded-2xl overflow-hidden cursor-pointer hover:brightness-105 transition-all disabled:opacity-60"
+                    >
+                      <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-1.5">
                         <span className="text-[12px] font-mono uppercase tracking-wider text-[#D9FF66]">Invite Code:</span>
-                        <span className="text-[14px] font-mono font-bold text-white">{inviteCode}</span>
+                        <span className="text-[12px] font-mono uppercase tracking-wider text-white">{inviteCode}</span>
                       </div>
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full h-12 bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
-                      >
+                      <div className="bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] h-12 flex items-center justify-center">
                         {loading ? "..." : "Join Friends & Family Free Pilot"}
-                      </button>
-                    </div>
+                      </div>
+                    </button>
                   ) : (
                     <button
                       type="submit"
