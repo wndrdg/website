@@ -239,12 +239,6 @@ function HomeContent() {
                 transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-8 max-w-md"
               >
-                {inviteCode && (
-                  <div className="mb-4 inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/15 px-3 py-1.5">
-                    <span className="text-[12px] text-white/50 uppercase tracking-wider">Invite</span>
-                    <span className="text-[13px] font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
-                  </div>
-                )}
                 <AnimatePresence mode="wait">
                   {!submitted ? (
                     <motion.form
@@ -298,6 +292,11 @@ function HomeContent() {
                           I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
                         </span>
                       </label>
+                      {inviteCode && (
+                        <div className="mt-2 text-[12px] uppercase tracking-wider text-white/50">
+                          Invite Code: <span className="font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
+                        </div>
+                      )}
                       <button
                         type="submit"
                         disabled={loading}
@@ -382,14 +381,6 @@ function HomeContent() {
         >
           <div className="absolute inset-0 backdrop-blur-[30px] bg-black/10" />
           <div className="relative z-10 px-6 pt-7 pb-8">
-            {inviteCode && (
-              <div className="mb-4 flex justify-center">
-                <div className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/15 px-3 py-1.5">
-                  <span className="text-[12px] text-white/50 uppercase tracking-wider">Invite</span>
-                  <span className="text-[13px] font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
-                </div>
-              </div>
-            )}
             <AnimatePresence mode="wait">
               {!submitted ? (
                 <motion.form
@@ -444,6 +435,11 @@ function HomeContent() {
                       I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
                     </span>
                   </label>
+                  {inviteCode && (
+                    <div className="mt-2 text-[12px] uppercase tracking-wider text-white/50 text-center">
+                      Invite Code: <span className="font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
+                    </div>
+                  )}
                   <button
                     type="submit"
                     disabled={loading}
