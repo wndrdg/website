@@ -217,9 +217,11 @@ function HomeContent() {
                 transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="font-serif text-[clamp(40px,5vw,72px)] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8]"
               >
-                We tell you what
+                Your dog is your
                 <br />
-                your dog can&rsquo;t.
+                whole world.
+                <br />
+                Protect theirs.
               </motion.h1>
 
               <motion.p
@@ -228,7 +230,7 @@ function HomeContent() {
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-4 text-[18px] leading-[1.4] text-white/80 max-w-md"
               >
-                Early disease detection through at-home blood work, powered by AI. Currently in private beta.
+                Early disease detection through at-home blood work, powered by AI. Join the waitlist.
               </motion.p>
 
               <motion.div
@@ -349,9 +351,11 @@ function HomeContent() {
             transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-[44px] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8] text-center"
           >
-            We tell you what
+            Your dog is your
             <br />
-            your dog can&rsquo;t.
+            whole world.
+            <br />
+            Protect theirs.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 14 }}
@@ -359,7 +363,7 @@ function HomeContent() {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="mt-3 mb-6 text-[16px] leading-[1.4] text-white/80 text-center px-4"
           >
-            Early disease detection through at-home blood work, powered by AI. Currently in private beta.
+            Early disease detection through at-home blood work, powered by AI. Join the waitlist.
           </motion.p>
         </div>
 
