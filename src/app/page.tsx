@@ -239,6 +239,12 @@ function HomeContent() {
                 transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-8 max-w-md"
               >
+                {inviteCode && (
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/15 px-3 py-1.5">
+                    <span className="text-[12px] text-white/50 uppercase tracking-wider">Invite</span>
+                    <span className="text-[13px] font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
+                  </div>
+                )}
                 <AnimatePresence mode="wait">
                   {!submitted ? (
                     <motion.form
@@ -295,9 +301,9 @@ function HomeContent() {
                       <button
                         type="submit"
                         disabled={loading}
-                        className="mt-3 h-12 w-48 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
+                        className={`mt-3 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60 ${inviteCode ? "w-full" : "w-48"}`}
                       >
-                        {loading ? "..." : "Join Waitlist"}
+                        {loading ? "..." : inviteCode ? "Join Friends & Family Free Pilot" : "Join Waitlist"}
                       </button>
                     </motion.form>
                   ) : (
@@ -376,6 +382,14 @@ function HomeContent() {
         >
           <div className="absolute inset-0 backdrop-blur-[30px] bg-black/10" />
           <div className="relative z-10 px-6 pt-7 pb-8">
+            {inviteCode && (
+              <div className="mb-4 flex justify-center">
+                <div className="inline-flex items-center gap-2 rounded-lg bg-white/10 border border-white/15 px-3 py-1.5">
+                  <span className="text-[12px] text-white/50 uppercase tracking-wider">Invite</span>
+                  <span className="text-[13px] font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
+                </div>
+              </div>
+            )}
             <AnimatePresence mode="wait">
               {!submitted ? (
                 <motion.form
@@ -435,7 +449,7 @@ function HomeContent() {
                     disabled={loading}
                     className="mt-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
                   >
-                    {loading ? "..." : "Join Waitlist"}
+                    {loading ? "..." : inviteCode ? "Join Friends & Family Free Pilot" : "Join Waitlist"}
                   </button>
                 </motion.form>
               ) : (
