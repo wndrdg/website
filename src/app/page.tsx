@@ -292,18 +292,29 @@ function HomeContent() {
                           I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
                         </span>
                       </label>
-                      {inviteCode && (
-                        <div className="mt-2 text-[12px] uppercase tracking-wider text-white/50">
-                          Invite Code: <span className="font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
+                      {inviteCode ? (
+                        <div className="mt-3 rounded-2xl border-2 border-[#005352] overflow-hidden">
+                          <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-2">
+                            <span className="text-[12px] font-mono uppercase tracking-wider text-[#D9FF66]">Invite Code:</span>
+                            <span className="text-[14px] font-mono font-bold text-white">{inviteCode}</span>
+                          </div>
+                          <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full h-12 bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
+                          >
+                            {loading ? "..." : "Join Friends & Family Free Pilot"}
+                          </button>
                         </div>
+                      ) : (
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="mt-3 h-12 w-48 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
+                        >
+                          {loading ? "..." : "Join Waitlist"}
+                        </button>
                       )}
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className={`mt-3 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60 ${inviteCode ? "w-full" : "w-48"}`}
-                      >
-                        {loading ? "..." : inviteCode ? "Join Friends & Family Free Pilot" : "Join Waitlist"}
-                      </button>
                     </motion.form>
                   ) : (
                     <motion.p
@@ -435,18 +446,29 @@ function HomeContent() {
                       I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
                     </span>
                   </label>
-                  {inviteCode && (
-                    <div className="mt-2 text-[12px] uppercase tracking-wider text-white/50 text-center">
-                      Invite Code: <span className="font-mono font-medium text-[#D9FF66]">{inviteCode}</span>
+                  {inviteCode ? (
+                    <div className="mt-2 rounded-2xl border-2 border-[#005352] overflow-hidden">
+                      <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-2">
+                        <span className="text-[12px] font-mono uppercase tracking-wider text-[#D9FF66]">Invite Code:</span>
+                        <span className="text-[14px] font-mono font-bold text-white">{inviteCode}</span>
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full h-12 bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
+                      >
+                        {loading ? "..." : "Join Friends & Family Free Pilot"}
+                      </button>
                     </div>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="mt-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
+                    >
+                      {loading ? "..." : "Join Waitlist"}
+                    </button>
                   )}
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="mt-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
-                  >
-                    {loading ? "..." : inviteCode ? "Join Friends & Family Free Pilot" : "Join Waitlist"}
-                  </button>
                 </motion.form>
               ) : (
                 <motion.p
