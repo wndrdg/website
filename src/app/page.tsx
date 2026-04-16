@@ -230,7 +230,7 @@ function HomeContent() {
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-4 text-[18px] leading-[1.4] text-white/80 max-w-md"
               >
-                Early disease detection through at-home blood work, powered by AI. Join the waitlist.
+                Early disease detection through at-home blood work, powered by AI. Now in private beta.
               </motion.p>
 
               <motion.div
@@ -363,7 +363,7 @@ function HomeContent() {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="mt-3 mb-6 text-[16px] leading-[1.4] text-white/80 text-center px-4"
           >
-            Early disease detection through at-home blood work, powered by AI. Join the waitlist.
+            Early disease detection through at-home blood work, powered by AI. Now in private beta.
           </motion.p>
         </div>
 
