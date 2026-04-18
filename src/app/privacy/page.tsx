@@ -219,6 +219,8 @@ channels such as email or the Wonder Dog application.</p>
 <p>For help with the SMS program, reply <strong>HELP</strong> to any
 Wonder Dog text message or contact us at support@wonder.dog.</p>
 <h2>No Sharing of SMS Opt-In Information or Phone Numbers</h2>
+<p><strong>No mobile information will be shared with third
+party/affiliates for marketing or promotional purposes.</strong></p>
 <p><strong>Mobile phone numbers and SMS opt-in information collected in
 connection with the Wonder Dog SMS program are not sold, rented, loaned,
 leased, traded, or shared with any third parties, affiliates, or
