@@ -288,8 +288,12 @@ function HomeContent() {
                           onChange={(e) => setSmsConsent(e.target.checked)}
                           className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
                         />
-                        <span className="text-[13px] text-white/60 leading-snug">
-                          I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
+                        <span className="text-[12px] text-white/60 leading-snug">
+                          I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
+                          <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
+                          {" "}and{" "}
+                          <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
+                          . Consent is not required to join the waitlist or use our service.
                         </span>
                       </label>
                       {inviteCode ? (
@@ -439,11 +443,14 @@ function HomeContent() {
                       type="checkbox"
                       checked={smsConsent}
                       onChange={(e) => setSmsConsent(e.target.checked)}
-                      required
                       className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
                     />
-                    <span className="text-[12px] text-white/60 leading-snug">
-                      I consent to receive SMS messages from Wonderdog. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
+                    <span className="text-[11px] text-white/60 leading-snug">
+                      I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
+                      <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
+                      {" "}and{" "}
+                      <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
+                      . Consent is not required to join the waitlist or use our service.
                     </span>
                   </label>
                   {inviteCode ? (

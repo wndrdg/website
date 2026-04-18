@@ -172,6 +172,81 @@ research on canine preventive health using de-identified or aggregated
 data, which may be published or shared with academic or industry
 partners.</p></li>
 </ul>
+<h1>SMS/Text Messaging Program</h1>
+<p>Wonder Dog operates an SMS messaging program to support members and
+waitlist participants. This section describes how mobile phone numbers
+and SMS opt-in information are collected, used, and protected. This
+section applies in addition to, and prevails over any inconsistent
+provisions of, this Privacy Policy with respect to SMS opt-in
+information and mobile phone numbers.</p>
+<h2>Types of Messages</h2>
+<p>If you opt in to receive SMS messages from Wonder Dog, you may
+receive recurring text messages regarding appointment scheduling,
+appointment reminders, blood draw reminders, lab and diagnostic result
+notifications, account-related updates, and customer support responses.
+SMS messages sent through the Wonder Dog program are transactional and
+conversational in nature. Wonder Dog does not use the SMS program to
+deliver promotional or marketing messages.</p>
+<h2>Message Frequency and Rates</h2>
+<p>Message frequency varies based on your appointment cadence, the
+status of your pet\u2019s diagnostic results, and the volume of your support
+interactions. Message and data rates may apply from your mobile carrier.
+Wonder Dog does not charge a separate fee for SMS messages.</p>
+<h2>How You Opt In</h2>
+<p>You may opt in to the Wonder Dog SMS program by (i) providing your
+mobile phone number on our waitlist signup form at wonderdog.com and
+affirmatively checking the dedicated, unchecked SMS consent checkbox, or
+(ii) enabling SMS communications during in-app account creation in the
+Wonder Dog iOS application. In both cases, SMS consent is explicit,
+affirmative, never pre-selected, and presented as a standalone
+checkbox that is not bundled with acceptance of our Terms and
+Conditions or any other agreement. Consent to receive SMS messages is
+not a condition of joining our waitlist, purchasing a Membership, or
+using the Service. Wonder Dog maintains records of each opt-in,
+including the date and time of consent, the source (website or app), the
+consent language shown to the user, and the phone number that opted
+in.</p>
+<h2>How You Opt Out</h2>
+<p>You may opt out of SMS messages at any time by replying
+<strong>STOP</strong> to any Wonder Dog text message. Upon receipt of a
+STOP reply, Wonder Dog will send a single confirmation message and will
+not send you additional SMS messages, except as necessary to confirm
+your opt-out or as required by law. You may also revoke SMS consent by
+emailing us at support@wonder.dog or legal@wonder.dog. Opting out of the
+SMS program does not affect your access to the Service through other
+channels such as email or the Wonder Dog application.</p>
+<h2>How to Get Help</h2>
+<p>For help with the SMS program, reply <strong>HELP</strong> to any
+Wonder Dog text message or contact us at support@wonder.dog.</p>
+<h2>No Sharing of SMS Opt-In Information or Phone Numbers</h2>
+<p><strong>Mobile phone numbers and SMS opt-in information collected in
+connection with the Wonder Dog SMS program are not sold, rented, loaned,
+leased, traded, or shared with any third parties, affiliates, or
+marketing partners for marketing, promotional, lead-generation, or
+solicitation purposes. This includes, without limitation, advertising
+networks, social media platforms, data brokers, and analytics providers.
+SMS opt-in consent data and mobile phone numbers are used solely to
+deliver the SMS messages you have consented to receive, to provide the
+Service, and for internal operational purposes (such as to honor an
+opt-out or respond to a support request). This no-sharing commitment
+applies regardless of any other sharing, disclosure, selling, or
+advertising-partner language elsewhere in this Privacy Policy.</strong>
+Wonder Dog may share SMS opt-in information with service providers that
+operate our SMS platform on our behalf (for example, Twilio, Inc.) and
+that are contractually prohibited from using that information for their
+own marketing purposes.</p>
+<h2>Carriers</h2>
+<p>The Wonder Dog SMS program is supported on major U.S. wireless
+carriers, including AT&amp;T, Verizon Wireless, T-Mobile, U.S. Cellular,
+Boost Mobile, Metro by T-Mobile, Cricket Wireless, Google Fi, and other
+participating carriers. Carriers are not liable for delayed or
+undelivered messages.</p>
+<h2>Eligibility</h2>
+<p>To participate in the Wonder Dog SMS program, you must be at least
+eighteen (18) years of age, a resident of the United States, and the
+authorized user or account holder of the mobile phone number you
+provide. By opting in, you represent that you meet these requirements.
+</p>
 <h1>How Is Your Information Disclosed to Others?</h1>
 <p>We disclose information for the same business and commercial reasons
 we collect and use it. Specifically, we may disclose information under

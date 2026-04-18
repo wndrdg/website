@@ -35,6 +35,11 @@ yarn-error.log*
 
 # response data
 /data
+waitlist.json
+vibe-check-responses.csv
+
+# macOS
+Icon?
 
 # vercel
 .vercel

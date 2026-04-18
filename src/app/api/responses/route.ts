@@ -40,23 +40,23 @@ export async function GET(request: Request) {
   if (searchParams.get("format") === "csv") {
     const headers = [
       "id",
-      "name",
-      "email",
-      "phone",
-      "timezone",
-      "canText",
-      "background",
-      "salary",
-      "framework",
-      "css",
-      "components",
-      "tool",
-      "model",
-      "stuck",
-      "rn_styling",
-      "rn_iterate",
-      "elapsed_seconds",
-      "submitted_at",
+      "Name",
+      "Email",
+      "Phone",
+      "Timezone",
+      "Can I text you?",
+      "Your background in one sentence",
+      "Desired annual salary (USD)",
+      "Go-to frontend framework?",
+      "Favorite CSS approach?",
+      "Favorite component library?",
+      "What do you vibe code in?",
+      "What AI model do you reach for most?",
+      "AI gets stuck in a loop — what’s your move?",
+      "No DOM, no Tailwind — how do you style in React Native?",
+      "RN builds are slow — how do you keep your feedback loop fast?",
+      "Time to complete (seconds)",
+      "Submitted at",
     ];
 
     const escape = (v: string) => {
@@ -91,7 +91,7 @@ export async function GET(request: Request) {
         .join(","),
     );
 
-    const csv = [headers.join(","), ...rows].join("\n");
+    const csv = [headers.map(escape).join(","), ...rows].join("\n");
 
     return new Response(csv, {
       headers: {

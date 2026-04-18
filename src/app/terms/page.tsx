@@ -313,20 +313,114 @@ We also retain the right to terminate or suspend your account, such as
 if you violate these Terms.</p>
 <h1>Consent to Communications</h1>
 <p>By using the Service, you consent to receive communications,
-including marketing emails and emails about your Appointments and your
-pet\u2019s health results; and you agree that all agreements, notices,
-disclosures, and other communications that we provide to you
-electronically, via email and on our website, satisfy any legal
-requirement that such communications be in writing. You also agree to
-communications from us by phone and SMS/text message if they are
-transactional or if you consent to them.</p>
-<p>By gibing your consent to such communications, you agree that no
-communications by Wonderdog to you shall violate the CAN-SPAM Act, the
-Telephone Consumer Protection Act, or any other applicable laws. You are
-responsible for paying any voice, message, and data fees, rates,
+including emails about your Appointments, your pet\u2019s health results,
+your account, and related service updates; and you agree that all
+agreements, notices, disclosures, and other communications that we
+provide to you electronically, via email and on our website, satisfy
+any legal requirement that such communications be in writing. You also
+agree to communications from us by phone and SMS/text message where
+transactional or where you have opted in to receive them as described
+below.</p>
+<p>By giving your consent to such communications, you agree that no
+communications by Wonder Dog to you shall violate the CAN-SPAM Act, the
+Telephone Consumer Protection Act (TCPA), or any other applicable laws.
+You are responsible for paying any voice, message, and data fees, rates,
 charges, and taxes that may apply to you.</p>
 <p>You may opt out of any of our communications by following the
-instructions provided in the communications or by contacting us.</p>
+instructions provided in the communications or by contacting us at
+support@wonder.dog.</p>
+<h1>Wonder Dog SMS/Text Messaging Program</h1>
+<p>Wonder Dog offers a mobile text messaging program (the
+\u201c<strong>SMS Program</strong>\u201d) to deliver transactional and
+account-related communications to members and waitlist participants who
+have affirmatively opted in. This section sets out the terms on which
+Wonder Dog provides the SMS Program and is incorporated into and
+supplements these Terms.</p>
+<h2>1. Program Name and Description</h2>
+<p>The SMS Program is operated under the brand name \u201cWonder Dog.\u201d When
+you opt in, you will receive recurring SMS text messages from Wonder
+Dog regarding appointment scheduling, appointment reminders, blood draw
+reminders, lab and diagnostic result notifications, account
+notifications (such as changes to your account, Membership, or
+Appointment status), and customer support responses to inbound
+messages. The SMS Program is transactional and conversational only and
+is not used to send promotional or marketing messages.</p>
+<h2>2. Opt-In Procedure</h2>
+<p>You may opt in to the SMS Program by: (i) providing your mobile
+phone number on the Wonder Dog waitlist signup form at
+<strong>https://wonderdog.com</strong> and affirmatively checking the
+dedicated, unchecked SMS consent checkbox that displays the disclosures
+required by applicable law and the CTIA Messaging Principles and Best
+Practices, or (ii) enabling SMS communications during in-app account
+creation in the Wonder Dog iOS application by affirmatively checking a
+dedicated, unchecked SMS consent box. SMS consent is always a
+standalone, affirmative action and is never pre-selected, never
+bundled with acceptance of these Terms, and never required as a
+condition of joining the waitlist, purchasing a Membership, or using
+the Service. Wonder Dog maintains records of each opt-in, including the
+date, time, source, consent language shown, and phone number.</p>
+<h2>3. Opt-Out Procedure</h2>
+<p><strong>You can cancel the SMS Program at any time. Just text
+\u201cSTOP\u201d in reply to any Wonder Dog SMS message. After you send the
+SMS message \u201cSTOP\u201d to us, we will send you an SMS message to confirm
+that you have been unsubscribed. After this, you will no longer
+receive SMS messages from us. If you want to join again, just opt in
+again using the process described above and we will start sending SMS
+messages to you again.</strong> You may also revoke SMS consent by
+emailing <strong>support@wonder.dog</strong> or
+<strong>legal@wonder.dog</strong>. Opting out of the SMS Program does
+not affect your access to the Service through other channels such as
+email or the Wonder Dog application.</p>
+<h2>4. Help and Customer Support</h2>
+<p>If you are experiencing issues with the SMS Program you can reply
+with the keyword <strong>HELP</strong> to any Wonder Dog SMS message
+for more assistance, or you can get help directly at
+<strong>support@wonder.dog</strong>.</p>
+<h2>5. Carrier Disclaimer</h2>
+<p><strong>Carriers are not liable for delayed or undelivered
+messages.</strong> The SMS Program is supported on major U.S. wireless
+carriers, including AT&amp;T, Verizon Wireless, T-Mobile, U.S. Cellular,
+Boost Mobile, Metro by T-Mobile, Cricket Wireless, Google Fi, and other
+participating carriers. Wonder Dog does not guarantee that SMS messages
+will be delivered, successfully received, or received in a timely
+manner, and is not responsible for any charges, fees, or other costs
+incurred through your wireless carrier.</p>
+<h2>6. Message Frequency, Rates, and Data</h2>
+<p>Message and data rates may apply for any messages sent to you from
+us and to us from you. <strong>You will receive recurring messages and
+message frequency varies</strong> based on your appointment cadence,
+the status of your pet\u2019s diagnostic results, and the volume of your
+support interactions. Wonder Dog does not charge a separate fee for
+SMS messages. If you have any questions about your text plan or data
+plan, it is best to contact your wireless provider.</p>
+<h2>7. Eligibility</h2>
+<p>To participate in the SMS Program, you must be at least eighteen
+(18) years of age, a resident of the United States, and the authorized
+user or account holder of the mobile phone number you provide. By
+opting in, you represent and warrant that you meet these requirements
+and that the phone number you have provided is a number you own or are
+authorized to use. You agree to notify Wonder Dog promptly at
+<strong>support@wonder.dog</strong> if you change or relinquish that
+mobile phone number, so that we can update our records and avoid
+sending messages intended for you to the new holder of the number.</p>
+<h2>8. Privacy</h2>
+<p><strong>If you have any questions regarding privacy, please read
+our Privacy Policy at</strong>
+<a href="/privacy"><strong>https://wonderdog.com/privacy</strong></a>.
+Mobile phone numbers and SMS opt-in information collected in
+connection with the SMS Program are not sold, rented, loaned, leased,
+traded, or shared with any third parties, affiliates, or marketing
+partners for marketing, promotional, lead-generation, or solicitation
+purposes. Phone numbers and SMS opt-in information are used solely to
+deliver the SMS messages you have consented to receive, to provide the
+Service, and for internal operational purposes (such as to honor an
+opt-out or respond to a support request).</p>
+<h2>9. Changes to the SMS Program</h2>
+<p>Wonder Dog may modify or terminate the SMS Program at any time, with
+or without notice. Material changes to these SMS Program terms will be
+communicated through the SMS Program itself, on our website, or by
+email. Your continued participation in the SMS Program after a material
+change constitutes your acceptance of the updated terms.</p>
 <h1>Termination</h1>
 <p>We may terminate or suspend your access to the Service immediately,
 without prior notice or liability, under our sole discretion, for any
