@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Wonderdog — We tell you what your dog can't",
+  title: "Wonderdog - AI Health Companion App",
   description: "We tell you what your dog can't. Join the waitlist.",
 };
 
