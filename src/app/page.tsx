@@ -230,7 +230,7 @@ function HomeContent() {
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="mt-4 text-[18px] leading-[1.4] text-white/80 max-w-md"
               >
-                Early disease detection through at-home blood work, powered by AI. Now in private beta.
+                Early disease detection through at-home blood work. Now in private beta in LA & NYC.
               </motion.p>
 
               <motion.div
@@ -307,7 +307,7 @@ function HomeContent() {
                             <span className="text-[12px] font-mono uppercase tracking-wider text-white">{inviteCode}</span>
                           </div>
                           <div className="bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] h-12 flex items-center justify-center">
-                            {loading ? "..." : "Join Friends & Family Free Pilot"}
+                            {loading ? "..." : "Join Friends & Family Pilot"}
                           </div>
                         </button>
                       ) : (
@@ -383,7 +383,7 @@ function HomeContent() {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="mt-3 mb-6 text-[16px] leading-[1.4] text-white/80 text-center px-4"
           >
-            Early disease detection through at-home blood work, powered by AI. Now in private beta.
+            Early disease detection through at-home blood work. Now in private beta in LA & NYC.
           </motion.p>
         </div>
 
@@ -464,7 +464,7 @@ function HomeContent() {
                         <span className="text-[12px] font-mono uppercase tracking-wider text-white">{inviteCode}</span>
                       </div>
                       <div className="bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] h-12 flex items-center justify-center">
-                        {loading ? "..." : "Join Friends & Family Free Pilot"}
+                        {loading ? "..." : "Join Friends & Family Pilot"}
                       </div>
                     </button>
                   ) : (
