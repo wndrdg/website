@@ -116,7 +116,7 @@ export default function WaitlistCodes() {
     }
   };
 
-  const getInviteUrl = (code: string) => `https://wonder.dog?invite=${code}`;
+  const getInviteUrl = (code: string) => `https://wonder.dog/wl?invite=${code}`;
 
   const copyLink = (code: string) => {
     navigator.clipboard.writeText(getInviteUrl(code));

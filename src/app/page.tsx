@@ -59,7 +59,7 @@ function useVideoThemeColor() {
   return videoRef;
 }
 
-function HomeContent() {
+export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolean } = {}) {
   const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [zip, setZip] = useState("");
@@ -281,21 +281,23 @@ function HomeContent() {
                           className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                         />
                       </div>
-                      <label className="flex items-start gap-3 cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={smsConsent}
-                          onChange={(e) => setSmsConsent(e.target.checked)}
-                          className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
-                        />
-                        <span className="text-[12px] text-white/60 leading-snug">
-                          I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
-                          <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
-                          {" "}and{" "}
-                          <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
-                          . Consent is not required to join the waitlist or use our service.
-                        </span>
-                      </label>
+                      {showSmsConsent && (
+                        <label className="flex items-start gap-3 cursor-pointer select-none">
+                          <input
+                            type="checkbox"
+                            checked={smsConsent}
+                            onChange={(e) => setSmsConsent(e.target.checked)}
+                            className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
+                          />
+                          <span className="text-[12px] text-white/60 leading-snug">
+                            I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
+                            <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
+                            {" "}and{" "}
+                            <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
+                            . Consent is not required to join the waitlist or use our service.
+                          </span>
+                        </label>
+                      )}
                       {inviteCode ? (
                         <button
                           type="submit"
@@ -438,21 +440,23 @@ function HomeContent() {
                       className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
                     />
                   </div>
-                  <label className="flex items-start gap-3 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={smsConsent}
-                      onChange={(e) => setSmsConsent(e.target.checked)}
-                      className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
-                    />
-                    <span className="text-[11px] text-white/60 leading-snug">
-                      I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
-                      <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
-                      {" "}and{" "}
-                      <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
-                      . Consent is not required to join the waitlist or use our service.
-                    </span>
-                  </label>
+                  {showSmsConsent && (
+                    <label className="flex items-start gap-3 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={smsConsent}
+                        onChange={(e) => setSmsConsent(e.target.checked)}
+                        className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
+                      />
+                      <span className="text-[11px] text-white/60 leading-snug">
+                        I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
+                        <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
+                        {" "}and{" "}
+                        <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
+                        . Consent is not required to join the waitlist or use our service.
+                      </span>
+                    </label>
+                  )}
                   {inviteCode ? (
                     <button
                       type="submit"
