@@ -233,6 +233,7 @@ function WaitlistInviteInner() {
   const [contactPreference, setContactPreference] =
     useState<ContactPreference>("text");
 
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -928,10 +929,36 @@ function WaitlistInviteInner() {
                     ) : null}
                   </div>
 
+                  <label className="mt-2 flex cursor-pointer select-none items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      className="mt-[3px] h-4 w-4 flex-shrink-0 rounded accent-[#D9FF66]"
+                    />
+                    <span className="text-[13px] leading-snug text-white/70">
+                      I agree to the{" "}
+                      <Link
+                        href="/terms"
+                        className="text-white underline hover:text-white/90"
+                      >
+                        Terms
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/privacy"
+                        className="text-white underline hover:text-white/90"
+                      >
+                        Privacy Policy
+                      </Link>
+                      .
+                    </span>
+                  </label>
+
                   <button
                     type="submit"
-                    disabled={submitting}
-                    className="mt-4 h-13 rounded-xl bg-[#D9FF66] py-3.5 text-[15px] font-semibold text-[#003A45] transition-all hover:bg-[#e5ff8a] disabled:opacity-60 cursor-pointer"
+                    disabled={submitting || !agreedToTerms}
+                    className="mt-4 h-13 rounded-xl bg-[#D9FF66] py-3.5 text-[15px] font-semibold text-[#003A45] transition-all hover:bg-[#e5ff8a] disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                   >
                     {submitting ? "Sending…" : "Accept Invitation"}
                   </button>
