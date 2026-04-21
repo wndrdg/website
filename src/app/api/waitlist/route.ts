@@ -4,13 +4,41 @@ import { put, list, get } from "@vercel/blob";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+type Dog = {
+  name?: string;
+  breed?: string;
+  weight?: string;
+  age?: string;
+};
+
 export async function POST(request: Request) {
   try {
-    const { name, zip, email, phone, smsConsent, invite_code } = await request.json();
+    const {
+      name,
+      zip,
+      email,
+      phone,
+      smsConsent,
+      invite_code,
+      address,
+      dogs,
+      contactPreference,
+    } = await request.json();
 
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
+
+    const cleanDogs: Dog[] | undefined = Array.isArray(dogs)
+      ? dogs
+          .map((d: Dog) => ({
+            name: d?.name || undefined,
+            breed: d?.breed || undefined,
+            weight: d?.weight || undefined,
+            age: d?.age || undefined,
+          }))
+          .filter((d) => d.name || d.breed || d.weight || d.age)
+      : undefined;
 
     const entry = {
       email,
@@ -19,6 +47,9 @@ export async function POST(request: Request) {
       phone: phone || undefined,
       smsConsent: !!smsConsent,
       invite_code: invite_code || undefined,
+      address: address || undefined,
+      dogs: cleanDogs && cleanDogs.length > 0 ? cleanDogs : undefined,
+      contactPreference: contactPreference || undefined,
       date: new Date().toISOString(),
     };
 
@@ -55,14 +86,32 @@ export async function POST(request: Request) {
       } catch { /* ignore lookup failures */ }
     }
 
+    const dogLines =
+      cleanDogs && cleanDogs.length > 0
+        ? cleanDogs.map((d, i) => {
+            const parts = [
+              d.name ? `name: ${d.name}` : null,
+              d.breed ? `breed: ${d.breed}` : null,
+              d.weight ? `weight: ${d.weight}` : null,
+              d.age ? `age: ${d.age}` : null,
+            ]
+              .filter(Boolean)
+              .join(", ");
+            return `  Dog ${i + 1}: ${parts}`;
+          })
+        : [];
+
     const details = [
       `Email: ${email}`,
       name ? `Name: ${name}` : null,
       phone ? `Phone: ${phone}` : null,
       zip ? `Zip: ${zip}` : null,
+      address ? `Address: ${address}` : null,
       `SMS Consent: ${smsConsent ? "Yes" : "No"}`,
+      contactPreference ? `Preferred Contact: ${contactPreference}` : null,
       invite_code ? `Invite Code: ${invite_code}` : null,
       codeDescription ? `Description: ${codeDescription}` : null,
+      dogLines.length > 0 ? `Dogs:\n${dogLines.join("\n")}` : null,
     ]
       .filter(Boolean)
       .join("\n");
