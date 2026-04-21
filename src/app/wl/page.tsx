@@ -417,7 +417,7 @@ function WaitlistInviteInner() {
       {/* ================================================================ */}
       <section
         ref={inviteSectionRef}
-        className="relative overflow-hidden bg-[#003A45] px-6 py-20 md:py-28"
+        className="relative overflow-hidden bg-[#003A45] px-6 pb-10 pt-20 md:pb-14 md:pt-28"
       >
         {/* Soft decorative glow */}
         <div
@@ -537,33 +537,15 @@ function WaitlistInviteInner() {
             </div>
           </motion.div>
 
-          {/* RSVP CTA */}
-          <motion.button
-            type="button"
-            onClick={() =>
-              formSectionRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              })
-            }
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            className="mt-12 inline-flex items-center gap-2 rounded-full bg-[#D9FF66] px-7 py-3.5 text-[14px] font-semibold tracking-wide text-[#003A45] shadow-[0_14px_40px_-10px_rgba(217,255,102,0.6)] transition-transform hover:scale-[1.02] cursor-pointer"
-          >
-            RSVP &mdash; Accept Invitation
-            <span aria-hidden>↓</span>
-          </motion.button>
         </div>
       </section>
 
       {/* ================================================================ */}
-      {/*  FORM SECTION                                                    */}
+      {/*  FORM SECTION — continuous with the invite reveal above          */}
       {/* ================================================================ */}
       <section
         ref={formSectionRef}
-        className="relative bg-gradient-to-b from-[#003A45] to-[#002631] px-6 pb-24 pt-16 md:pt-20"
+        className="relative bg-[#003A45] px-6 pb-24 pt-6"
       >
         <div className="mx-auto max-w-xl">
           <AnimatePresence mode="wait">
@@ -836,119 +818,172 @@ function GoldenTicket({
   code: string;
   description: string;
 }) {
-  // Fixed stub width so the perforation + notch positions line up exactly.
-  const STUB_W = "7.5rem";
-  const NOTCH_R = "11px";
+  // Vector geometry — all content overlays onto this path at matching %.
+  const W = 480;
+  const H = 180;
+  const CORNER_R = 22;
+  const STUB_X = 128;
+  const NOTCH_R = 13;
 
-  // Two radial-gradient masks, composited with `intersect`, punch real
-  // circular holes at the top and bottom of the perforation line. A tiny
-  // buffer between `transparent` and `black` gives a clean anti-aliased edge.
-  const maskImage = `
-    radial-gradient(circle ${NOTCH_R} at ${STUB_W} 0, transparent ${NOTCH_R}, black calc(${NOTCH_R} + 0.5px)),
-    radial-gradient(circle ${NOTCH_R} at ${STUB_W} 100%, transparent ${NOTCH_R}, black calc(${NOTCH_R} + 0.5px))
-  `;
+  // Outer ticket path, traced clockwise. The two notch arcs use sweep=0
+  // so they curve INTO the ticket from the top and bottom edges — i.e.
+  // actual concave cutouts. Everything outside this path is transparent.
+  const ticketPath = `M ${CORNER_R} 0
+    H ${STUB_X - NOTCH_R}
+    A ${NOTCH_R} ${NOTCH_R} 0 0 0 ${STUB_X + NOTCH_R} 0
+    H ${W - CORNER_R}
+    A ${CORNER_R} ${CORNER_R} 0 0 1 ${W} ${CORNER_R}
+    V ${H - CORNER_R}
+    A ${CORNER_R} ${CORNER_R} 0 0 1 ${W - CORNER_R} ${H}
+    H ${STUB_X + NOTCH_R}
+    A ${NOTCH_R} ${NOTCH_R} 0 0 0 ${STUB_X - NOTCH_R} ${H}
+    H ${CORNER_R}
+    A ${CORNER_R} ${CORNER_R} 0 0 1 0 ${H - CORNER_R}
+    V ${CORNER_R}
+    A ${CORNER_R} ${CORNER_R} 0 0 1 ${CORNER_R} 0
+    Z`;
+
+  const stubPct = (STUB_X / W) * 100;
 
   return (
-    <div className="relative mx-auto inline-block max-w-full">
-      <div
-        className="relative flex items-stretch rounded-[22px]"
+    <div
+      className="relative mx-auto inline-block w-full max-w-[480px]"
+      style={{ containerType: "inline-size" }}
+    >
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="block h-auto w-full"
         style={{
-          background:
-            "linear-gradient(135deg, #EDFFA8 0%, #D9FF66 35%, #B6E53A 70%, #D9FF66 100%)",
-          maskImage,
-          WebkitMaskImage: maskImage,
-          maskComposite: "intersect",
-          WebkitMaskComposite: "source-in",
-          overflow: "hidden",
-          // drop-shadow follows the masked silhouette (notches and all);
-          // box-shadow would spill through the holes.
           filter:
-            "drop-shadow(0 18px 36px rgba(217,255,102,0.32)) drop-shadow(0 6px 14px rgba(0,0,0,0.3))",
+            "drop-shadow(0 18px 32px rgba(217,255,102,0.3)) drop-shadow(0 6px 14px rgba(0,0,0,0.28))",
         }}
       >
-        {/* Left stub — code */}
+        <defs>
+          <linearGradient id="tg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#EDFFA8" />
+            <stop offset="0.35" stopColor="#D9FF66" />
+            <stop offset="0.72" stopColor="#B6E53A" />
+            <stop offset="1" stopColor="#D9FF66" />
+          </linearGradient>
+          <radialGradient id="tlHighlight" cx="8%" cy="0%" r="70%">
+            <stop offset="0" stopColor="#ffffff" stopOpacity="0.45" />
+            <stop offset="0.6" stopColor="#ffffff" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="brShade" cx="92%" cy="100%" r="70%">
+            <stop offset="0" stopColor="#003A45" stopOpacity="0.22" />
+            <stop offset="0.6" stopColor="#003A45" stopOpacity="0" />
+          </radialGradient>
+          <clipPath id="ticketClip">
+            <path d={ticketPath} />
+          </clipPath>
+        </defs>
+
+        <g clipPath="url(#ticketClip)">
+          {/* Base gradient */}
+          <path d={ticketPath} fill="url(#tg)" />
+          {/* Sheen highlights */}
+          <rect width={W} height={H} fill="url(#tlHighlight)" />
+          <rect width={W} height={H} fill="url(#brShade)" />
+          {/* Top edge highlight / bottom shade */}
+          <rect width={W} height="1.5" fill="#ffffff" fillOpacity="0.65" />
+          <rect
+            y={H - 2}
+            width={W}
+            height="2"
+            fill="#003A45"
+            fillOpacity="0.14"
+          />
+          {/* Animated shimmer sweep, clipped to the ticket shape */}
+          <rect
+            x="-160"
+            y="0"
+            width="160"
+            height={H}
+            fill="#ffffff"
+            fillOpacity="0.35"
+            style={{
+              mixBlendMode: "overlay",
+              transform: "skewX(-18deg)",
+              transformOrigin: "center",
+              animation: "wdTicketShine 6s ease-in-out infinite",
+            }}
+          />
+        </g>
+
+        {/* Perforation dashed line */}
+        <line
+          x1={STUB_X}
+          y1={NOTCH_R + 8}
+          x2={STUB_X}
+          y2={H - NOTCH_R - 8}
+          stroke="#003A45"
+          strokeOpacity="0.4"
+          strokeWidth="2.4"
+          strokeDasharray="5 5"
+          strokeLinecap="round"
+        />
+      </svg>
+
+      {/* Content overlay — sits absolutely over the SVG. Font sizes in
+          cqw so they scale with the ticket's container width. */}
+      <div className="pointer-events-none absolute inset-0 flex">
         <div
-          className="relative flex flex-shrink-0 flex-col items-center justify-center py-7 sm:py-8"
-          style={{ width: STUB_W }}
+          className="flex flex-col items-center justify-center"
+          style={{ width: `${stubPct}%` }}
         >
-          <span className="text-[8.5px] font-mono uppercase tracking-[0.3em] text-[#003A45]/70">
+          <span
+            className="font-mono uppercase tracking-[0.3em] text-[#003A45]/70"
+            style={{ fontSize: "clamp(7.5px, 1.85cqw, 10px)" }}
+          >
             Invite Code
           </span>
-          <span className="mt-3 font-mono text-[28px] font-bold leading-none tracking-[0.12em] text-[#003A45] sm:text-[32px]">
+          <span
+            className="mt-[0.55em] font-mono font-bold leading-none tracking-[0.12em] text-[#003A45]"
+            style={{ fontSize: "clamp(22px, 6.2cqw, 34px)" }}
+          >
             {code}
           </span>
-          <span className="mt-3 text-[8px] font-mono uppercase tracking-[0.35em] text-[#003A45]/55">
+          <span
+            className="mt-[0.7em] font-mono uppercase tracking-[0.35em] text-[#003A45]/55"
+            style={{ fontSize: "clamp(6.5px, 1.55cqw, 9px)" }}
+          >
             Admit One
           </span>
         </div>
-
-        {/* Perforation — dashed line between the two notch holes */}
-        <div className="relative flex flex-shrink-0 items-stretch py-5">
-          <div
-            className="h-full w-0 border-l-2 border-dashed"
-            style={{ borderColor: "rgba(0,58,69,0.35)" }}
-          />
-        </div>
-
-        {/* Main face — VIP guest list */}
-        <div className="flex min-w-[180px] max-w-[230px] flex-col justify-center px-5 py-7 text-left sm:max-w-[320px] sm:px-7 sm:py-8">
-          <span className="text-[8.5px] font-mono uppercase tracking-[0.3em] text-[#003A45]/70">
+        <div
+          className="flex flex-1 flex-col justify-center text-left"
+          style={{
+            paddingLeft: "clamp(0.75rem, 3cqw, 1.75rem)",
+            paddingRight: "clamp(1rem, 4cqw, 2rem)",
+          }}
+        >
+          <span
+            className="font-mono uppercase tracking-[0.3em] text-[#003A45]/70"
+            style={{ fontSize: "clamp(7.5px, 1.85cqw, 10px)" }}
+          >
             VIP Guest List
           </span>
-          <p className="mt-2 font-serif text-[20px] font-semibold leading-[1.15] tracking-[-0.01em] text-[#003A45] sm:text-[24px]">
+          <p
+            className="mt-[0.3em] font-serif font-semibold leading-[1.15] tracking-[-0.01em] text-[#003A45]"
+            style={{ fontSize: "clamp(17px, 5cqw, 26px)" }}
+          >
             {description}
           </p>
-          <div className="mt-3 flex items-center gap-1.5 text-[#003A45]/50">
-            <span className="text-[9px]">★</span>
+          <div className="mt-[0.55em] flex items-center gap-1.5 text-[#003A45]/50">
+            <span style={{ fontSize: "clamp(7px, 1.5cqw, 10px)" }}>★</span>
             <span className="h-px flex-1 bg-[#003A45]/25" />
-            <span className="text-[9px]">★</span>
+            <span style={{ fontSize: "clamp(7px, 1.5cqw, 10px)" }}>★</span>
           </div>
         </div>
-
-        {/* Shimmer sweep */}
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 w-1/3"
-          initial={{ x: "-120%" }}
-          animate={{ x: "360%" }}
-          transition={{
-            duration: 3.2,
-            repeat: Infinity,
-            repeatDelay: 3,
-            ease: "easeInOut",
-          }}
-          style={{
-            background:
-              "linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%)",
-            mixBlendMode: "overlay",
-          }}
-        />
-
-        {/* Sheen overlay */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(120% 60% at 10% 0%, rgba(255,255,255,0.4), transparent 55%), radial-gradient(120% 60% at 90% 100%, rgba(0,58,69,0.14), transparent 55%)",
-          }}
-        />
-
-        {/* Inner highlight / bottom shade — drawn after sheen so it's visible.
-            Using a pseudo-shadow rendered as a thin absolutely-positioned
-            line keeps us clear of inset box-shadows (which render through
-            the mask holes). */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{ background: "rgba(255,255,255,0.7)" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px]"
-          style={{ background: "rgba(0,58,69,0.12)" }}
-        />
       </div>
+
+      <style jsx>{`
+        @keyframes wdTicketShine {
+          0% { transform: translateX(-40px) skewX(-18deg); }
+          55% { transform: translateX(640px) skewX(-18deg); }
+          100% { transform: translateX(640px) skewX(-18deg); }
+        }
+      `}</style>
     </div>
   );
 }
