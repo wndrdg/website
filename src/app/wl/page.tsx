@@ -850,6 +850,17 @@ function GoldenTicket({
       className="relative mx-auto inline-block w-full max-w-[480px]"
       style={{ containerType: "inline-size" }}
     >
+      {/* Soft radial glow behind the ticket */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-16"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(217,255,102,0.28) 0%, rgba(217,255,102,0.1) 35%, rgba(217,255,102,0) 70%)",
+          filter: "blur(8px)",
+          zIndex: -1,
+        }}
+      />
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="block h-auto w-full"
@@ -870,38 +881,13 @@ function GoldenTicket({
             <stop offset="0" stopColor="#003A45" stopOpacity="0.22" />
             <stop offset="0.6" stopColor="#003A45" stopOpacity="0" />
           </radialGradient>
-          {/* Shadow filter — drawn from the actual path silhouette so it
-              follows the notches instead of the SVG's bounding box. */}
-          <filter
-            id="ticketShadow"
-            x="-25%"
-            y="-25%"
-            width="150%"
-            height="150%"
-          >
-            <feDropShadow
-              dx="0"
-              dy="12"
-              stdDeviation="10"
-              floodColor="#D9FF66"
-              floodOpacity="0.32"
-            />
-            <feDropShadow
-              dx="0"
-              dy="4"
-              stdDeviation="6"
-              floodColor="#000000"
-              floodOpacity="0.22"
-            />
-          </filter>
           <clipPath id="ticketClip">
             <path d={ticketPath} />
           </clipPath>
         </defs>
 
-        {/* Shadow-casting silhouette of the ticket (single path, so the
-            shadow is the true notched outline). */}
-        <path d={ticketPath} fill="url(#tg)" filter="url(#ticketShadow)" />
+        {/* Ticket silhouette */}
+        <path d={ticketPath} fill="url(#tg)" />
 
         {/* Overlays clipped to the same shape */}
         <g clipPath="url(#ticketClip)">
