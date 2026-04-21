@@ -78,18 +78,59 @@ function useGooglePlaces() {
 /*  Address input with Google Places autocomplete                             */
 /* -------------------------------------------------------------------------- */
 
-function AddressInput({
-  value,
-  onChange,
-  placeholder = "Street address",
+type ParsedAddress = {
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+};
+
+type PlaceResult = {
+  formatted_address?: string;
+  address_components?: Array<{
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }>;
+};
+
+function parsePlace(place: PlaceResult): ParsedAddress {
+  const comps = place.address_components || [];
+  const find = (t: string, short = false) => {
+    const c = comps.find((x) => x.types.includes(t));
+    return c ? (short ? c.short_name : c.long_name) : "";
+  };
+  const streetNumber = find("street_number");
+  const route = find("route");
+  const city =
+    find("locality") ||
+    find("sublocality") ||
+    find("sublocality_level_1") ||
+    find("postal_town") ||
+    find("administrative_area_level_3");
+  const state = find("administrative_area_level_1", true);
+  const zip = find("postal_code");
+  return {
+    street: [streetNumber, route].filter(Boolean).join(" "),
+    city,
+    state,
+    zip,
+  };
+}
+
+function AddressAutocomplete({
+  query,
+  onQueryChange,
+  onPlaceSelected,
+  placeholder = "Start typing your address",
 }: {
-  value: string;
-  onChange: (v: string) => void;
+  query: string;
+  onQueryChange: (v: string) => void;
+  onPlaceSelected: (parsed: ParsedAddress) => void;
   placeholder?: string;
 }) {
   const ready = useGooglePlaces();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const acRef = useRef<unknown>(null);
 
   useEffect(() => {
     if (!ready || !inputRef.current) return;
@@ -105,7 +146,7 @@ function AddressInput({
                 ev: string,
                 cb: () => void,
               ) => { remove: () => void };
-              getPlace: () => { formatted_address?: string };
+              getPlace: () => PlaceResult;
             };
           };
         };
@@ -115,19 +156,22 @@ function AddressInput({
     const ac = new w.google.maps.places.Autocomplete(inputRef.current, {
       types: ["address"],
       componentRestrictions: { country: "us" },
-      fields: ["formatted_address"],
+      fields: ["formatted_address", "address_components"],
     });
-    acRef.current = ac;
 
     const listener = ac.addListener("place_changed", () => {
       const place = ac.getPlace();
-      if (place?.formatted_address) onChange(place.formatted_address);
+      const parsed = parsePlace(place);
+      if (inputRef.current && parsed.street) {
+        inputRef.current.value = parsed.street;
+      }
+      onQueryChange(parsed.street || place?.formatted_address || "");
+      onPlaceSelected(parsed);
     });
 
     return () => {
       listener.remove();
     };
-    // We intentionally only wire the autocomplete once it becomes ready.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
 
@@ -135,10 +179,16 @@ function AddressInput({
     <input
       ref={inputRef}
       type="text"
-      autoComplete="off"
+      // Safari ignores autocomplete="off" on inputs it thinks are address
+      // fields, and overlays its contact-card autofill on top of Google's
+      // dropdown. "new-password" is the widely-used workaround that gets
+      // Safari to leave the input alone. `name` is intentionally non-standard.
+      autoComplete="new-password"
+      name="wd-address-search"
+      data-form-type="other"
       placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
+      value={query}
+      onChange={(e) => onQueryChange(e.target.value)}
       className="w-full h-12 rounded-xl bg-white/10 border border-white/25 px-5 text-[16px] text-white placeholder:text-white/50 outline-none focus:border-[#D9FF66]/70 focus:bg-white/15 transition-colors"
     />
   );
@@ -171,7 +221,13 @@ function WaitlistInviteInner() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+  const [addressQuery, setAddressQuery] = useState("");
+  const [addressSelected, setAddressSelected] = useState(false);
+  const [street, setStreet] = useState("");
+  const [apt, setApt] = useState("");
+  const [city, setCity] = useState("");
+  const [stateCode, setStateCode] = useState("");
+  const [zip, setZip] = useState("");
   const [dogCount, setDogCount] = useState<number>(1);
   const [dogs, setDogs] = useState<Dog[]>([emptyDog()]);
   const [contactPreference, setContactPreference] =
@@ -232,7 +288,10 @@ function WaitlistInviteInner() {
     name.trim().length > 0 &&
     email.trim().length > 0 &&
     phone.replace(/\D/g, "").length === 10 &&
-    address.trim().length > 0 &&
+    street.trim().length > 0 &&
+    city.trim().length > 0 &&
+    stateCode.trim().length > 0 &&
+    zip.trim().length > 0 &&
     dogCount >= 1;
 
   const updateDog = useCallback(
@@ -257,6 +316,14 @@ function WaitlistInviteInner() {
     e.preventDefault();
     if (submitting) return;
     setSubmitting(true);
+    const formattedAddress = [
+      [street, apt].filter(Boolean).join(" "),
+      city,
+      [stateCode, zip].filter(Boolean).join(" "),
+    ]
+      .filter(Boolean)
+      .join(", ");
+
     try {
       await fetch("/api/waitlist", {
         method: "POST",
@@ -265,7 +332,8 @@ function WaitlistInviteInner() {
           name,
           email,
           phone,
-          address,
+          address: formattedAddress,
+          addressParts: { street, apt, city, state: stateCode, zip },
           invite_code: inviteCode || undefined,
           dogs,
           contactPreference,
@@ -491,11 +559,10 @@ function WaitlistInviteInner() {
             </p>
 
             <p>
-              We&rsquo;re excited to have you alongside us as we launch our AI
-              health companion app for dogs — partnering with the nation&rsquo;s
-              most advanced reference lab and local vet techs, all overseen by
-              some of the most accomplished veterinary pathologists in the
-              world.
+              We&rsquo;re excited to have you with us as we launch our AI
+              health companion app for dogs, partnering with the nation&rsquo;s
+              most advanced reference lab and local vet techs, overseen by
+              world-class veterinary pathologists.
             </p>
 
             <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-white/5 p-6 text-left md:p-8">
@@ -519,6 +586,13 @@ function WaitlistInviteInner() {
                   <span>
                     A direct line to our team — your feedback shapes what we
                     build next
+                  </span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-[9px] inline-block h-[5px] w-[5px] flex-shrink-0 rounded-full bg-[#D9FF66]" />
+                  <span>
+                    A lifetime founder&rsquo;s discount once we launch, if you
+                    choose to keep going with us (we hope you do)
                   </span>
                 </li>
               </ul>
@@ -610,11 +684,86 @@ function WaitlistInviteInner() {
                     />
                   </div>
 
-                  <AddressInput
-                    value={address}
-                    onChange={setAddress}
-                    placeholder="Home address (where we&rsquo;ll meet you)"
+                  <AddressAutocomplete
+                    query={addressQuery}
+                    onQueryChange={(v) => {
+                      setAddressQuery(v);
+                      if (addressSelected && v !== street) {
+                        // user is editing — treat as re-search
+                        setAddressSelected(false);
+                      }
+                    }}
+                    onPlaceSelected={(p) => {
+                      setStreet(p.street);
+                      setCity(p.city);
+                      setStateCode(p.state);
+                      setZip(p.zip);
+                      setAddressQuery(p.street);
+                      setAddressSelected(true);
+                    }}
+                    placeholder="Start typing your home address…"
                   />
+
+                  <AnimatePresence initial={false}>
+                    {addressSelected ? (
+                      <motion.div
+                        key="addr-parts"
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 0 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex flex-col gap-3.5 pt-1">
+                          <div className="flex flex-col gap-3.5 md:flex-row">
+                            <input
+                              type="text"
+                              placeholder="Street"
+                              value={street}
+                              onChange={(e) => setStreet(e.target.value)}
+                              className="h-12 w-full flex-[2] rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Apt / Unit (optional)"
+                              value={apt}
+                              onChange={(e) => setApt(e.target.value)}
+                              className="h-12 w-full flex-1 rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                            />
+                          </div>
+                          <div className="flex flex-col gap-3.5 md:flex-row">
+                            <input
+                              type="text"
+                              placeholder="City"
+                              value={city}
+                              onChange={(e) => setCity(e.target.value)}
+                              className="h-12 w-full flex-[2] rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                            />
+                            <input
+                              type="text"
+                              placeholder="State"
+                              value={stateCode}
+                              onChange={(e) =>
+                                setStateCode(e.target.value.toUpperCase().slice(0, 2))
+                              }
+                              maxLength={2}
+                              className="h-12 w-full flex-1 rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] uppercase text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                            />
+                            <input
+                              type="text"
+                              placeholder="ZIP"
+                              inputMode="numeric"
+                              value={zip}
+                              onChange={(e) =>
+                                setZip(e.target.value.replace(/\D/g, "").slice(0, 5))
+                              }
+                              className="h-12 w-full flex-1 rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
 
                   {/* Dog count selector */}
                   <div className="mt-5">

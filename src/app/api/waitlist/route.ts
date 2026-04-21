@@ -21,6 +21,7 @@ export async function POST(request: Request) {
       smsConsent,
       invite_code,
       address,
+      addressParts,
       dogs,
       contactPreference,
     } = await request.json();
@@ -43,11 +44,12 @@ export async function POST(request: Request) {
     const entry = {
       email,
       name: name || undefined,
-      zip: zip || undefined,
+      zip: (addressParts?.zip || zip) || undefined,
       phone: phone || undefined,
       smsConsent: !!smsConsent,
       invite_code: invite_code || undefined,
       address: address || undefined,
+      addressParts: addressParts || undefined,
       dogs: cleanDogs && cleanDogs.length > 0 ? cleanDogs : undefined,
       contactPreference: contactPreference || undefined,
       date: new Date().toISOString(),

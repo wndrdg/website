@@ -278,3 +278,61 @@
   55% { transform: translateX(640px) skewX(-18deg); }
   100% { transform: translateX(640px) skewX(-18deg); }
 }
+
+/* ---------- Google Places autocomplete (.pac-container) restyle ---------- */
+/* Google appends .pac-container to document.body, so these overrides live
+   in globals.css rather than the /wl component. */
+.pac-container {
+  margin-top: 6px;
+  border: 1px solid rgba(217, 255, 102, 0.22);
+  border-radius: 14px;
+  background: rgba(0, 29, 38, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6),
+              0 8px 20px -8px rgba(0, 0, 0, 0.45);
+  padding: 6px;
+  font-family: inherit;
+  overflow: hidden;
+}
+.pac-container:after {
+  /* Hide the default "Powered by Google" image — we'll re-add it subtly */
+  background: none;
+  height: 0;
+  padding: 0;
+  margin: 0;
+}
+.pac-item {
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  color: rgba(245, 240, 232, 0.82);
+  font-size: 14px;
+  line-height: 1.35;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.pac-item + .pac-item {
+  margin-top: 2px;
+}
+.pac-item:hover,
+.pac-item-selected,
+.pac-item-selected:hover {
+  background: rgba(217, 255, 102, 0.12);
+  color: #f5f0e8;
+}
+.pac-icon,
+.pac-icon-marker {
+  /* Hide the default pin icon; the label carries enough meaning */
+  display: none;
+}
+.pac-item-query {
+  color: #f5f0e8;
+  font-size: 14px;
+  font-weight: 500;
+  padding-right: 6px;
+}
+.pac-matched {
+  color: #D9FF66;
+  font-weight: 600;
+}
