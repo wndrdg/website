@@ -853,10 +853,7 @@ function GoldenTicket({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="block h-auto w-full"
-        style={{
-          filter:
-            "drop-shadow(0 18px 32px rgba(217,255,102,0.3)) drop-shadow(0 6px 14px rgba(0,0,0,0.28))",
-        }}
+        style={{ overflow: "visible" }}
       >
         <defs>
           <linearGradient id="tg" x1="0" y1="0" x2="1" y2="1">
@@ -873,18 +870,43 @@ function GoldenTicket({
             <stop offset="0" stopColor="#003A45" stopOpacity="0.22" />
             <stop offset="0.6" stopColor="#003A45" stopOpacity="0" />
           </radialGradient>
+          {/* Shadow filter — drawn from the actual path silhouette so it
+              follows the notches instead of the SVG's bounding box. */}
+          <filter
+            id="ticketShadow"
+            x="-25%"
+            y="-25%"
+            width="150%"
+            height="150%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="12"
+              stdDeviation="10"
+              floodColor="#D9FF66"
+              floodOpacity="0.32"
+            />
+            <feDropShadow
+              dx="0"
+              dy="4"
+              stdDeviation="6"
+              floodColor="#000000"
+              floodOpacity="0.22"
+            />
+          </filter>
           <clipPath id="ticketClip">
             <path d={ticketPath} />
           </clipPath>
         </defs>
 
+        {/* Shadow-casting silhouette of the ticket (single path, so the
+            shadow is the true notched outline). */}
+        <path d={ticketPath} fill="url(#tg)" filter="url(#ticketShadow)" />
+
+        {/* Overlays clipped to the same shape */}
         <g clipPath="url(#ticketClip)">
-          {/* Base gradient */}
-          <path d={ticketPath} fill="url(#tg)" />
-          {/* Sheen highlights */}
           <rect width={W} height={H} fill="url(#tlHighlight)" />
           <rect width={W} height={H} fill="url(#brShade)" />
-          {/* Top edge highlight / bottom shade */}
           <rect width={W} height="1.5" fill="#ffffff" fillOpacity="0.65" />
           <rect
             y={H - 2}
@@ -893,7 +915,6 @@ function GoldenTicket({
             fill="#003A45"
             fillOpacity="0.14"
           />
-          {/* Animated shimmer sweep, clipped to the ticket shape */}
           <rect
             x="-160"
             y="0"
@@ -903,7 +924,6 @@ function GoldenTicket({
             fillOpacity="0.35"
             style={{
               mixBlendMode: "overlay",
-              transform: "skewX(-18deg)",
               transformOrigin: "center",
               animation: "wdTicketShine 6s ease-in-out infinite",
             }}
@@ -977,13 +997,6 @@ function GoldenTicket({
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes wdTicketShine {
-          0% { transform: translateX(-40px) skewX(-18deg); }
-          55% { transform: translateX(640px) skewX(-18deg); }
-          100% { transform: translateX(640px) skewX(-18deg); }
-        }
-      `}</style>
     </div>
   );
 }

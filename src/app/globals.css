@@ -272,3 +272,9 @@
     @apply text-foreground;
   }
 }
+
+@keyframes wdTicketShine {
+  0% { transform: translateX(-40px) skewX(-18deg); }
+  55% { transform: translateX(640px) skewX(-18deg); }
+  100% { transform: translateX(640px) skewX(-18deg); }
+}
