@@ -350,9 +350,8 @@ function HomeInner() {
                     <span className="text-[12px] leading-snug text-white/60">
                       I consent to receive recurring SMS text messages from
                       Wonderdog regarding appointment scheduling, appointment
-                      reminders, lab and diagnostic results, account
-                      notifications, and customer support. Message frequency
-                      varies. Msg &amp; data rates may apply. Reply STOP to
+                      reminders, account notifications, and customer support.
+                      Message frequency varies. Msg &amp; data rates may apply. Reply STOP to
                       unsubscribe, HELP for help. See our{" "}
                       <Link
                         href="/privacy"
