@@ -4,6 +4,10 @@ import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
+
+const fieldClass =
+  "h-11 rounded-md border-white/25 bg-white/10 px-4 text-[16px] text-white placeholder:text-white/50 shadow-none transition-colors focus-visible:border-[#D9FF66] focus-visible:bg-white/15 focus-visible:ring-[#D9FF66]/30 focus-visible:ring-2 md:text-[15px]";
 
 /**
  * Scene color timeline for the mobile video reel.
@@ -298,15 +302,15 @@ function HomeInner() {
                   onSubmit={handleSubmit}
                   className="flex flex-col gap-3.5"
                 >
-                  <div className="flex flex-col gap-3.5 md:flex-row">
-                    <input
+                  <div className="flex flex-col gap-3 md:flex-row">
+                    <Input
                       type="text"
                       placeholder="Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="h-12 w-full flex-[2] rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                      className={`${fieldClass} flex-[2]`}
                     />
-                    <input
+                    <Input
                       type="text"
                       inputMode="numeric"
                       placeholder="Zip code"
@@ -314,24 +318,24 @@ function HomeInner() {
                       onChange={(e) =>
                         setZip(e.target.value.replace(/\D/g, "").slice(0, 5))
                       }
-                      className="h-12 w-full flex-1 rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                      className={`${fieldClass} flex-1 md:max-w-[140px]`}
                     />
                   </div>
-                  <div className="flex flex-col gap-3.5 md:flex-row">
-                    <input
+                  <div className="flex flex-col gap-3 md:flex-row">
+                    <Input
                       type="email"
                       placeholder="Email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="h-12 w-full rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                      className={fieldClass}
                     />
-                    <input
+                    <Input
                       type="tel"
                       placeholder="Phone number"
                       value={phone}
                       onChange={(e) => setPhone(formatPhone(e.target.value))}
-                      className="h-12 w-full rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
+                      className={fieldClass}
                     />
                   </div>
 
