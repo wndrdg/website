@@ -339,7 +339,9 @@ function HomeInner() {
                     />
                   </div>
 
-                  {/* Massive SMS consent — required for Twilio compliance */}
+                  {/* SMS consent — Twilio A2P 10DLC compliance.
+                      Standalone checkbox: SMS only, no Terms/Privacy refs.
+                      Optional — submit button is NOT gated on this. */}
                   <label className="mt-2 flex cursor-pointer select-none items-start gap-3">
                     <input
                       type="checkbox"
@@ -348,30 +350,39 @@ function HomeInner() {
                       className="mt-[3px] h-4 w-4 flex-shrink-0 rounded accent-[#D9FF66]"
                     />
                     <span className="text-[12px] leading-snug text-white/60">
-                      I agree to receive SMS messages from Wonderdog about my
-                      account, appointments, and customer support. Message
-                      frequency varies. Msg &amp; data rates may apply. Reply
-                      STOP to opt out, HELP for help. See{" "}
-                      <Link
-                        href="/privacy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:text-white/90"
-                      >
-                        Privacy Policy
-                      </Link>{" "}
-                      and{" "}
-                      <Link
-                        href="/terms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline hover:text-white/90"
-                      >
-                        Terms
-                      </Link>
-                      . Consent is not required to use the service.
+                      By checking, you agree to receive transactional and
+                      informational SMS messages from Wonderdog about
+                      appointment scheduling, appointment reminders, account
+                      notifications, and customer support. Message frequency
+                      varies. Msg &amp; data rates may apply. Reply HELP for
+                      help, STOP to opt out. Consent is not required to join
+                      the waitlist or use our service.
                     </span>
                   </label>
+
+                  {/* Terms & Privacy — separate from SMS consent per Twilio.
+                      Implicit acceptance via form submission, not a gate. */}
+                  <p className="text-[11px] leading-snug text-white/45">
+                    By joining the waitlist, you agree to our{" "}
+                    <Link
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-white/70"
+                    >
+                      Terms
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-white/70"
+                    >
+                      Privacy Policy
+                    </Link>
+                    .
+                  </p>
 
                   <button
                     type="submit"
