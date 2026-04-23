@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
-import { put, list, get } from "@vercel/blob";
+import { list, get } from "@vercel/blob";
+import { createServerClient } from "@/lib/crm/supabase/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -10,6 +11,14 @@ type Dog = {
   weight?: string;
   age?: string;
 };
+
+function splitName(full: string | undefined): { first: string | null; last: string | null } {
+  if (!full) return { first: null, last: null };
+  const parts = full.trim().split(/\s+/);
+  if (parts.length === 0) return { first: null, last: null };
+  if (parts.length === 1) return { first: parts[0], last: null };
+  return { first: parts[0], last: parts.slice(1).join(" ") };
+}
 
 export async function POST(request: Request) {
   try {
@@ -30,7 +39,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const cleanDogs: Dog[] | undefined = Array.isArray(dogs)
+    const cleanDogs: Dog[] = Array.isArray(dogs)
       ? dogs
           .map((d: Dog) => ({
             name: d?.name || undefined,
@@ -39,40 +48,36 @@ export async function POST(request: Request) {
             age: d?.age || undefined,
           }))
           .filter((d) => d.name || d.breed || d.weight || d.age)
-      : undefined;
+      : [];
 
-    const entry = {
+    // Primary write: crm_waitlist in Supabase. This is now the source of
+    // truth for waitlist signups (replaces the Vercel Blob signups/* path).
+    const { first, last } = splitName(name);
+    const supabase = createServerClient();
+    const { error: insertError } = await supabase.from("crm_waitlist").insert({
       email,
-      name: name || undefined,
-      zip: (addressParts?.zip || zip) || undefined,
-      phone: phone || undefined,
-      smsConsent: !!smsConsent,
-      invite_code: invite_code || undefined,
-      address: address || undefined,
-      addressParts: addressParts || undefined,
-      dogs: cleanDogs && cleanDogs.length > 0 ? cleanDogs : undefined,
-      contactPreference: contactPreference || undefined,
-      date: new Date().toISOString(),
-    };
-
-    // Append-only: each signup gets its own blob under signups/. No read-modify-write,
-    // so no race conditions and no CDN cache headaches. Use the timestamp + email hash
-    // for the pathname so it sorts naturally and is uniquely addressable.
-    try {
-      const safeEmail = email.replace(/[^a-z0-9]/gi, "_").toLowerCase();
-      const pathname = `signups/${entry.date}-${safeEmail}.json`;
-      await put(pathname, JSON.stringify(entry, null, 2), {
-        access: "private",
-        addRandomSuffix: false,
-        allowOverwrite: true,
-        contentType: "application/json",
-      });
-    } catch (err) {
-      console.error("Blob write failed:", err);
+      phone: phone || null,
+      first_name: first,
+      last_name: last,
+      zip: addressParts?.zip || zip || null,
+      city: addressParts?.city || null,
+      dog_name: cleanDogs[0]?.name || null,
+      dog_breed: cleanDogs[0]?.breed || null,
+      source: "website",
+      referral_code: invite_code || null,
+      sms_consent: !!smsConsent,
+      status: "waiting",
+    });
+    if (insertError) {
+      console.error("Supabase insert failed:", insertError);
+      return NextResponse.json(
+        { error: "Failed to process signup" },
+        { status: 500 },
+      );
     }
 
-    // Send notification email via Resend (verified wonder.dog domain)
-    // Look up invite code description if present
+    // Invite code description is still looked up from Vercel Blob — invite
+    // codes haven't been migrated to Supabase yet.
     let codeDescription = "";
     if (invite_code) {
       try {
@@ -89,7 +94,7 @@ export async function POST(request: Request) {
     }
 
     const dogLines =
-      cleanDogs && cleanDogs.length > 0
+      cleanDogs.length > 0
         ? cleanDogs.map((d, i) => {
             const parts = [
               d.name ? `name: ${d.name}` : null,
@@ -130,7 +135,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error("Waitlist POST failed:", err);
     return NextResponse.json(
       { error: "Failed to process signup" },
       { status: 500 },
