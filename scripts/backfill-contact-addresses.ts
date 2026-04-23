@@ -63,7 +63,20 @@ async function main() {
 
     for (const [email, s] of byEmail) {
       const parts = s.addressParts || {};
-      if (!parts.street && !parts.apt && !parts.state) {
+      let street: string | null = parts.street || null;
+      let apt: string | null = parts.apt || null;
+      // Fallback: if addressParts.street is empty but a free-form `address`
+      // string is present and isn't just the zip, store it as the street.
+      // Better than dropping it; user can clean up later.
+      if (!street && typeof s.address === "string") {
+        const a = s.address.trim();
+        const z = parts.zip || s.zip;
+        if (a && a !== z) {
+          street = a;
+        }
+      }
+
+      if (!street && !apt && !parts.state) {
         skippedNoAddress++;
         continue;
       }
@@ -71,8 +84,8 @@ async function main() {
       // COALESCE so we never overwrite a non-null value already on the row.
       const result = await sql`
         UPDATE crm_contacts SET
-          street = COALESCE(street, ${parts.street || null}),
-          apt    = COALESCE(apt,    ${parts.apt || null}),
+          street = COALESCE(street, ${street}),
+          apt    = COALESCE(apt,    ${apt}),
           city   = COALESCE(city,   ${parts.city || null}),
           state  = COALESCE(state,  ${parts.state || null}),
           zip    = COALESCE(zip,    ${parts.zip || null})
