@@ -1,22 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/auth";
 
 // Two-host setup on a single Vercel deploy:
-//   - wonder.dog        → marketing site + /waitlist-codes admin
+//   - wonder.dog        → marketing + /waitlist-codes admin
 //   - spark.wonder.dog  → CRM (dashboard, customers, messages, etc.)
-// The subdomain is just a landing-UX convenience — routes are globally
-// reachable but the CRM section is Basic Auth'd regardless of host.
 //
-// Credentials for both admin surfaces are base64-encoded "jeff:jeff". Casual
-// deterrence only — replace with real auth before widening access.
-const EXPECTED_BASIC = "amVmZjpqZWZm";
+// Two auth regimes:
+//   - /waitlist-codes and its APIs → legacy HTTP Basic Auth (jeff:jeff)
+//   - CRM surface (/dashboard etc. + /api/crm/*) → Google OAuth via Auth.js,
+//     restricted to @wonder.dog accounts.
+//
+// The public invite lookup (/api/codes/lookup/:code) and waitlist submission
+// (/api/waitlist POST) are intentionally NOT gated — they're consumed by the
+// customer-facing /wl and / pages.
 
-// Paths that require auth. The public invite lookup (/api/codes/lookup/...)
-// and the public waitlist submission (/api/waitlist POST) are intentionally
-// NOT included — they're consumed by the customer-facing /wl and / pages.
-const AUTH_MATCHERS: RegExp[] = [
+const EXPECTED_BASIC = "amVmZjpqZWZm"; // jeff:jeff, base64
+
+const BASIC_AUTH_MATCHERS: RegExp[] = [
   /^\/waitlist-codes(\/|$)/,
   /^\/api\/codes(\/|$)/,
   /^\/api\/waitlist\/list\/?$/,
+];
+
+const CRM_MATCHERS: RegExp[] = [
   /^\/(dashboard|customers|messages|blood-draws|vet-records|vet-review|settings|waitlist)(\/|$)/,
   /^\/api\/crm\//,
 ];
@@ -34,12 +40,12 @@ function requireBasicAuth(req: NextRequest): NextResponse | null {
   });
 }
 
-export function proxy(req: NextRequest) {
+export default auth((req) => {
   const { pathname } = req.nextUrl;
   const host = (req.headers.get("host") || "").toLowerCase();
   const isSpark = host.startsWith("spark.");
 
-  // Clean landing on spark.wonder.dog → go straight into the CRM.
+  // Clean landing on spark.wonder.dog → straight into the CRM.
   if (isSpark && pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
@@ -49,14 +55,32 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  for (const rx of AUTH_MATCHERS) {
+  // Legacy admin surface (Basic Auth)
+  for (const rx of BASIC_AUTH_MATCHERS) {
     if (rx.test(pathname)) {
-      return requireBasicAuth(req) || NextResponse.next();
+      return requireBasicAuth(req as unknown as NextRequest) || NextResponse.next();
+    }
+  }
+
+  // CRM surface (Google OAuth via Auth.js)
+  for (const rx of CRM_MATCHERS) {
+    if (rx.test(pathname)) {
+      if (!req.auth?.user?.email?.endsWith("@wonder.dog")) {
+        // API routes → 401 JSON (clients handle redirect themselves)
+        if (pathname.startsWith("/api/")) {
+          return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        // Pages → redirect to sign-in, remember where they were going
+        const signin = new URL("/signin", req.url);
+        signin.searchParams.set("callbackUrl", pathname);
+        return NextResponse.redirect(signin);
+      }
+      return NextResponse.next();
     }
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [
