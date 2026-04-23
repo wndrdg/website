@@ -10,7 +10,11 @@ import {
 import { Badge } from "@/components/crm/ui/badge";
 import { Button } from "@/components/crm/ui/button";
 import { Separator } from "@/components/crm/ui/separator";
-import { BookAppointmentDialog } from "@/components/crm/appointments/BookAppointmentDialog";
+import {
+  AppointmentDialog,
+  type AppointmentType,
+  type ExistingAppointment,
+} from "@/components/crm/appointments/AppointmentDialog";
 import { formatRelativeTime } from "@/lib/crm/utils/formatters";
 import type { WaitlistContact, CodeMeta } from "./types";
 
@@ -63,7 +67,10 @@ export function WaitlistInspector({
   onClose: () => void;
 }) {
   const router = useRouter();
-  const [bookType, setBookType] = useState<"vcpr" | "blood_draw" | null>(null);
+  const [dialog, setDialog] = useState<{
+    type: AppointmentType;
+    appointment: ExistingAppointment | null;
+  } | null>(null);
   const [togglingContact, setTogglingContact] = useState(false);
 
   if (!entry) {
@@ -77,6 +84,12 @@ export function WaitlistInspector({
   const fullName =
     [entry.first_name, entry.last_name].filter(Boolean).join(" ") || entry.email || "Unknown";
   const contacted = entry.last_contact_at != null;
+  // First active appointment of each type (entry.appointments is already
+  // filtered to non-cancelled / non-no_show, sorted by scheduled_at asc).
+  const vcprAppointment =
+    entry.appointments.find((a) => a.type === "vcpr") ?? null;
+  const drawAppointment =
+    entry.appointments.find((a) => a.type === "blood_draw") ?? null;
 
   const toggleContacted = async () => {
     setTogglingContact(true);
@@ -116,7 +129,8 @@ export function WaitlistInspector({
             </div>
           </div>
 
-          {/* Actions */}
+          {/* Actions — each appointment button is 1:1 with the contact's
+              current appointment of that type. Click to open its modal. */}
           <div className="grid grid-cols-3 gap-2 border-b bg-muted/20 px-6 py-4">
             <Button
               variant={contacted ? "secondary" : "default"}
@@ -132,18 +146,32 @@ export function WaitlistInspector({
               {contacted ? "Contacted ✓" : "Mark contacted"}
             </Button>
             <Button
-              variant={entry.has_vcpr ? "secondary" : "default"}
+              variant={vcprAppointment ? "secondary" : "default"}
               size="sm"
-              onClick={() => setBookType("vcpr")}
+              onClick={() =>
+                setDialog({ type: "vcpr", appointment: vcprAppointment })
+              }
+              title={
+                vcprAppointment
+                  ? "Open this VCPR appointment"
+                  : "Schedule a VCPR appointment"
+              }
             >
-              {entry.has_vcpr ? "VCPR booked ✓" : "Book VCPR"}
+              {vcprAppointment ? "VCPR booked ✓" : "Book VCPR"}
             </Button>
             <Button
-              variant={entry.has_blood_draw ? "secondary" : "default"}
+              variant={drawAppointment ? "secondary" : "default"}
               size="sm"
-              onClick={() => setBookType("blood_draw")}
+              onClick={() =>
+                setDialog({ type: "blood_draw", appointment: drawAppointment })
+              }
+              title={
+                drawAppointment
+                  ? "Open this blood draw appointment"
+                  : "Schedule a blood draw"
+              }
             >
-              {entry.has_blood_draw ? "Draw booked ✓" : "Book draw"}
+              {drawAppointment ? "Draw booked ✓" : "Book draw"}
             </Button>
           </div>
 
@@ -311,11 +339,12 @@ export function WaitlistInspector({
         </SheetContent>
       </Sheet>
 
-      <BookAppointmentDialog
-        open={bookType !== null}
-        onOpenChange={(o) => !o && setBookType(null)}
+      <AppointmentDialog
+        open={dialog !== null}
+        onOpenChange={(o) => !o && setDialog(null)}
         contactId={entry.id}
-        initialType={bookType ?? "vcpr"}
+        type={dialog?.type ?? "vcpr"}
+        appointment={dialog?.appointment ?? null}
       />
     </>
   );

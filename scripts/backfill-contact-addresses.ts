@@ -22,6 +22,8 @@ if (!SUPABASE_DB_URL || !BLOB_TOKEN) {
 type BlobSignup = {
   email?: string;
   name?: string;
+  zip?: string;
+  address?: string;
   addressParts?: {
     street?: string;
     apt?: string;
