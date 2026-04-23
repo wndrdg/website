@@ -348,11 +348,10 @@ function HomeInner() {
                       className="mt-[3px] h-4 w-4 flex-shrink-0 rounded accent-[#D9FF66]"
                     />
                     <span className="text-[12px] leading-snug text-white/60">
-                      I consent to receive recurring SMS text messages from
-                      Wonderdog regarding appointment scheduling, appointment
-                      reminders, account notifications, and customer support.
-                      Message frequency varies. Msg &amp; data rates may apply. Reply STOP to
-                      unsubscribe, HELP for help. See our{" "}
+                      I agree to receive SMS messages from Wonderdog about my
+                      account, appointments, and customer support. Message
+                      frequency varies. Msg &amp; data rates may apply. Reply
+                      STOP to opt out, HELP for help. See{" "}
                       <Link
                         href="/privacy"
                         target="_blank"
@@ -370,8 +369,7 @@ function HomeInner() {
                       >
                         Terms
                       </Link>
-                      . Consent is not required to join the waitlist or use our
-                      service.
+                      . Consent is not required to use the service.
                     </span>
                   </label>
 
