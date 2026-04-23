@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const termsHTML = `<p>Welcome to Wonderdog. Wonderdog Health, Inc., a Delaware corporation
+const termsHTML = `<p>Welcome to Wonderdog. Wonder Dog Health, Inc., a Delaware corporation
 (<strong>\u201cWonderdog,\u201d \u201cus,\u201d \u201cwe,\u201d</strong> or <strong>\u201cour\u201d</strong>)
 recommends that you read these Terms and Conditions
 (<strong>\u201cTerms\u201d</strong>) carefully before using our website,
@@ -189,8 +189,7 @@ not limited to blood biomarker results, AI-generated health analyses,
 longitudinal health trend data, Televet consultation notes, Vet Tech
 observation records, intake form responses, and aggregate
 population-level data derived from member pets (collectively, \u201cPlatform
-Data\u201d) \u2014 is and shall remain the sole and exclusive property of Wonder
-Dog Inc. By using the Service, you irrevocably and perpetually assign to
+Data\u201d) \u2014 is and shall remain the sole and exclusive property of Wonderdog Inc. By using the Service, you irrevocably and perpetually assign to
 Wonderdog all right, title, and interest in and to Platform Data, to
 the fullest extent permitted by applicable law.</p>
 <h2>License to Your Pet\u2019s Personal Health Information</h2>
@@ -198,8 +197,7 @@ the fullest extent permitted by applicable law.</p>
 the Service, such as your pet\u2019s name, species, breed, age, and
 individually identifiable biomarker results (\u201cPet Health Information\u201d),
 is personal to you and your pet. Wonderdog does not claim ownership of
-Pet Health Information. However, by using the Service, you grant Wonder
-Dog a perpetual, irrevocable, worldwide, royalty-free, sublicensable
+Pet Health Information. However, by using the Service, you grant Wonderdog a perpetual, irrevocable, worldwide, royalty-free, sublicensable
 license to use, store, process, and analyze Pet Health Information for
 the following purposes:</p>
 <ul>
@@ -293,12 +291,10 @@ available through the Service.</p>
 <p>The Service and its features and functionality \u2014 including but not
 limited to Wonderdog\u2019s AI diagnostic platform, longitudinal health data
 infrastructure, biomarker analysis models, and the Liquid Gold
-supplement line \u2014 are and will remain the exclusive property of Wonder
-Dog Inc. and its licensors. The Service is protected by copyright,
+supplement line \u2014 are and will remain the exclusive property of Wonderdog Inc. and its licensors. The Service is protected by copyright,
 trademark, and other laws of both the United States and foreign
 countries. Our trademarks and trade dress may not be used in connection
-with any product or service without the prior written consent of Wonder
-Dog in each instance.</p>
+with any product or service without the prior written consent of Wonderdog in each instance.</p>
 <h1>Accounts</h1>
 <p>As part of the Service, you may save information about you or your
 pet by creating a member account. If you create an account, you warrant
@@ -318,50 +314,53 @@ your account, and related service updates; and you agree that all
 agreements, notices, disclosures, and other communications that we
 provide to you electronically, via email and on our website, satisfy
 any legal requirement that such communications be in writing. You also
-agree to communications from us by phone and SMS/text message where
-transactional or where you have opted in to receive them as described
-below.</p>
+acknowledge that SMS/text message communications from Wonderdog
+require a separate, affirmative opt-in as described in the
+SMS/Text Messaging Program section below, and are not sent to you
+based on your acceptance of these Terms or creation of an account
+alone.</p>
 <p>By giving your consent to such communications, you agree that no
-communications by Wonder Dog to you shall violate the CAN-SPAM Act, the
+communications by Wonderdog to you shall violate the CAN-SPAM Act, the
 Telephone Consumer Protection Act (TCPA), or any other applicable laws.
 You are responsible for paying any voice, message, and data fees, rates,
 charges, and taxes that may apply to you.</p>
 <p>You may opt out of any of our communications by following the
 instructions provided in the communications or by contacting us at
 support@wonder.dog.</p>
-<h1>Wonder Dog SMS/Text Messaging Program</h1>
-<p>Wonder Dog offers a mobile text messaging program (the
+<h1>Wonderdog SMS/Text Messaging Program</h1>
+<p>Wonderdog offers a mobile text messaging program (the
 \u201c<strong>SMS Program</strong>\u201d) to deliver transactional and
 account-related communications to members and waitlist participants who
 have affirmatively opted in. This section sets out the terms on which
-Wonder Dog provides the SMS Program and is incorporated into and
+Wonderdog provides the SMS Program and is incorporated into and
 supplements these Terms.</p>
 <h2>1. Program Name and Description</h2>
-<p>The SMS Program is operated under the brand name \u201cWonder Dog.\u201d When
-you opt in, you will receive recurring SMS text messages from Wonder
-Dog regarding appointment scheduling, appointment reminders, blood draw
-reminders, lab and diagnostic result notifications, account
+<p>The SMS Program is operated under the brand name \u201cWonderdog.\u201d When
+you opt in, you will receive recurring SMS text messages from Wonderdog
+regarding appointment scheduling, appointment reminders, account
 notifications (such as changes to your account, Membership, or
-Appointment status), and customer support responses to inbound
-messages. The SMS Program is transactional and conversational only and
-is not used to send promotional or marketing messages.</p>
+Appointment status), service-related updates, and customer support
+responses to inbound messages. The SMS Program is transactional and
+conversational only and is not used to send promotional or marketing
+messages. Consent to receive SMS messages is not a condition of
+purchase, of joining the waitlist, or of using the Service.</p>
 <h2>2. Opt-In Procedure</h2>
 <p>You may opt in to the SMS Program by: (i) providing your mobile
-phone number on the Wonder Dog waitlist signup form at
-<strong>https://wonderdog.com</strong> and affirmatively checking the
+phone number on the Wonderdog waitlist signup form at
+<strong>https://wonder.dog</strong> and affirmatively checking the
 dedicated, unchecked SMS consent checkbox that displays the disclosures
 required by applicable law and the CTIA Messaging Principles and Best
 Practices, or (ii) enabling SMS communications during in-app account
-creation in the Wonder Dog iOS application by affirmatively checking a
+creation in the Wonderdog iOS application by affirmatively checking a
 dedicated, unchecked SMS consent box. SMS consent is always a
 standalone, affirmative action and is never pre-selected, never
 bundled with acceptance of these Terms, and never required as a
 condition of joining the waitlist, purchasing a Membership, or using
-the Service. Wonder Dog maintains records of each opt-in, including the
+the Service. Wonderdog maintains records of each opt-in, including the
 date, time, source, consent language shown, and phone number.</p>
 <h2>3. Opt-Out Procedure</h2>
 <p><strong>You can cancel the SMS Program at any time. Just text
-\u201cSTOP\u201d in reply to any Wonder Dog SMS message. After you send the
+\u201cSTOP\u201d in reply to any Wonderdog SMS message. After you send the
 SMS message \u201cSTOP\u201d to us, we will send you an SMS message to confirm
 that you have been unsubscribed. After this, you will no longer
 receive SMS messages from us. If you want to join again, just opt in
@@ -370,10 +369,10 @@ messages to you again.</strong> You may also revoke SMS consent by
 emailing <strong>support@wonder.dog</strong> or
 <strong>legal@wonder.dog</strong>. Opting out of the SMS Program does
 not affect your access to the Service through other channels such as
-email or the Wonder Dog application.</p>
+email or the Wonderdog application.</p>
 <h2>4. Help and Customer Support</h2>
 <p>If you are experiencing issues with the SMS Program you can reply
-with the keyword <strong>HELP</strong> to any Wonder Dog SMS message
+with the keyword <strong>HELP</strong> to any Wonderdog SMS message
 for more assistance, or you can get help directly at
 <strong>support@wonder.dog</strong>.</p>
 <h2>5. Carrier Disclaimer</h2>
@@ -381,16 +380,15 @@ for more assistance, or you can get help directly at
 messages.</strong> The SMS Program is supported on major U.S. wireless
 carriers, including AT&amp;T, Verizon Wireless, T-Mobile, U.S. Cellular,
 Boost Mobile, Metro by T-Mobile, Cricket Wireless, Google Fi, and other
-participating carriers. Wonder Dog does not guarantee that SMS messages
+participating carriers. Wonderdog does not guarantee that SMS messages
 will be delivered, successfully received, or received in a timely
 manner, and is not responsible for any charges, fees, or other costs
 incurred through your wireless carrier.</p>
 <h2>6. Message Frequency, Rates, and Data</h2>
 <p>Message and data rates may apply for any messages sent to you from
 us and to us from you. <strong>You will receive recurring messages and
-message frequency varies</strong> based on your appointment cadence,
-the status of your pet\u2019s diagnostic results, and the volume of your
-support interactions. Wonder Dog does not charge a separate fee for
+message frequency varies</strong> based on your appointment cadence
+and the volume of your support interactions. Wonderdog does not charge a separate fee for
 SMS messages. If you have any questions about your text plan or data
 plan, it is best to contact your wireless provider.</p>
 <h2>7. Eligibility</h2>
@@ -399,14 +397,14 @@ plan, it is best to contact your wireless provider.</p>
 user or account holder of the mobile phone number you provide. By
 opting in, you represent and warrant that you meet these requirements
 and that the phone number you have provided is a number you own or are
-authorized to use. You agree to notify Wonder Dog promptly at
+authorized to use. You agree to notify Wonderdog promptly at
 <strong>support@wonder.dog</strong> if you change or relinquish that
 mobile phone number, so that we can update our records and avoid
 sending messages intended for you to the new holder of the number.</p>
 <h2>8. Privacy</h2>
 <p><strong>If you have any questions regarding privacy, please read
 our Privacy Policy at</strong>
-<a href="/privacy"><strong>https://wonderdog.com/privacy</strong></a>.
+<a href="/privacy"><strong>https://wonder.dog/privacy</strong></a>.
 Mobile phone numbers and SMS opt-in information collected in
 connection with the SMS Program are not sold, rented, loaned, leased,
 traded, or shared with any third parties, affiliates, or marketing
@@ -416,7 +414,7 @@ deliver the SMS messages you have consented to receive, to provide the
 Service, and for internal operational purposes (such as to honor an
 opt-out or respond to a support request).</p>
 <h2>9. Changes to the SMS Program</h2>
-<p>Wonder Dog may modify or terminate the SMS Program at any time, with
+<p>Wonderdog may modify or terminate the SMS Program at any time, with
 or without notice. Material changes to these SMS Program terms will be
 communicated through the SMS Program itself, on our website, or by
 email. Your continued participation in the SMS Program after a material
@@ -434,8 +432,7 @@ limitations of liability.</p>
 <h1>Appointments</h1>
 <p>An <strong>\u201cAppointment\u201d</strong> occurs when you utilize the booking
 mechanism on the Wonderdog website or application, complete the member
-intake form, and receive a confirmed appointment time with a Wonder
-Dog-affiliated licensed veterinarian (\u201cTelevet\u201d) and/or veterinary
+intake form, and receive a confirmed appointment time with a Wonderdog-affiliated licensed veterinarian (\u201cTelevet\u201d) and/or veterinary
 technician (\u201cVet Tech\u201d). If you request an Appointment, you agree that
 we are not obligated to accept your request and may decline it at our
 sole discretion. If your Appointment request is accepted, you
@@ -624,7 +621,7 @@ to make your pet available at the scheduled appointment time.</p>
 <h1>Indemnification</h1>
 <p>To the maximum extent permitted by law, you agree to indemnify,
 defend (with counsel reasonably acceptable to us), and hold harmless
-Wonderdog Health, Inc. and its licensees and licensors, and our/their
+Wonder Dog Health, Inc. and its licensees and licensors, and our/their
 employees, contractors, agents, officers, and managers, from and against
 any and all claims, damages, obligations, losses, liabilities, costs or
 debt, and expenses (including but not limited to attorney\u2019s fees),
@@ -635,14 +632,13 @@ including about your pet\u2019s vaccination status, health history, or
 behavioral history.</p>
 <p>Additionally, to the maximum extent permitted by law, you agree to
 indemnify, defend (with counsel reasonably acceptable to us), and hold
-harmless Wonderdog Health, Inc. and its licensees and licensors, and our/their
+harmless Wonder Dog Health, Inc. and its licensees and licensors, and our/their
 employees, contractors, agents, officers, and managers, from and against
 any and all claims, damages, obligations, losses, liabilities, costs or
 debt, and expenses (including but not limited to attorney\u2019s fees)
 resulting from or arising out of: a) injuries your pet causes to another
 pet or person in our care or in the presence of our staff; b) damages to
-property caused by your pet; c) injuries your pet causes to any Wonder
-Dog employee, agent, contractor, Televet, Vet Tech, or affiliate; d) any
+property caused by your pet; c) injuries your pet causes to any Wonderdog employee, agent, contractor, Televet, Vet Tech, or affiliate; d) any
 nuisances, quarantine expenses, or other costs created by your pet;
 and/or e) your violation of the conditions of these Terms (including,
 without limitation, the prohibited conduct set forth herein).</p>
@@ -774,7 +770,7 @@ the copyright owner\u2019s behalf. We may terminate your account or use of
 the Service if you are a repeat infringer under a repeat infringer
 policy.</p>
 <p>DMCA notices may be sent to:</p>
-<p><strong>Wonderdog Health, Inc.</strong></p>
+<p><strong>Wonder Dog Health, Inc.</strong></p>
 <p><a href="mailto:legal@wonder.dog">legal@wonder.dog</a></p>
 <p>Additional Prohibited ConductYou shall not engage in any of the
 following activities at any time with respect to the Wonderdog website:

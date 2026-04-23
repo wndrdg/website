@@ -10,7 +10,7 @@ Conditions and outlines our privacy practices in connection with your
 use of our website, mobile application, and any related services
 (together, the <strong>\u201cWebsite\u201d</strong> or
 <strong>\u201cService\u201d</strong>).</p>
-<p>This Privacy Policy explains how Wonderdog Health, Inc. (<strong>\u201cWonderdog,\u201d \u201cwe,\u201d \u201cus,\u201d</strong> or <strong>\u201cour\u201d</strong>) collects, uses,
+<p>This Privacy Policy explains how Wonder Dog Health, Inc. (<strong>\u201cWonderdog,\u201d \u201cwe,\u201d \u201cus,\u201d</strong> or <strong>\u201cour\u201d</strong>) collects, uses,
 and discloses personal information. It applies only to the Service and
 where we control data collection and use. It does not apply to any
 third-party websites, actions, or offers (together, <strong>\u201cThird-Party
@@ -65,7 +65,7 @@ and Conditions, there is a meaningful distinction between two categories
 of health-related data. First, \u201cPlatform Data\u201d \u2014 which includes
 aggregate biomarker results, AI-generated analyses, longitudinal trend
 data, and population-level data derived from member pets \u2014 is assigned
-to and owned exclusively by Wonderdog Health, Inc. Second, \u201cPet Health
+to and owned exclusively by Wonder Dog Health, Inc. Second, \u201cPet Health
 Information\u201d \u2014 which includes individually identifiable data such as
 your pet\u2019s name, breed, age, and individually identifiable biomarker
 results \u2014 remains personal to you; Wonderdog does not claim ownership
