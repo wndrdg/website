@@ -42,6 +42,8 @@ type GoogleNamespace = {
 // we don't re-geocode the same zip repeatedly within a session.
 const GEOCODE_CACHE = new Map<string, LatLng>();
 const GEOCODE_FAILED = new Set<string>();
+// Last observed geocode error (for surfacing quota / config issues to the UI).
+let LAST_GEOCODE_ERROR: string | null = null;
 
 function useGoogleMaps() {
   const [ready, setReady] = useState(() => {
@@ -104,10 +106,30 @@ async function geocodeZip(
     const latlng = { lat: loc.lat(), lng: loc.lng() };
     GEOCODE_CACHE.set(zip, latlng);
     return latlng;
-  } catch {
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (!LAST_GEOCODE_ERROR) {
+      LAST_GEOCODE_ERROR = msg;
+      // eslint-disable-next-line no-console
+      console.warn("[WaitlistMap] geocode failed:", msg);
+    }
     GEOCODE_FAILED.add(zip);
     return null;
   }
+}
+
+function hintForGeocodeError(msg: string | null): string | null {
+  if (!msg) return null;
+  if (/REQUEST_DENIED/i.test(msg)) {
+    return "Geocoding API is not enabled on this Google Cloud project. Enable it in: console.cloud.google.com → APIs & Services → Library → search “Geocoding API” → Enable. Billing must also be active on the project.";
+  }
+  if (/OVER_QUERY_LIMIT|quota/i.test(msg)) {
+    return "Google Maps quota exceeded. Check billing/quotas in Google Cloud Console.";
+  }
+  if (/ApiNotActivatedMapError|ApiTargetBlockedMapError/i.test(msg)) {
+    return "Your Maps API key doesn't have Geocoding enabled, or is restricted to the wrong APIs. Update the key restrictions in Google Cloud Console.";
+  }
+  return `Geocoding error: ${msg}`;
 }
 
 export function WaitlistMap({
@@ -129,6 +151,7 @@ export function WaitlistMap({
 
   const [stats, setStats] = useState({ plotted: 0, failed: 0, total: 0 });
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [geocodeError, setGeocodeError] = useState<string | null>(null);
 
   // Partition entries up front so stats are accurate independent of the
   // async geocoding loop below.
@@ -191,6 +214,7 @@ export function WaitlistMap({
         if (!latlng) {
           failed += group.length;
           setStats((s) => ({ ...s, failed }));
+          if (LAST_GEOCODE_ERROR) setGeocodeError(LAST_GEOCODE_ERROR);
         } else {
           group.forEach((entry, i) => {
             // Small diagonal jitter so multiple entries in one zip don't
@@ -288,10 +312,20 @@ export function WaitlistMap({
             ) : null}
           </div>
         ) : (
-          <div
-            ref={containerRef}
-            className="h-[600px] w-full overflow-hidden rounded-md border border-border"
-          />
+          <div className="space-y-3">
+            {geocodeError && stats.plotted === 0 ? (
+              <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+                <p className="font-medium">Map can&apos;t place any pins.</p>
+                <p className="mt-1">
+                  {hintForGeocodeError(geocodeError) || geocodeError}
+                </p>
+              </div>
+            ) : null}
+            <div
+              ref={containerRef}
+              className="h-[600px] w-full overflow-hidden rounded-md border border-border"
+            />
+          </div>
         )}
       </CardContent>
     </Card>
