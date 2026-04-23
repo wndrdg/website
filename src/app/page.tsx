@@ -277,9 +277,7 @@ function HomeInner() {
               className="mx-auto mt-6 max-w-md text-[16px] leading-[1.6] text-white/75 md:text-[17px]"
             >
               An AI health companion for dogs, built around at-home blood work
-              and early disease detection. We&rsquo;re onboarding a small group
-              right now — leave your details and we&rsquo;ll reach out when we
-              have room for you.
+              and early disease detection.
             </motion.p>
           </div>
 
