@@ -1,7 +1,8 @@
 import { createServerClient } from "@/lib/crm/supabase/server";
 import { VetReviewView } from "@/components/crm/vet-review/VetReviewView";
 
-export const dynamic = "force-dynamic";
+// 30s cache; router.refresh() purges on mutations.
+export const revalidate = 30;
 
 // Fake lab results per customer
 const LAB_RESULTS = [

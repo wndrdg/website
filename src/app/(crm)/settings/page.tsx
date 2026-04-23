@@ -3,7 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/crm/ui/ta
 import { createServerClient } from "@/lib/crm/supabase/server";
 import { AgentSettings } from "@/components/crm/settings/AgentSettings";
 
-export const dynamic = "force-dynamic";
+// 60s cache; router.refresh() purges on mutations.
+export const revalidate = 60;
 
 export default async function SettingsPage() {
   const supabase = createServerClient();

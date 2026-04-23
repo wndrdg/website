@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { put, list, get } from "@vercel/blob";
+import { invalidateInviteCodesCache } from "@/lib/crm/invite-codes";
 
 // Alphabet for 4-character codes: no ambiguous characters (0/O, 1/I/L removed)
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -158,6 +159,7 @@ export async function POST(request: Request) {
       allowOverwrite: true,
       contentType: "application/json",
     });
+    invalidateInviteCodesCache();
 
     return NextResponse.json({
       success: true,

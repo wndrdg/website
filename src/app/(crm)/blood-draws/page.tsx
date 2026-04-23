@@ -1,7 +1,8 @@
 import { createServerClient } from "@/lib/crm/supabase/server";
 import { CalendarView } from "@/components/crm/blood-draws/CalendarView";
 
-export const dynamic = "force-dynamic";
+// 30s cache; router.refresh() purges on mutations.
+export const revalidate = 30;
 
 export default async function BloodDrawsPage() {
   const supabase = createServerClient();

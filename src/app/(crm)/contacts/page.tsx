@@ -1,7 +1,8 @@
 import { createServerClient } from "@/lib/crm/supabase/server";
 import { ContactTable } from "@/components/crm/contacts/ContactTable";
 
-export const dynamic = "force-dynamic";
+// 30s cache; router.refresh() purges on mutations.
+export const revalidate = 30;
 
 export default async function ContactsPage() {
   const supabase = createServerClient();

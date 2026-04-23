@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/crm/ui/ca
 import { Users, ClipboardList, Calendar, Microscope, MessageSquare } from "lucide-react";
 import { formatRelativeTime } from "@/lib/crm/utils/formatters";
 
-export const dynamic = "force-dynamic";
+// 60s cache; router.refresh() purges on mutations.
+export const revalidate = 60;
 
 export default async function DashboardPage() {
   const supabase = createServerClient();

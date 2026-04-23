@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { put, list, del, get } from "@vercel/blob";
+import { invalidateInviteCodesCache } from "@/lib/crm/invite-codes";
 
 async function findCodeBlob(code: string) {
   const { blobs } = await list({ prefix: `codes/${code}.json` });
@@ -65,6 +66,7 @@ export async function PATCH(
       allowOverwrite: true,
       contentType: "application/json",
     });
+    invalidateInviteCodesCache();
 
     return NextResponse.json({ success: true, code: updated });
   } catch (error) {
@@ -89,6 +91,7 @@ export async function DELETE(
     }
 
     await del(blob.url);
+    invalidateInviteCodesCache();
 
     return NextResponse.json({ success: true });
   } catch (error) {

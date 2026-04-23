@@ -1,46 +1,16 @@
 import { createServerClient } from "@/lib/crm/supabase/server";
-import { list, get } from "@vercel/blob";
+import { getAllInviteCodes } from "@/lib/crm/invite-codes";
 import { WaitlistBrowser } from "@/components/crm/waitlist/WaitlistBrowser";
 import type {
   WaitlistContact,
   WaitlistAppointment,
-  CodeMeta,
 } from "@/components/crm/waitlist/types";
 
-export const dynamic = "force-dynamic";
-
-async function fetchCodeMeta(codes: string[]): Promise<Record<string, CodeMeta>> {
-  if (codes.length === 0) return {};
-  const result: Record<string, CodeMeta> = {};
-  try {
-    const { blobs } = await list({ prefix: "codes/" });
-    const wanted = new Set(codes);
-    const relevant = blobs.filter((b) => {
-      const filename = b.pathname.split("/").pop() || "";
-      return wanted.has(filename.replace(".json", ""));
-    });
-    await Promise.all(
-      relevant.map(async (b) => {
-        try {
-          const resp = await get(b.url, { access: "private" });
-          if (!resp) return;
-          const text = await new Response(resp.stream).text();
-          const data = JSON.parse(text);
-          if (typeof data?.code === "string") {
-            result[data.code] = {
-              description: data.description,
-              note: data.note,
-              created: data.created,
-            };
-          }
-        } catch { /* ignore */ }
-      }),
-    );
-    return result;
-  } catch {
-    return result;
-  }
-}
+// Cache for 30s. Mutations (book/cancel/mark contacted) call router.refresh()
+// which purges the cache and forces a fresh render — so the user always sees
+// the result of their own action immediately. Other tabs/users see at most
+// 30s-stale data, which is fine for a CRM list.
+export const revalidate = 30;
 
 export default async function WaitlistPage() {
   const supabase = createServerClient();
@@ -98,10 +68,15 @@ export default async function WaitlistPage() {
     appointments: byContact.get(c.id) || [],
   }));
 
-  const codes = Array.from(
-    new Set(rows.map((r) => r.referral_code).filter((x): x is string => !!x)),
+  // One cached call returns the whole codes/* map. Filter in memory to
+  // just the codes referenced by the waitlist rows.
+  const allCodes = await getAllInviteCodes();
+  const referenced = new Set(
+    rows.map((r) => r.referral_code).filter((x): x is string => !!x),
   );
-  const codeMeta = await fetchCodeMeta(codes);
+  const codeMeta = Object.fromEntries(
+    Object.entries(allCodes).filter(([code]) => referenced.has(code)),
+  );
 
   return <WaitlistBrowser entries={rows} codeMeta={codeMeta} />;
 }
