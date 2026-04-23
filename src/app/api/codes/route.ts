@@ -36,6 +36,7 @@ async function getCodesWithSignupCounts(): Promise<
   Array<{
     code: string;
     description: string;
+    note?: string;
     created: string;
     signups: number;
   }>
@@ -57,6 +58,7 @@ async function getCodesWithSignupCounts(): Promise<
     ).filter(Boolean) as Array<{
       code: string;
       description: string;
+      note?: string;
       created: string;
     }>;
 
@@ -87,6 +89,7 @@ async function getCodesWithSignupCounts(): Promise<
     return codes.map((c) => ({
       code: c.code,
       description: c.description,
+      note: c.note,
       created: c.created,
       signups: countByCode.get(c.code) || 0,
     }));
@@ -113,7 +116,7 @@ export async function GET() {
 // POST: Create a new code
 export async function POST(request: Request) {
   try {
-    const { description } = await request.json();
+    const { description, note } = await request.json();
 
     if (!description || typeof description !== "string") {
       return NextResponse.json(
@@ -140,9 +143,12 @@ export async function POST(request: Request) {
     } while (existingCodes.includes(code));
 
     // Store the code (private access to match store configuration)
+    const noteTrimmed =
+      typeof note === "string" && note.trim() ? note.trim() : undefined;
     const codeData = {
       code,
       description: description.trim(),
+      ...(noteTrimmed ? { note: noteTrimmed } : {}),
       created: new Date().toISOString(),
     };
 

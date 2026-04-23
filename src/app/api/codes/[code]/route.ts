@@ -6,18 +6,29 @@ async function findCodeBlob(code: string) {
   return blobs[0] || null;
 }
 
-// PATCH: Update description of a code
+// PATCH: Update description and/or internal note of a code
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ code: string }> },
 ) {
   try {
     const { code } = await params;
-    const { description } = await request.json();
+    const body = await request.json();
+    const { description, note } = body;
 
-    if (!description || typeof description !== "string") {
+    if (
+      description !== undefined &&
+      (typeof description !== "string" || !description.trim())
+    ) {
       return NextResponse.json(
-        { error: "Description is required" },
+        { error: "Description must be a non-empty string" },
+        { status: 400 },
+      );
+    }
+
+    if (note !== undefined && typeof note !== "string") {
+      return NextResponse.json(
+        { error: "Note must be a string" },
         { status: 400 },
       );
     }
@@ -35,10 +46,18 @@ export async function PATCH(
     const text = await new Response(resp.stream).text();
     const existing = JSON.parse(text);
 
-    const updated = {
-      ...existing,
-      description: description.trim(),
-    };
+    const updated: Record<string, unknown> = { ...existing };
+    if (typeof description === "string") {
+      updated.description = description.trim();
+    }
+    if (typeof note === "string") {
+      const trimmed = note.trim();
+      if (trimmed) {
+        updated.note = trimmed;
+      } else {
+        delete updated.note;
+      }
+    }
 
     await put(`codes/${code}.json`, JSON.stringify(updated, null, 2), {
       access: "private",
