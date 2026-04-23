@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/crm/supabase/server";
+import { list, get } from "@vercel/blob";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/crm/ui/card";
 import { Badge } from "@/components/crm/ui/badge";
 import {
@@ -13,13 +14,55 @@ import { formatRelativeTime } from "@/lib/crm/utils/formatters";
 
 export const dynamic = "force-dynamic";
 
+type CodeMeta = { description?: string; note?: string; created?: string };
+
+async function fetchCodeMeta(codes: string[]): Promise<Record<string, CodeMeta>> {
+  if (codes.length === 0) return {};
+  const result: Record<string, CodeMeta> = {};
+  try {
+    const { blobs } = await list({ prefix: "codes/" });
+    const wanted = new Set(codes);
+    const relevant = blobs.filter((b) => {
+      const filename = b.pathname.split("/").pop() || "";
+      return wanted.has(filename.replace(".json", ""));
+    });
+    await Promise.all(
+      relevant.map(async (b) => {
+        try {
+          const resp = await get(b.url, { access: "private" });
+          if (!resp) return;
+          const text = await new Response(resp.stream).text();
+          const data = JSON.parse(text);
+          if (typeof data?.code === "string") {
+            result[data.code] = {
+              description: data.description,
+              note: data.note,
+              created: data.created,
+            };
+          }
+        } catch {
+          /* ignore one-off failures */
+        }
+      }),
+    );
+    return result;
+  } catch {
+    return result;
+  }
+}
+
 export default async function WaitlistPage() {
   const supabase = createServerClient();
 
   const { data: entries } = await supabase
     .from("crm_waitlist")
     .select("*")
-    .order("position", { ascending: true });
+    .order("created_at", { ascending: false });
+
+  const codes = Array.from(
+    new Set((entries || []).map((e) => e.referral_code).filter(Boolean) as string[]),
+  );
+  const codeMeta = await fetchCodeMeta(codes);
 
   const waiting = entries?.filter((e) => e.status === "waiting") ?? [];
   const invited = entries?.filter((e) => e.status === "invited") ?? [];
@@ -33,6 +76,7 @@ export default async function WaitlistPage() {
   ];
 
   const SOURCE_COLORS: Record<string, string> = {
+    website: "bg-teal-100 text-teal-700",
     instagram: "bg-pink-100 text-pink-700",
     referral: "bg-green-100 text-green-700",
     tiktok: "bg-purple-100 text-purple-700",
@@ -44,6 +88,22 @@ export default async function WaitlistPage() {
     podcast: "bg-orange-100 text-orange-700",
     vet_referral: "bg-emerald-100 text-emerald-700",
   };
+
+  const formatDateTime = (v: string | null | undefined) => {
+    if (!v) return "—";
+    try {
+      return new Date(v).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    } catch {
+      return "—";
+    }
+  };
+
+  const dash = <span className="text-muted-foreground">—</span>;
 
   return (
     <div className="space-y-6">
@@ -64,69 +124,109 @@ export default async function WaitlistPage() {
       {/* Table */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">All Entries</CardTitle>
+          <CardTitle className="text-sm font-medium">
+            All Entries <span className="text-muted-foreground font-normal">(most recent first)</span>
+          </CardTitle>
         </CardHeader>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-12">#</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Dog</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Joined</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {entries?.map((entry) => (
-              <TableRow key={entry.id}>
-                <TableCell className="text-sm text-muted-foreground font-mono">
-                  {entry.position}
-                </TableCell>
-                <TableCell className="font-medium text-sm">
-                  {entry.first_name} {entry.last_name}
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  {entry.email}
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  {[entry.city, entry.zip].filter(Boolean).join(", ")}
-                </TableCell>
-                <TableCell className="text-sm">
-                  {entry.dog_name ? (
-                    <span>
-                      {entry.dog_name}{" "}
-                      <span className="text-muted-foreground text-xs">{entry.dog_breed}</span>
-                    </span>
-                  ) : "—"}
-                </TableCell>
-                <TableCell>
-                  {entry.source && (
-                    <Badge
-                      variant="secondary"
-                      className={`text-xs ${SOURCE_COLORS[entry.source] ?? ""}`}
-                    >
-                      {entry.source}
-                    </Badge>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Badge
-                    variant={entry.status === "waiting" ? "outline" : "default"}
-                    className="text-xs"
-                  >
-                    {entry.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
-                  {formatRelativeTime(entry.created_at)}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Joined</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>City</TableHead>
+                  <TableHead>Zip</TableHead>
+                  <TableHead>Dog</TableHead>
+                  <TableHead>Breed</TableHead>
+                  <TableHead className="text-center">SMS</TableHead>
+                  <TableHead>Source</TableHead>
+                  <TableHead>Invite Code</TableHead>
+                  <TableHead>Invite Description</TableHead>
+                  <TableHead>Invite Note</TableHead>
+                  <TableHead>UTM Source</TableHead>
+                  <TableHead>UTM Medium</TableHead>
+                  <TableHead>UTM Campaign</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Position</TableHead>
+                  <TableHead>Invited At</TableHead>
+                  <TableHead>Converted At</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {entries?.map((entry) => {
+                  const meta = entry.referral_code ? codeMeta[entry.referral_code] : undefined;
+                  return (
+                    <TableRow key={entry.id}>
+                      <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
+                        {formatRelativeTime(entry.created_at)}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-sm font-medium">
+                        {[entry.first_name, entry.last_name].filter(Boolean).join(" ") || dash}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.email}</TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.phone || dash}</TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.city || dash}</TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.zip || dash}</TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.dog_name || dash}</TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.dog_breed || dash}</TableCell>
+                      <TableCell className="text-center text-xs">
+                        {entry.sms_consent ? (
+                          <span className="text-green-600">✓</span>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {entry.source ? (
+                          <Badge
+                            variant="secondary"
+                            className={`text-xs ${SOURCE_COLORS[entry.source] ?? ""}`}
+                          >
+                            {entry.source}
+                          </Badge>
+                        ) : dash}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap">
+                        {entry.referral_code ? (
+                          <Badge variant="secondary" className="font-mono text-xs">
+                            {entry.referral_code}
+                          </Badge>
+                        ) : dash}
+                      </TableCell>
+                      <TableCell className="text-sm">{meta?.description || dash}</TableCell>
+                      <TableCell className="text-sm italic text-muted-foreground">
+                        {meta?.note || dash}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.utm_source || dash}</TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.utm_medium || dash}</TableCell>
+                      <TableCell className="whitespace-nowrap text-sm">{entry.utm_campaign || dash}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={entry.status === "waiting" ? "outline" : "default"}
+                          className="text-xs"
+                        >
+                          {entry.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-sm font-mono text-muted-foreground">
+                        {entry.position ?? dash}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
+                        {formatDateTime(entry.invited_at)}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
+                        {formatDateTime(entry.converted_at)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
       </Card>
     </div>
   );
