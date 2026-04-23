@@ -77,7 +77,14 @@ export async function POST(request: Request) {
           error: "Failed to process signup",
           _debug: String(insertError?.message || insertError),
           _url: url ? `${url.slice(0, 30)} (len=${url.length})` : "UNSET",
-          _key: key ? `${key.slice(0, 12)}… (len=${key.length})` : "UNSET",
+          _key: key
+            ? `${key.slice(0, 12)}…${key.slice(-12)} (len=${key.length}, role=${(() => {
+                try {
+                  const payload = JSON.parse(Buffer.from(key.split(".")[1] || "", "base64").toString());
+                  return payload.role || "unknown";
+                } catch { return "unparseable"; }
+              })()})`
+            : "UNSET",
         },
         { status: 500 },
       );
