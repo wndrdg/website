@@ -10,8 +10,7 @@ Conditions and outlines our privacy practices in connection with your
 use of our website, mobile application, and any related services
 (together, the <strong>\u201cWebsite\u201d</strong> or
 <strong>\u201cService\u201d</strong>).</p>
-<p>This Privacy Policy explains how Wonderdog Health, Inc. (<strong>\u201cWonder
-Dog,\u201d \u201cwe,\u201d \u201cus,\u201d</strong> or <strong>\u201cour\u201d</strong>) collects, uses,
+<p>This Privacy Policy explains how Wonderdog Health, Inc. (<strong>\u201cWonderdog,\u201d \u201cwe,\u201d \u201cus,\u201d</strong> or <strong>\u201cour\u201d</strong>) collects, uses,
 and discloses personal information. It applies only to the Service and
 where we control data collection and use. It does not apply to any
 third-party websites, actions, or offers (together, <strong>\u201cThird-Party
@@ -173,56 +172,56 @@ data, which may be published or shared with academic or industry
 partners.</p></li>
 </ul>
 <h1>SMS/Text Messaging Program</h1>
-<p>Wonder Dog operates an SMS messaging program to support members and
+<p>Wonderdog operates an SMS messaging program to support members and
 waitlist participants. This section describes how mobile phone numbers
 and SMS opt-in information are collected, used, and protected. This
 section applies in addition to, and prevails over any inconsistent
 provisions of, this Privacy Policy with respect to SMS opt-in
 information and mobile phone numbers.</p>
 <h2>Types of Messages</h2>
-<p>If you opt in to receive SMS messages from Wonder Dog, you may
+<p>If you opt in to receive SMS messages from Wonderdog, you may
 receive recurring text messages regarding appointment scheduling,
-appointment reminders, blood draw reminders, lab and diagnostic result
-notifications, account-related updates, and customer support responses.
-SMS messages sent through the Wonder Dog program are transactional and
-conversational in nature. Wonder Dog does not use the SMS program to
-deliver promotional or marketing messages.</p>
+appointment reminders, account notifications, service-related
+communications, and customer support responses. SMS messages sent
+through the Wonderdog program are transactional and conversational in
+nature. Wonderdog does not use the SMS program to deliver promotional
+or marketing messages, and consent to receive SMS messages is not a
+condition of purchase or of using the Service.</p>
 <h2>Message Frequency and Rates</h2>
-<p>Message frequency varies based on your appointment cadence, the
-status of your pet\u2019s diagnostic results, and the volume of your support
-interactions. Message and data rates may apply from your mobile carrier.
-Wonder Dog does not charge a separate fee for SMS messages.</p>
+<p>Message frequency varies based on your appointment cadence and the
+volume of your support interactions. Message and data rates may apply from your mobile carrier.
+Wonderdog does not charge a separate fee for SMS messages.</p>
 <h2>How You Opt In</h2>
-<p>You may opt in to the Wonder Dog SMS program by (i) providing your
-mobile phone number on our waitlist signup form at wonderdog.com and
+<p>You may opt in to the Wonderdog SMS program by (i) providing your
+mobile phone number on our waitlist signup form at wonder.dog and
 affirmatively checking the dedicated, unchecked SMS consent checkbox, or
 (ii) enabling SMS communications during in-app account creation in the
-Wonder Dog iOS application. In both cases, SMS consent is explicit,
+Wonderdog iOS application. In both cases, SMS consent is explicit,
 affirmative, never pre-selected, and presented as a standalone
 checkbox that is not bundled with acceptance of our Terms and
 Conditions or any other agreement. Consent to receive SMS messages is
 not a condition of joining our waitlist, purchasing a Membership, or
-using the Service. Wonder Dog maintains records of each opt-in,
+using the Service. Wonderdog maintains records of each opt-in,
 including the date and time of consent, the source (website or app), the
 consent language shown to the user, and the phone number that opted
 in.</p>
 <h2>How You Opt Out</h2>
 <p>You may opt out of SMS messages at any time by replying
-<strong>STOP</strong> to any Wonder Dog text message. Upon receipt of a
-STOP reply, Wonder Dog will send a single confirmation message and will
+<strong>STOP</strong> to any Wonderdog text message. Upon receipt of a
+STOP reply, Wonderdog will send a single confirmation message and will
 not send you additional SMS messages, except as necessary to confirm
 your opt-out or as required by law. You may also revoke SMS consent by
 emailing us at support@wonder.dog or legal@wonder.dog. Opting out of the
 SMS program does not affect your access to the Service through other
-channels such as email or the Wonder Dog application.</p>
+channels such as email or the Wonderdog application.</p>
 <h2>How to Get Help</h2>
 <p>For help with the SMS program, reply <strong>HELP</strong> to any
-Wonder Dog text message or contact us at support@wonder.dog.</p>
+Wonderdog text message or contact us at support@wonder.dog.</p>
 <h2>No Sharing of SMS Opt-In Information or Phone Numbers</h2>
 <p><strong>No mobile information will be shared with third
 party/affiliates for marketing or promotional purposes.</strong></p>
 <p><strong>Mobile phone numbers and SMS opt-in information collected in
-connection with the Wonder Dog SMS program are not sold, rented, loaned,
+connection with the Wonderdog SMS program are not sold, rented, loaned,
 leased, traded, or shared with any third parties, affiliates, or
 marketing partners for marketing, promotional, lead-generation, or
 solicitation purposes. This includes, without limitation, advertising
@@ -233,18 +232,18 @@ Service, and for internal operational purposes (such as to honor an
 opt-out or respond to a support request). This no-sharing commitment
 applies regardless of any other sharing, disclosure, selling, or
 advertising-partner language elsewhere in this Privacy Policy.</strong>
-Wonder Dog may share SMS opt-in information with service providers that
+Wonderdog may share SMS opt-in information with service providers that
 operate our SMS platform on our behalf (for example, Twilio, Inc.) and
 that are contractually prohibited from using that information for their
 own marketing purposes.</p>
 <h2>Carriers</h2>
-<p>The Wonder Dog SMS program is supported on major U.S. wireless
+<p>The Wonderdog SMS program is supported on major U.S. wireless
 carriers, including AT&amp;T, Verizon Wireless, T-Mobile, U.S. Cellular,
 Boost Mobile, Metro by T-Mobile, Cricket Wireless, Google Fi, and other
 participating carriers. Carriers are not liable for delayed or
 undelivered messages.</p>
 <h2>Eligibility</h2>
-<p>To participate in the Wonder Dog SMS program, you must be at least
+<p>To participate in the Wonderdog SMS program, you must be at least
 eighteen (18) years of age, a resident of the United States, and the
 authorized user or account holder of the mobile phone number you
 provide. By opting in, you represent that you meet these requirements.
@@ -362,8 +361,7 @@ from and data is stored in the United States. If you access the Service
 from outside the United States, please be aware that your information
 will be transferred to, processed, and stored in the United States,
 where data protection laws may differ from those in your country of
-residence. By using the Service, you consent to this transfer. Wonder
-Dog applies the same data protection standards described in this Privacy
+residence. By using the Service, you consent to this transfer. Wonderdog applies the same data protection standards described in this Privacy
 Policy to all personal information regardless of where it is processed.
 If you are located outside the United States and have questions about
 international data transfers, please contact us at legal@wonder.dog.
@@ -636,8 +634,7 @@ Security Act, and the Virginia Consumer Data Protection Act
 Delaware, Florida, Iowa, Oregon, Maryland, Montana, Nebraska, Tennessee,
 Texas, Utah, or Virginia and Wonderdog may have personal information
 about you that is the type of information subject to the State Data
-Privacy Laws, the State Data Privacy Laws are not applicable to Wonder
-Dog or to our relationship with you.</p>
+Privacy Laws, the State Data Privacy Laws are not applicable to Wonderdog or to our relationship with you.</p>
 <h1>How Do We Modify Our Privacy Policy?</h1>
 <p>Wonderdog reserves the right to modify this Privacy Policy at any
 time. When we make material changes \u2014 such as changes to the categories
