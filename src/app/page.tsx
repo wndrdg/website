@@ -199,7 +199,7 @@ function HomeInner() {
               className="mx-auto mt-5 max-w-xl text-[16px] leading-[1.5] text-white/80 md:text-[19px]"
             >
               The AI health companion for your dog &mdash; early disease
-              detection through at-home blood work. Now in private beta.
+              detection through at-home blood work. By invite only.
             </motion.p>
           </div>
 
