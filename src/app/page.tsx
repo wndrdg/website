@@ -198,8 +198,8 @@ function HomeInner() {
               transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="mx-auto mt-5 max-w-xl text-[16px] leading-[1.5] text-white/80 md:text-[19px]"
             >
-              Early disease detection through at-home blood work. Now in private
-              beta in LA &amp; NYC.
+              The AI health companion for your dog &mdash; early disease
+              detection through at-home blood work. Now in private beta.
             </motion.p>
           </div>
 
@@ -276,9 +276,10 @@ function HomeInner() {
               transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
               className="mx-auto mt-6 max-w-md text-[16px] leading-[1.6] text-white/75 md:text-[17px]"
             >
-              We&rsquo;re currently serving a small group of dogs in Los Angeles
-              &amp; New York City. Leave your details — we&rsquo;ll be in touch
-              when we have room for you.
+              An AI health companion for dogs, built around at-home blood work
+              and early disease detection. We&rsquo;re onboarding a small group
+              right now — leave your details and we&rsquo;ll reach out when we
+              have room for you.
             </motion.p>
           </div>
 
