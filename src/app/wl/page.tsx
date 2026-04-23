@@ -913,6 +913,8 @@ function WaitlistInviteInner() {
                         unsubscribe. See our{" "}
                         <Link
                           href="/privacy"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="underline hover:text-white/80"
                         >
                           Privacy Policy
@@ -920,6 +922,8 @@ function WaitlistInviteInner() {
                         and{" "}
                         <Link
                           href="/terms"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="underline hover:text-white/80"
                         >
                           Terms
@@ -940,6 +944,8 @@ function WaitlistInviteInner() {
                       I agree to the{" "}
                       <Link
                         href="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-white underline hover:text-white/90"
                       >
                         Terms
@@ -947,6 +953,8 @@ function WaitlistInviteInner() {
                       and{" "}
                       <Link
                         href="/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-white underline hover:text-white/90"
                       >
                         Privacy Policy
@@ -970,10 +978,10 @@ function WaitlistInviteInner() {
 
         {/* Footer */}
         <div className="mx-auto mt-20 flex max-w-xl justify-center gap-5 text-[12px] text-white/45">
-          <Link href="/privacy" className="hover:text-white/75 transition-colors">
+          <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-white/75 transition-colors">
             Privacy
           </Link>
-          <Link href="/terms" className="hover:text-white/75 transition-colors">
+          <Link href="/terms" target="_blank" rel="noopener noreferrer" className="hover:text-white/75 transition-colors">
             Terms
           </Link>
           <span>&copy; 2026 Wonderdog</span>

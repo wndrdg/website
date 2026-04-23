@@ -291,9 +291,9 @@ export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolea
                           />
                           <span className="text-[12px] text-white/60 leading-snug">
                             I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
-                            <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
+                            <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Privacy Policy</Link>
                             {" "}and{" "}
-                            <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
+                            <Link href="/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Terms</Link>
                             . Consent is not required to join the waitlist or use our service.
                           </span>
                         </label>
@@ -344,8 +344,8 @@ export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolea
               transition={{ duration: 0.8, delay: 0.7 }}
               className="flex gap-3 text-[11px] text-white/50"
             >
-              <Link href="/privacy" className="hover:text-white/80 transition-colors">Privacy</Link>
-              <Link href="/terms" className="hover:text-white/80 transition-colors">Terms</Link>
+              <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Privacy</Link>
+              <Link href="/terms" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Terms</Link>
               <span>&copy; 2026 Wonderdog</span>
             </motion.footer>
           </div>
@@ -450,9 +450,9 @@ export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolea
                       />
                       <span className="text-[11px] text-white/60 leading-snug">
                         I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
-                        <Link href="/privacy" className="underline hover:text-white/90">Privacy Policy</Link>
+                        <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Privacy Policy</Link>
                         {" "}and{" "}
-                        <Link href="/terms" className="underline hover:text-white/90">Terms</Link>
+                        <Link href="/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Terms</Link>
                         . Consent is not required to join the waitlist or use our service.
                       </span>
                     </label>
@@ -495,8 +495,8 @@ export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolea
             </AnimatePresence>
 
             <div className="mt-5 flex justify-center gap-4 text-[12px] text-white/50">
-              <Link href="/privacy" className="hover:text-white/80 transition-colors">Privacy</Link>
-              <Link href="/terms" className="hover:text-white/80 transition-colors">Terms</Link>
+              <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Privacy</Link>
+              <Link href="/terms" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Terms</Link>
               <span>&copy; 2026 Wonderdog</span>
             </div>
           </div>
