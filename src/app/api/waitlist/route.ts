@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     if (insertError) {
       console.error("Supabase insert failed:", insertError);
       return NextResponse.json(
-        { error: "Failed to process signup" },
+        { error: "Failed to process signup", _debug: String(insertError?.message || insertError) },
         { status: 500 },
       );
     }
@@ -138,7 +138,10 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error("Waitlist POST failed:", err);
     return NextResponse.json(
-      { error: "Failed to process signup" },
+      {
+        error: "Failed to process signup",
+        _debug: err instanceof Error ? `${err.name}: ${err.message}` : String(err),
+      },
       { status: 500 },
     );
   }
