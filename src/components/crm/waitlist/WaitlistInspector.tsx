@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Sheet,
@@ -72,6 +72,24 @@ export function WaitlistInspector({
     appointment: ExistingAppointment | null;
   } | null>(null);
   const [togglingContact, setTogglingContact] = useState(false);
+  // Optimistic local state for the contacted toggle. Falls back to the
+  // server value once router.refresh() lands.
+  const [contactedOverride, setContactedOverride] = useState<boolean | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+
+  // When the inspector switches to a different contact, or the server
+  // catches up to the optimistic state, drop the override.
+  useEffect(() => {
+    setContactedOverride(null);
+    setActionError(null);
+  }, [entry?.id]);
+  useEffect(() => {
+    if (entry == null) return;
+    const serverContacted = entry.last_contact_at != null;
+    if (contactedOverride !== null && contactedOverride === serverContacted) {
+      setContactedOverride(null);
+    }
+  }, [entry, contactedOverride]);
 
   if (!entry) {
     return (
@@ -83,7 +101,8 @@ export function WaitlistInspector({
 
   const fullName =
     [entry.first_name, entry.last_name].filter(Boolean).join(" ") || entry.email || "Unknown";
-  const contacted = entry.last_contact_at != null;
+  const contacted =
+    contactedOverride !== null ? contactedOverride : entry.last_contact_at != null;
   // First active appointment of each type (entry.appointments is already
   // filtered to non-cancelled / non-no_show, sorted by scheduled_at asc).
   const vcprAppointment =
@@ -92,14 +111,24 @@ export function WaitlistInspector({
     entry.appointments.find((a) => a.type === "blood_draw") ?? null;
 
   const toggleContacted = async () => {
+    const nextValue = !contacted;
     setTogglingContact(true);
+    setActionError(null);
+    setContactedOverride(nextValue); // optimistic flip
     try {
-      await fetch("/api/crm/contacts/conversation", {
+      const res = await fetch("/api/crm/contacts/conversation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contact_id: entry.id, open: !contacted }),
+        body: JSON.stringify({ contact_id: entry.id, open: nextValue }),
       });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error || `Failed (${res.status})`);
+      }
       router.refresh();
+    } catch (e) {
+      setContactedOverride(!nextValue); // revert
+      setActionError(e instanceof Error ? e.message : String(e));
     } finally {
       setTogglingContact(false);
     }
@@ -128,6 +157,12 @@ export function WaitlistInspector({
               <span>Joined {formatRelativeTime(entry.created_at)}</span>
             </div>
           </div>
+
+          {actionError ? (
+            <div className="border-b border-red-200 bg-red-50 px-6 py-2 text-xs text-red-700">
+              {actionError}
+            </div>
+          ) : null}
 
           {/* Actions — each appointment button is 1:1 with the contact's
               current appointment of that type. Click to open its modal. */}

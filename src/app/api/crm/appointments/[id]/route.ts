@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createServerClient } from "@/lib/crm/supabase/server";
 
 const ALLOWED_STATUSES = new Set([
@@ -47,6 +48,12 @@ export async function PATCH(
       .single();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    revalidatePath("/waitlist");
+    revalidatePath("/contacts");
+    revalidatePath("/blood-draws");
+    revalidatePath("/dashboard");
+
     return NextResponse.json(data);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";

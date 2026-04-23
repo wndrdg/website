@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createServerClient } from "@/lib/crm/supabase/server";
 
 // Book a VCPR or blood-draw appointment for a contact.
@@ -85,6 +86,11 @@ export async function POST(req: NextRequest) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    revalidatePath("/waitlist");
+    revalidatePath("/contacts");
+    revalidatePath("/blood-draws");
+    revalidatePath("/dashboard");
 
     return NextResponse.json(appointment);
   } catch (err: unknown) {
