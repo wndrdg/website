@@ -149,6 +149,62 @@ export function WaitlistInspector({
 
           {/* Body */}
           <div className="space-y-6 px-6 py-6">
+            {/* Appointments */}
+            <section>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Appointments
+              </h3>
+              {entry.appointments.length === 0 ? (
+                <p className="mt-3 text-sm text-muted-foreground">None booked yet.</p>
+              ) : (
+                <ul className="mt-3 space-y-2">
+                  {entry.appointments.map((a) => {
+                    const when = new Date(a.scheduled_at);
+                    const typeLabel = a.type === "vcpr" ? "VCPR" : "Blood draw";
+                    const assignee = a.vet_name || a.vet_tech_name || "—";
+                    const where = [a.city, a.state].filter(Boolean).join(", ");
+                    return (
+                      <li
+                        key={a.id}
+                        className="rounded-md border border-border bg-muted/30 px-3 py-2 text-sm"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="text-xs">{typeLabel}</Badge>
+                            <span className="font-medium">
+                              {when.toLocaleString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "2-digit",
+                              })}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              · {a.duration_minutes}m
+                            </span>
+                          </div>
+                          <Badge variant="outline" className="text-xs capitalize">
+                            {a.status.replace(/_/g, " ")}
+                          </Badge>
+                        </div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          with <span className="text-foreground">{assignee}</span>
+                          {where ? <> · {where}</> : null}
+                        </div>
+                        {a.notes ? (
+                          <p className="mt-1.5 text-xs leading-snug text-muted-foreground">
+                            {a.notes}
+                          </p>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
+
+            <Separator />
+
             <section>
               <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Contact

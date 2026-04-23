@@ -1,7 +1,11 @@
 import { createServerClient } from "@/lib/crm/supabase/server";
 import { list, get } from "@vercel/blob";
 import { WaitlistBrowser } from "@/components/crm/waitlist/WaitlistBrowser";
-import type { WaitlistContact, CodeMeta } from "@/components/crm/waitlist/types";
+import type {
+  WaitlistContact,
+  WaitlistAppointment,
+  CodeMeta,
+} from "@/components/crm/waitlist/types";
 
 export const dynamic = "force-dynamic";
 
@@ -53,23 +57,45 @@ export default async function WaitlistPage() {
       .order("created_at", { ascending: false }),
     supabase
       .from("crm_appointments")
-      .select("contact_id, type, status")
-      .not("status", "in", '("cancelled","no_show")'),
+      .select(
+        "id, contact_id, type, scheduled_at, duration_minutes, status, notes, address, city, state, zip, crm_vets(name), crm_vet_techs(name)",
+      )
+      .not("status", "in", '("cancelled","no_show")')
+      .order("scheduled_at", { ascending: true }),
   ]);
 
-  // Index appointments by contact + type
+  // Index appointments by contact
+  const byContact = new Map<string, WaitlistAppointment[]>();
   const vcprByContact = new Set<string>();
   const drawByContact = new Set<string>();
-  for (const a of appts || []) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  for (const a of (appts as any[]) || []) {
     if (!a.contact_id) continue;
     if (a.type === "vcpr") vcprByContact.add(a.contact_id);
     if (a.type === "blood_draw") drawByContact.add(a.contact_id);
+    const list = byContact.get(a.contact_id) || [];
+    list.push({
+      id: a.id,
+      type: a.type,
+      scheduled_at: a.scheduled_at,
+      duration_minutes: a.duration_minutes,
+      status: a.status,
+      notes: a.notes,
+      vet_name: a.crm_vets?.name ?? null,
+      vet_tech_name: a.crm_vet_techs?.name ?? null,
+      address: a.address,
+      city: a.city,
+      state: a.state,
+      zip: a.zip,
+    });
+    byContact.set(a.contact_id, list);
   }
 
   const rows: WaitlistContact[] = (contacts || []).map((c) => ({
-    ...(c as Omit<WaitlistContact, "has_vcpr" | "has_blood_draw">),
+    ...(c as Omit<WaitlistContact, "has_vcpr" | "has_blood_draw" | "appointments">),
     has_vcpr: vcprByContact.has(c.id),
     has_blood_draw: drawByContact.has(c.id),
+    appointments: byContact.get(c.id) || [],
   }));
 
   const codes = Array.from(

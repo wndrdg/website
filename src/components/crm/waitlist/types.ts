@@ -30,6 +30,22 @@ export type WaitlistContact = {
   // Derived (server-computed booleans joined from crm_appointments)
   has_vcpr: boolean;
   has_blood_draw: boolean;
+  appointments: WaitlistAppointment[];
+};
+
+export type WaitlistAppointment = {
+  id: string;
+  type: "vcpr" | "blood_draw";
+  scheduled_at: string;
+  duration_minutes: number;
+  status: string;
+  notes: string | null;
+  vet_name: string | null;
+  vet_tech_name: string | null;
+  address: string | null;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
 };
 
 export type CodeMeta = {
