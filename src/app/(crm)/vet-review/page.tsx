@@ -71,7 +71,7 @@ export default async function VetReviewPage() {
   const supabase = createServerClient();
 
   const { data: customers } = await supabase
-    .from("crm_customers")
+    .from("crm_contacts")
     .select("*, crm_dogs(*)")
     .eq("lifecycle_stage", "labs_need_approval")
     .order("created_at", { ascending: false });

@@ -3,10 +3,10 @@ import { createServerClient } from "@/lib/crm/supabase/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { customer_id, agent_enabled, human_requested } = await req.json();
+    const { contact_id, agent_enabled, human_requested } = await req.json();
 
-    if (!customer_id) {
-      return NextResponse.json({ error: "Missing customer_id" }, { status: 400 });
+    if (!contact_id) {
+      return NextResponse.json({ error: "Missing contact_id" }, { status: 400 });
     }
 
     const update: Record<string, boolean> = {};
@@ -19,9 +19,9 @@ export async function POST(req: NextRequest) {
 
     const supabase = createServerClient();
     const { error } = await supabase
-      .from("crm_customers")
+      .from("crm_contacts")
       .update(update)
-      .eq("id", customer_id);
+      .eq("id", contact_id);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

@@ -23,7 +23,7 @@ const BASIC_AUTH_MATCHERS: RegExp[] = [
 ];
 
 const CRM_MATCHERS: RegExp[] = [
-  /^\/(dashboard|customers|messages|blood-draws|vet-records|vet-review|settings|waitlist)(\/|$)/,
+  /^\/(dashboard|contacts|messages|blood-draws|vet-records|vet-review|settings|waitlist)(\/|$)/,
   /^\/api\/crm\//,
 ];
 
@@ -89,8 +89,8 @@ export const config = {
     "/waitlist-codes/:path*",
     "/dashboard",
     "/dashboard/:path*",
-    "/customers",
-    "/customers/:path*",
+    "/contacts",
+    "/contacts/:path*",
     "/waitlist",
     "/messages",
     "/messages/:path*",

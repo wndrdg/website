@@ -85,7 +85,7 @@ export type DogSex = "male" | "female" | "male_neutered" | "female_spayed";
 
 export interface CrmDog {
   id: string;
-  customer_id: string;
+  contact_id: string;
   app_dog_id: string | null;
   name: string;
   breed: string | null;
@@ -138,7 +138,7 @@ export type EventType = (typeof EVENT_TYPES)[number];
 
 export interface CrmCustomerEvent {
   id: string;
-  customer_id: string;
+  contact_id: string;
   dog_id: string | null;
   event_type: EventType;
   event_data: Record<string, unknown>;
@@ -155,7 +155,7 @@ export type SmsStatus = "queued" | "sent" | "delivered" | "failed" | "received";
 
 export interface CrmSmsMessage {
   id: string;
-  customer_id: string;
+  contact_id: string;
   twilio_sid: string | null;
   direction: SmsDirection;
   from_number: string | null;
@@ -175,7 +175,7 @@ export interface CrmSmsMessage {
 
 export interface CrmNote {
   id: string;
-  customer_id: string;
+  contact_id: string;
   dog_id: string | null;
   body: string;
   is_pinned: boolean;
@@ -204,7 +204,7 @@ export type BloodDrawStatus = (typeof BLOOD_DRAW_STATUSES)[number];
 
 export interface CrmBloodDraw {
   id: string;
-  customer_id: string;
+  contact_id: string;
   dog_id: string;
   status: BloodDrawStatus;
   scheduled_date: string | null;
@@ -249,7 +249,7 @@ export type VetRecordsStatus = (typeof VET_RECORDS_STATUSES)[number];
 
 export interface CrmVetRecordsRequest {
   id: string;
-  customer_id: string;
+  contact_id: string;
   dog_id: string;
   vet_clinic_name: string | null;
   vet_clinic_phone: string | null;
@@ -283,7 +283,7 @@ export type WaitlistStatus = (typeof WAITLIST_STATUSES)[number];
 
 export interface CrmWaitlistEntry {
   id: string;
-  customer_id: string;
+  contact_id: string;
   email: string;
   phone: string | null;
   first_name: string | null;

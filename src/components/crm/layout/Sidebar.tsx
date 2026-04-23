@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback } from "@/components/crm/ui/avatar";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/customers", label: "Customers", icon: Users },
+  { href: "/contacts", label: "Contacts", icon: Users },
   { href: "/waitlist", label: "Waitlist", icon: ClipboardList, countKey: "waitlistCount" as const },
   { href: "/blood-draws", label: "Calendar", icon: Droplets },
   { href: "/vet-review", label: "Vet Review", icon: Microscope, countKey: "pendingReviewCount" as const },

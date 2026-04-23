@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/crm/ui/table";
 import { formatRelativeTime } from "@/lib/crm/utils/formatters";
-import type { WaitlistEntry, CodeMeta } from "./types";
+import type { WaitlistContact, CodeMeta } from "./types";
 
 const SOURCE_COLORS: Record<string, string> = {
   website: "bg-teal-100 text-teal-700",
@@ -27,18 +27,19 @@ const SOURCE_COLORS: Record<string, string> = {
   vet_referral: "bg-emerald-100 text-emerald-700",
 };
 
-function formatDateTime(v: string | null | undefined): string {
-  if (!v) return "—";
-  try {
-    return new Date(v).toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    });
-  } catch {
-    return "—";
-  }
+function Flag({ on, label }: { on: boolean; label: string }) {
+  return (
+    <span
+      className={
+        on
+          ? "inline-flex items-center gap-1 text-xs font-medium text-green-700"
+          : "inline-flex items-center gap-1 text-xs text-muted-foreground"
+      }
+      title={label}
+    >
+      {on ? "✓" : "—"}
+    </span>
+  );
 }
 
 export function WaitlistList({
@@ -46,7 +47,7 @@ export function WaitlistList({
   codeMeta,
   onSelect,
 }: {
-  entries: WaitlistEntry[];
+  entries: WaitlistContact[];
   codeMeta: Record<string, CodeMeta>;
   onSelect: (id: string) => void;
 }) {
@@ -56,9 +57,9 @@ export function WaitlistList({
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium">
-          All Entries{" "}
+          Waitlist contacts{" "}
           <span className="font-normal text-muted-foreground">
-            (most recent first — click a row to inspect)
+            (most recent first — click a row for details)
           </span>
         </CardTitle>
       </CardHeader>
@@ -74,65 +75,81 @@ export function WaitlistList({
                 <TableHead>City</TableHead>
                 <TableHead>Zip</TableHead>
                 <TableHead>Dog</TableHead>
-                <TableHead>Breed</TableHead>
-                <TableHead className="text-center">SMS</TableHead>
+                <TableHead className="text-center">SMS OK</TableHead>
+                <TableHead className="text-center">Contacted</TableHead>
+                <TableHead className="text-center">VCPR</TableHead>
+                <TableHead className="text-center">Blood Draw</TableHead>
                 <TableHead>Source</TableHead>
                 <TableHead>Invite Code</TableHead>
                 <TableHead>Invite Description</TableHead>
                 <TableHead>Invite Note</TableHead>
-                <TableHead>UTM Source</TableHead>
-                <TableHead>UTM Medium</TableHead>
-                <TableHead>UTM Campaign</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Position</TableHead>
-                <TableHead>Invited At</TableHead>
-                <TableHead>Converted At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {entries.map((entry) => {
-                const meta = entry.referral_code ? codeMeta[entry.referral_code] : undefined;
+              {entries.map((e) => {
+                const meta = e.referral_code ? codeMeta[e.referral_code] : undefined;
+                const contacted = e.last_contact_at != null;
                 return (
                   <TableRow
-                    key={entry.id}
-                    onClick={() => onSelect(entry.id)}
+                    key={e.id}
+                    onClick={() => onSelect(e.id)}
                     className="cursor-pointer hover:bg-muted/50"
                   >
                     <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
-                      {formatRelativeTime(entry.created_at)}
+                      {formatRelativeTime(e.created_at)}
                     </TableCell>
                     <TableCell className="whitespace-nowrap text-sm font-medium">
-                      {[entry.first_name, entry.last_name].filter(Boolean).join(" ") || dash}
+                      {[e.first_name, e.last_name].filter(Boolean).join(" ") || dash}
                     </TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.email}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.phone || dash}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.city || dash}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.zip || dash}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.dog_name || dash}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.dog_breed || dash}</TableCell>
-                    <TableCell className="text-center text-xs">
-                      {entry.sms_consent ? (
-                        <span className="text-green-600">✓</span>
+                    <TableCell className="whitespace-nowrap text-sm">{e.email || dash}</TableCell>
+                    <TableCell className="whitespace-nowrap text-sm">{e.phone || dash}</TableCell>
+                    <TableCell className="whitespace-nowrap text-sm">{e.city || dash}</TableCell>
+                    <TableCell className="whitespace-nowrap text-sm">{e.zip || dash}</TableCell>
+                    <TableCell className="whitespace-nowrap text-sm">
+                      {e.dog_name || dash}
+                      {e.dog_breed ? (
+                        <span className="ml-1 text-xs text-muted-foreground">{e.dog_breed}</span>
+                      ) : null}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Flag on={!!e.sms_consent} label="SMS consent" />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {contacted ? (
+                        <span
+                          className="text-xs text-green-700"
+                          title={`Contacted ${formatRelativeTime(e.last_contact_at!)}`}
+                        >
+                          ✓
+                        </span>
                       ) : (
-                        <span className="text-muted-foreground">—</span>
+                        <span className="text-xs text-amber-600" title="Needs outreach">
+                          ○
+                        </span>
                       )}
                     </TableCell>
+                    <TableCell className="text-center">
+                      <Flag on={e.has_vcpr} label="VCPR appointment" />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Flag on={e.has_blood_draw} label="Blood draw appointment" />
+                    </TableCell>
                     <TableCell>
-                      {entry.source ? (
+                      {e.waitlist_source ? (
                         <Badge
                           variant="secondary"
-                          className={`text-xs ${SOURCE_COLORS[entry.source] ?? ""}`}
+                          className={`text-xs ${SOURCE_COLORS[e.waitlist_source] ?? ""}`}
                         >
-                          {entry.source}
+                          {e.waitlist_source}
                         </Badge>
                       ) : (
                         dash
                       )}
                     </TableCell>
                     <TableCell className="whitespace-nowrap">
-                      {entry.referral_code ? (
+                      {e.referral_code ? (
                         <Badge variant="secondary" className="font-mono text-xs">
-                          {entry.referral_code}
+                          {e.referral_code}
                         </Badge>
                       ) : (
                         dash
@@ -141,26 +158,6 @@ export function WaitlistList({
                     <TableCell className="text-sm">{meta?.description || dash}</TableCell>
                     <TableCell className="text-sm italic text-muted-foreground">
                       {meta?.note || dash}
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.utm_source || dash}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.utm_medium || dash}</TableCell>
-                    <TableCell className="whitespace-nowrap text-sm">{entry.utm_campaign || dash}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={entry.status === "waiting" ? "outline" : "default"}
-                        className="text-xs"
-                      >
-                        {entry.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap font-mono text-sm text-muted-foreground">
-                      {entry.position ?? dash}
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
-                      {formatDateTime(entry.invited_at)}
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
-                      {formatDateTime(entry.converted_at)}
                     </TableCell>
                   </TableRow>
                 );

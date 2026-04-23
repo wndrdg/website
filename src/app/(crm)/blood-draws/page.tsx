@@ -17,11 +17,11 @@ export default async function BloodDrawsPage() {
       .order("name"),
     supabase
       .from("crm_appointments")
-      .select("*, crm_customers(full_name), crm_vet_techs(name, city)")
+      .select("*, crm_contacts(full_name), crm_vet_techs(name, city)")
       .eq("appointment_date", today)
       .order("start_time"),
     supabase
-      .from("crm_customers")
+      .from("crm_contacts")
       .select("id, full_name, city, state")
       .eq("is_active", true)
       .order("full_name"),
@@ -42,7 +42,7 @@ export default async function BloodDrawsPage() {
     return {
       id: a.id,
       techId: a.vet_tech_id,
-      customerName: a.crm_customers?.full_name ?? "Unknown",
+      customerName: a.crm_contacts?.full_name ?? "Unknown",
       customerCity: a.city ?? "",
       startHour: startH,
       startMin: startM,

@@ -4,7 +4,7 @@ import { logVetRecordsRequest } from "@/lib/crm/vet-records";
 export async function POST(req: NextRequest) {
   try {
     const {
-      customer_id,
+      contact_id,
       dog_id,
       clinic_name,
       clinic_email,
@@ -13,12 +13,12 @@ export async function POST(req: NextRequest) {
       created_by,
     } = await req.json();
 
-    if (!customer_id || !dog_id) {
-      return NextResponse.json({ error: "Missing customer_id or dog_id" }, { status: 400 });
+    if (!contact_id || !dog_id) {
+      return NextResponse.json({ error: "Missing contact_id or dog_id" }, { status: 400 });
     }
 
     const result = await logVetRecordsRequest({
-      customerId: customer_id,
+      customerId: contact_id,
       dogId: dog_id,
       clinicName: clinic_name ?? null,
       clinicEmail: clinic_email ?? null,

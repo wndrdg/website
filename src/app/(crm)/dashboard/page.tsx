@@ -19,13 +19,13 @@ export default async function DashboardPage() {
     { data: customers },
     { data: recentEvents },
   ] = await Promise.all([
-    supabase.from("crm_customers").select("*", { count: "exact", head: true }),
+    supabase.from("crm_contacts").select("*", { count: "exact", head: true }),
     supabase.from("crm_waitlist").select("*", { count: "exact", head: true }).eq("status", "waiting"),
     supabase.from("crm_appointments").select("*", { count: "exact", head: true }).eq("appointment_date", today),
-    supabase.from("crm_customers").select("id").eq("lifecycle_stage", "labs_need_approval"),
-    supabase.from("crm_customers").select("id").not("last_contact_at", "is", null),
-    supabase.from("crm_customers").select("lifecycle_stage"),
-    supabase.from("crm_customer_events").select("*, crm_customers(full_name)").order("created_at", { ascending: false }).limit(20),
+    supabase.from("crm_contacts").select("id").eq("lifecycle_stage", "labs_need_approval"),
+    supabase.from("crm_contacts").select("id").not("last_contact_at", "is", null),
+    supabase.from("crm_contacts").select("lifecycle_stage"),
+    supabase.from("crm_customer_events").select("*, crm_contacts(full_name)").order("created_at", { ascending: false }).limit(20),
   ]);
 
   const stats = [
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
                   <div className="flex-1 min-w-0">
                     <p>
                       <span className="font-medium">
-                        {event.crm_customers?.full_name ?? "Unknown"}
+                        {event.crm_contacts?.full_name ?? "Unknown"}
                       </span>{" "}
                       <span className="text-muted-foreground">
                         {event.event_type.replace(/_/g, " ")}

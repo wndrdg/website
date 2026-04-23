@@ -3,10 +3,10 @@ import { createServerClient } from "@/lib/crm/supabase/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { customer_id, body } = await req.json();
+    const { contact_id, body } = await req.json();
 
-    if (!customer_id || !body?.trim()) {
-      return NextResponse.json({ error: "Missing customer_id or body" }, { status: 400 });
+    if (!contact_id || !body?.trim()) {
+      return NextResponse.json({ error: "Missing contact_id or body" }, { status: 400 });
     }
 
     const supabase = createServerClient();
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const { data: note, error } = await supabase
       .from("crm_notes")
       .insert({
-        customer_id,
+        contact_id,
         body: body.trim(),
         created_by: createdBy,
       })

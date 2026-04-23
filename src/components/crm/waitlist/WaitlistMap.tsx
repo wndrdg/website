@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/crm/ui/card";
-import type { WaitlistEntry } from "./types";
+import type { WaitlistContact } from "./types";
 
 // Minimal Google Maps JS API surface we use. Avoids dragging in
 // @types/google.maps for a handful of fields.
@@ -136,7 +136,7 @@ export function WaitlistMap({
   entries,
   onSelect,
 }: {
-  entries: WaitlistEntry[];
+  entries: WaitlistContact[];
   onSelect: (id: string) => void;
 }) {
   const ready = useGoogleMaps();
@@ -156,8 +156,8 @@ export function WaitlistMap({
   // Partition entries up front so stats are accurate independent of the
   // async geocoding loop below.
   const { withZip, withoutZip } = useMemo(() => {
-    const a: WaitlistEntry[] = [];
-    const b: WaitlistEntry[] = [];
+    const a: WaitlistContact[] = [];
+    const b: WaitlistContact[] = [];
     for (const e of entries) {
       if (normalizeZip(e.zip)) a.push(e);
       else b.push(e);
@@ -192,7 +192,7 @@ export function WaitlistMap({
 
     // Group entries by zip so we make one geocode call per unique zip,
     // then place one marker per entry (with a tiny jitter for duplicates).
-    const byZip = new Map<string, WaitlistEntry[]>();
+    const byZip = new Map<string, WaitlistContact[]>();
     for (const e of withZip) {
       const z = normalizeZip(e.zip)!;
       const list = byZip.get(z) || [];

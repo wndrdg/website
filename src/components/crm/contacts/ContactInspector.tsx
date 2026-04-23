@@ -46,7 +46,7 @@ import {
 import { cn } from "@/lib/utils";
 import { formatRelativeTime } from "@/lib/crm/utils/formatters";
 import { AgentToggle } from "./AgentToggle";
-import { CustomerHistory } from "./CustomerHistory";
+import { ContactHistory } from "./ContactHistory";
 
 interface Dog {
   id: string;
@@ -142,7 +142,7 @@ interface Props {
   onUpdate?: () => void;
 }
 
-export function CustomerInspector({ customer, onClose, onUpdate }: Props) {
+export function ContactInspector({ customer, onClose, onUpdate }: Props) {
   const [appOpen, setAppOpen] = useState(false);
   return (
     <Sheet
@@ -223,7 +223,7 @@ function InspectorContent({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            customer_id: customer.id,
+            contact_id: customer.id,
             body: composerText,
           }),
         });
@@ -258,7 +258,7 @@ function InspectorContent({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer_id: customer.id,
+          contact_id: customer.id,
           dog_id: dog.id,
           clinic_name: dog.vet_clinic_name,
           clinic_email: dog.vet_clinic_email ?? null,
@@ -279,7 +279,7 @@ function InspectorContent({
       const res = await fetch("/api/crm/customers/conversation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customer_id: customer.id, open: newState }),
+        body: JSON.stringify({ contact_id: customer.id, open: newState }),
       });
       if (res.ok) {
         setConvoOpen(newState);
@@ -297,7 +297,7 @@ function InspectorContent({
       const res = await fetch("/api/crm/customers/notes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customer_id: customer.id, body: noteText }),
+        body: JSON.stringify({ contact_id: customer.id, body: noteText }),
       });
       if (res.ok) {
         const note = await res.json();
@@ -541,7 +541,7 @@ function InspectorContent({
         </div>
 
         <div className="px-9 pt-7 pb-10">
-          <CustomerHistory customer={customer} />
+          <ContactHistory customer={customer} />
 
           <Separator className="mb-7" />
 

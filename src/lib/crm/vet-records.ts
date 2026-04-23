@@ -30,7 +30,7 @@ export async function logVetRecordsRequest({
   const { count } = await supabase
     .from("crm_vet_records_requests")
     .select("id", { count: "exact", head: true })
-    .eq("customer_id", customerId)
+    .eq("contact_id", customerId)
     .eq("dog_id", dogId);
 
   const requestNumber = (count ?? 0) + 1;
@@ -38,7 +38,7 @@ export async function logVetRecordsRequest({
   const { data: request, error: reqErr } = await supabase
     .from("crm_vet_records_requests")
     .insert({
-      customer_id: customerId,
+      contact_id: customerId,
       dog_id: dogId,
       vet_clinic_name: clinicName,
       vet_clinic_email: clinicEmail,
@@ -63,7 +63,7 @@ export async function logVetRecordsRequest({
   const { data: note, error: noteErr } = await supabase
     .from("crm_notes")
     .insert({
-      customer_id: customerId,
+      contact_id: customerId,
       dog_id: dogId,
       body,
       is_pinned: false,

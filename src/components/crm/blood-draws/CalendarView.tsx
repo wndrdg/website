@@ -119,7 +119,7 @@ export function CalendarView({ vetTechs, appointments: initialAppointments, cust
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer_id: customer.id,
+          contact_id: customer.id,
           vet_tech_id: pending.techId,
           start_hour: pending.hour,
           start_min: pending.min,

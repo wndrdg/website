@@ -50,30 +50,60 @@ export async function POST(request: Request) {
           .filter((d) => d.name || d.breed || d.weight || d.age)
       : [];
 
-    // Primary write: crm_waitlist in Supabase. This is now the source of
-    // truth for waitlist signups (replaces the Vercel Blob signups/* path).
+    // Primary write: crm_contacts in Supabase with is_waitlist=true.
+    // If a Contact already exists with this email, we flip is_waitlist on
+    // and fill in any fields they hadn't given us before — no duplicates.
     const { first, last } = splitName(name);
     const supabase = createServerClient();
-    const { error: insertError } = await supabase.from("crm_waitlist").insert({
+
+    const payload = {
       email,
       phone: phone || null,
       first_name: first,
       last_name: last,
-      zip: addressParts?.zip || zip || null,
+      street: addressParts?.street || null,
+      apt: addressParts?.apt || null,
       city: addressParts?.city || null,
+      state: addressParts?.state || null,
+      zip: addressParts?.zip || zip || null,
       dog_name: cleanDogs[0]?.name || null,
       dog_breed: cleanDogs[0]?.breed || null,
-      source: "website",
+      waitlist_source: "website",
       referral_code: invite_code || null,
       sms_consent: !!smsConsent,
-      status: "waiting",
-    });
-    if (insertError) {
-      console.error("Supabase insert failed:", insertError);
-      return NextResponse.json(
-        { error: "Failed to process signup" },
-        { status: 500 },
-      );
+      is_waitlist: true,
+      lifecycle_stage: "waitlist",
+    };
+
+    const { data: existing } = await supabase
+      .from("crm_contacts")
+      .select("id")
+      .ilike("email", email)
+      .limit(1);
+
+    if (existing && existing.length > 0) {
+      const { error: updateError } = await supabase
+        .from("crm_contacts")
+        .update({ ...payload })
+        .eq("id", existing[0].id);
+      if (updateError) {
+        console.error("Supabase update failed:", updateError);
+        return NextResponse.json(
+          { error: "Failed to process signup" },
+          { status: 500 },
+        );
+      }
+    } else {
+      const { error: insertError } = await supabase
+        .from("crm_contacts")
+        .insert(payload);
+      if (insertError) {
+        console.error("Supabase insert failed:", insertError);
+        return NextResponse.json(
+          { error: "Failed to process signup" },
+          { status: 500 },
+        );
+      }
     }
 
     // Invite code description is still looked up from Vercel Blob — invite

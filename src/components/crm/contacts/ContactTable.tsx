@@ -18,10 +18,10 @@ import { Search, MessageCircle } from "lucide-react";
 import { LIFECYCLE_STAGE_CONFIG } from "@/lib/crm/utils/constants";
 import { formatRelativeTime, formatFutureDay, formatLabDate } from "@/lib/crm/utils/formatters";
 import type { LifecycleStage } from "@/lib/crm/types";
-import { CustomerInspector } from "./CustomerInspector";
+import { ContactInspector } from "./ContactInspector";
 import { AgentToggle } from "./AgentToggle";
 
-interface CustomerRow {
+interface ContactRow {
   id: string;
   first_name: string | null;
   last_name: string | null;
@@ -95,14 +95,14 @@ interface CustomerRow {
   }[];
 }
 
-export function CustomerTable({ customers }: { customers: CustomerRow[] }) {
+export function ContactTable({ contacts }: { contacts: ContactRow[] }) {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [stageFilter, setStageFilter] = useState<string>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    let result = customers.filter((c) => c.last_contact_at != null);
+    let result = contacts.filter((c) => c.last_contact_at != null);
 
     if (search) {
       const q = search.toLowerCase();
@@ -121,14 +121,14 @@ export function CustomerTable({ customers }: { customers: CustomerRow[] }) {
     }
 
     return result;
-  }, [customers, search, stageFilter]);
+  }, [contacts, search, stageFilter]);
 
   const stages = useMemo(() => {
-    const s = new Set(customers.map((c) => c.lifecycle_stage));
+    const s = new Set(contacts.map((c) => c.lifecycle_stage));
     return Array.from(s).sort();
-  }, [customers]);
+  }, [contacts]);
 
-  const selectedCustomer = selectedId ? customers.find((c) => c.id === selectedId) ?? null : null;
+  const selectedContact = selectedId ? contacts.find((c) => c.id === selectedId) ?? null : null;
 
   return (
     <div className="space-y-4">
@@ -289,7 +289,7 @@ export function CustomerTable({ customers }: { customers: CustomerRow[] }) {
             {filtered.length === 0 && (
               <TableRow>
                 <TableCell colSpan={8} className="text-center py-12 text-muted-foreground">
-                  No customers found
+                  No contacts found
                 </TableCell>
               </TableRow>
             )}
@@ -298,8 +298,8 @@ export function CustomerTable({ customers }: { customers: CustomerRow[] }) {
       </Card>
 
       {/* Customer Inspector */}
-      <CustomerInspector
-        customer={selectedCustomer}
+      <ContactInspector
+        customer={selectedContact}
         onClose={() => setSelectedId(null)}
         onUpdate={() => router.refresh()}
       />

@@ -29,7 +29,7 @@ export function AgentToggle({
       await fetch("/api/crm/customers/agent-toggle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customer_id: customerId, ...body }),
+        body: JSON.stringify({ contact_id: customerId, ...body }),
       });
       onUpdate?.();
     });

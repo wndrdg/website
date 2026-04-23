@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 // Keep this logic in sync with the layouts that own these classes:
 //   - .crm-theme       — src/app/(crm)/layout.tsx
 //   - .light-override  — src/app/waitlist-codes/layout.tsx
-const themeBootstrap = `(function(){try{var p=location.pathname;var h=location.host||"";if(h.indexOf("spark.")===0||/^\\/(dashboard|customers|waitlist|messages|blood-draws|vet-records|vet-review|settings)(\\/|$)/.test(p)){document.documentElement.classList.add("crm-theme");}if(/^\\/waitlist-codes(\\/|$)/.test(p)){document.documentElement.classList.add("light-override");}}catch(e){}})();`;
+const themeBootstrap = `(function(){try{var p=location.pathname;var h=location.host||"";if(h.indexOf("spark.")===0||/^\\/(dashboard|contacts|waitlist|messages|blood-draws|vet-records|vet-review|settings)(\\/|$)/.test(p)){document.documentElement.classList.add("crm-theme");}if(/^\\/waitlist-codes(\\/|$)/.test(p)){document.documentElement.classList.add("light-override");}}catch(e){}})();`;
 
 export default function RootLayout({
   children,

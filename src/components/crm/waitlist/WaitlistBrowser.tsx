@@ -6,42 +6,40 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/crm/ui/ta
 import { WaitlistList } from "./WaitlistList";
 import { WaitlistMap } from "./WaitlistMap";
 import { WaitlistInspector } from "./WaitlistInspector";
-import type { WaitlistEntry, CodeMeta } from "./types";
+import type { WaitlistContact, CodeMeta } from "./types";
 
 export function WaitlistBrowser({
   entries,
   codeMeta,
 }: {
-  entries: WaitlistEntry[];
+  entries: WaitlistContact[];
   codeMeta: Record<string, CodeMeta>;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [view, setView] = useState<"list" | "map">("list");
 
-  const selectedEntry = useMemo(
+  const selected = useMemo(
     () => (selectedId ? entries.find((e) => e.id === selectedId) ?? null : null),
     [selectedId, entries],
   );
-  const selectedMeta = selectedEntry?.referral_code
-    ? codeMeta[selectedEntry.referral_code]
-    : undefined;
+  const selectedMeta = selected?.referral_code ? codeMeta[selected.referral_code] : undefined;
 
-  const waiting = entries.filter((e) => e.status === "waiting").length;
-  const invited = entries.filter((e) => e.status === "invited").length;
-  const converted = entries.filter((e) => e.status === "converted").length;
+  const contacted = entries.filter((e) => e.last_contact_at != null).length;
+  const needsOutreach = entries.length - contacted;
+  const withVcpr = entries.filter((e) => e.has_vcpr).length;
+  const withDraw = entries.filter((e) => e.has_blood_draw).length;
 
   const stats = [
-    { label: "Total Waiting", value: waiting },
-    { label: "Invited", value: invited },
-    { label: "Converted", value: converted },
-    { label: "Total Entries", value: entries.length },
+    { label: "Needs outreach", value: needsOutreach },
+    { label: "Contacted", value: contacted },
+    { label: "VCPR booked", value: withVcpr },
+    { label: "Blood draw booked", value: withDraw },
   ];
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Waitlist</h1>
 
-      {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
         {stats.map((s) => (
           <Card key={s.label}>
@@ -60,11 +58,7 @@ export function WaitlistBrowser({
         </TabsList>
 
         <TabsContent value="list" className="mt-4">
-          <WaitlistList
-            entries={entries}
-            codeMeta={codeMeta}
-            onSelect={setSelectedId}
-          />
+          <WaitlistList entries={entries} codeMeta={codeMeta} onSelect={setSelectedId} />
         </TabsContent>
 
         <TabsContent value="map" className="mt-4">
@@ -73,9 +67,9 @@ export function WaitlistBrowser({
       </Tabs>
 
       <WaitlistInspector
-        entry={selectedEntry}
+        entry={selected}
         codeMeta={selectedMeta}
-        open={!!selectedEntry}
+        open={!!selected}
         onClose={() => setSelectedId(null)}
       />
     </div>

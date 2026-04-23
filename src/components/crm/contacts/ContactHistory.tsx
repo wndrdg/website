@@ -29,7 +29,7 @@ interface Props {
   };
 }
 
-export function CustomerHistory({ customer }: Props) {
+export function ContactHistory({ customer }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const events = useMemo(() => buildCustomerHistory(customer), [customer]);

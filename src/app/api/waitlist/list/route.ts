@@ -11,10 +11,11 @@ export async function GET() {
   try {
     const supabase = createServerClient();
     const { data, error } = await supabase
-      .from("crm_waitlist")
+      .from("crm_contacts")
       .select(
-        "id, email, first_name, last_name, phone, zip, city, dog_name, dog_breed, source, referral_code, sms_consent, status, created_at",
+        "id, email, first_name, last_name, phone, zip, city, dog_name, dog_breed, waitlist_source, referral_code, sms_consent, lifecycle_stage, created_at",
       )
+      .eq("is_waitlist", true)
       .order("created_at", { ascending: false });
 
     if (error) {
@@ -41,6 +42,7 @@ export async function GET() {
           : undefined,
       smsConsent: !!r.sms_consent,
       invite_code: r.referral_code || undefined,
+      source: r.waitlist_source || undefined,
     }));
 
     return NextResponse.json({
