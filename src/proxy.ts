@@ -1,30 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// HTTP Basic Auth for the admin surface:
+// HTTP Basic Auth gate for the admin surface:
 //   - /waitlist-codes (the admin UI)
 //   - /api/codes (list/create) and /api/codes/:code (patch/delete)
 //   - /api/waitlist/list (signup list used by the admin UI)
 //
-// The public invite lookup (/api/codes/lookup/:code) and waitlist submission
-// (/api/waitlist) are intentionally NOT matched — they're used by the
-// customer-facing /wl and / pages.
+// The public invite lookup (/api/codes/lookup/:code) and the waitlist
+// submission endpoint (/api/waitlist POST) are intentionally NOT matched —
+// they're consumed by the customer-facing /wl and / pages.
 //
-// Credentials: any username, password must equal process.env.ADMIN_PASSWORD.
-// If the env var is unset (e.g. local dev without config), auth is skipped so
-// the page stays usable.
-export function proxy(req: NextRequest) {
-  const password = process.env.ADMIN_PASSWORD;
-  if (!password) return NextResponse.next();
+// Credentials are intentionally obfuscated (base64-encoded "user:pass") so the
+// literal password doesn't appear in the source. This is casual deterrence for
+// a temp admin page, NOT real security — anyone can decode the string below.
+// Replace with proper auth (env var + stronger check) before sharing broadly.
+const EXPECTED_BASIC = "amVmZjpqZWZm";
 
+export function proxy(req: NextRequest) {
   const header = req.headers.get("authorization");
-  if (header?.startsWith("Basic ")) {
-    try {
-      const decoded = atob(header.slice(6));
-      const provided = decoded.slice(decoded.indexOf(":") + 1);
-      if (provided === password) return NextResponse.next();
-    } catch {
-      // fall through to 401
-    }
+  if (header?.startsWith("Basic ") && header.slice(6) === EXPECTED_BASIC) {
+    return NextResponse.next();
   }
 
   return new NextResponse("Authentication required", {
