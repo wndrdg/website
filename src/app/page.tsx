@@ -9,22 +9,17 @@ import { useSearchParams } from "next/navigation";
  * Scene color timeline for the mobile video reel.
  * Each entry: [startTime in seconds, hex color for Safari status bar].
  * These should match the dominant top-of-frame color at each scene cut.
- * Tune these by watching reel-mobile.mp4 and sampling colors.
  */
 const SCENE_COLORS: [number, string][] = [
-  [0,    "#1a1a1a"],   // Scene 1 — dark opening
-  [3.5,  "#2d4a3a"],   // Scene 2 — greenish outdoor
-  [7,    "#3a2a1e"],   // Scene 3 — warm indoor / golden
-  [10.5, "#1e3040"],   // Scene 4 — blue/cool tone
-  [14,   "#3d2b1a"],   // Scene 5 — warm amber
-  [17.5, "#1a2a1a"],   // Scene 6 — dark green / park
-  [20,   "#1a1a1a"],   // Loop back to dark
+  [0,    "#1a1a1a"],
+  [3.5,  "#2d4a3a"],
+  [7,    "#3a2a1e"],
+  [10.5, "#1e3040"],
+  [14,   "#3d2b1a"],
+  [17.5, "#1a2a1a"],
+  [20,   "#1a1a1a"],
 ];
 
-/**
- * Hook: sync Safari status bar (theme-color meta tag) to video scene cuts.
- * Polls the mobile video's currentTime and updates the meta tag when scenes change.
- */
 function useVideoThemeColor() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const currentColorRef = useRef<string>(SCENE_COLORS[0][1]);
@@ -34,7 +29,6 @@ function useVideoThemeColor() {
     if (!video) return;
 
     const t = video.currentTime;
-    // Find the active scene (last entry where startTime <= currentTime)
     let color = SCENE_COLORS[0][1];
     for (const [start, c] of SCENE_COLORS) {
       if (t >= start) color = c;
@@ -43,15 +37,12 @@ function useVideoThemeColor() {
 
     if (color !== currentColorRef.current) {
       currentColorRef.current = color;
-      document.documentElement.style.backgroundColor = color;
-      document.body.style.backgroundColor = color;
       const meta = document.querySelector('meta[name="theme-color"]');
       if (meta) meta.setAttribute("content", color);
     }
   }, []);
 
   useEffect(() => {
-    // Poll every 200ms — fast enough for scene cuts, cheap enough to not matter
     const interval = setInterval(updateThemeColor, 200);
     return () => clearInterval(interval);
   }, [updateThemeColor]);
@@ -59,47 +50,36 @@ function useVideoThemeColor() {
   return videoRef;
 }
 
-export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolean } = {}) {
+function formatPhone(value: string) {
+  const digits = value.replace(/\D/g, "").slice(0, 10);
+  if (digits.length === 0) return "";
+  if (digits.length <= 3) return `(${digits}`;
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
+function HomeInner() {
   const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [zip, setZip] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [smsConsent, setSmsConsent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const mobileVideoRef = useVideoThemeColor();
-  const [smsConsent, setSmsConsent] = useState(false);
-  const [inviteCode, setInviteCode] = useState<string | null>(null);
 
-  // Check for invite code in URL
-  useEffect(() => {
-    const invite = searchParams.get('invite');
-    if (invite) {
-      setInviteCode(invite);
-    }
-  }, [searchParams]);
+  // If someone lands on "/?invite=XXX", forward the code to the API but don't
+  // show any invite-specific UI — the dedicated invite flow lives at /wl.
+  const inviteCode = searchParams.get("invite") || null;
 
-  // Lock body scroll while the splash is mounted (so the page feels intentional, no scrolling)
-  useEffect(() => {
-    const prevHtml = document.documentElement.style.overflow;
-    const prevBody = document.body.style.overflow;
-    const prevOverscroll = document.body.style.overscrollBehavior;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    document.body.style.overscrollBehavior = "none";
-    return () => {
-      document.documentElement.style.overflow = prevHtml;
-      document.body.style.overflow = prevBody;
-      document.body.style.overscrollBehavior = prevOverscroll;
-    };
-  }, []);
+  const waitlistSectionRef = useRef<HTMLDivElement | null>(null);
 
-  const formatPhone = (value: string) => {
-    const digits = value.replace(/\D/g, "").slice(0, 10);
-    if (digits.length === 0) return "";
-    if (digits.length <= 3) return `(${digits}`;
-    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  const scrollToWaitlist = () => {
+    waitlistSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -111,13 +91,13 @@ export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolea
       await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          name, 
-          zip, 
-          email, 
-          phone, 
+        body: JSON.stringify({
+          name,
+          zip,
+          email,
+          phone,
           smsConsent,
-          invite_code: inviteCode 
+          invite_code: inviteCode,
         }),
       });
     } catch {
@@ -127,277 +107,189 @@ export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolea
   };
 
   return (
-    <>
-    {/* Full-bleed video background. Container is sized to 100vh / 100vw via inline styles
-        (modern Safari treats 100vh as the largest viewport, equivalent to lvh) so we cover
-        behind the iOS URL bar. Video uses the "YouTube-cover" centering pattern with
-        min-width/min-height 100% so it always overflows the container and gets cropped,
-        guaranteeing zero black bars regardless of aspect mismatch. */}
-    <div
-      className="fixed inset-0 -z-10 overflow-hidden bg-black"
-      style={{ width: "100vw", height: "100vh" }}
-    >
-      {/* Desktop video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        className="hidden md:block"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          minWidth: "100%",
-          minHeight: "100%",
-          width: "auto",
-          height: "auto",
-          objectFit: "cover",
-        }}
-      >
-        <source src="/reel-desktop.webm" type="video/webm" />
-        <source src="/reel-desktop.mp4" type="video/mp4" />
-      </video>
-      {/* Mobile video — MP4 listed first so iOS Safari grabs the universally-supported
-          H.264 stream instead of potentially-flaky VP9 WebM decode. */}
-      <video
-        ref={mobileVideoRef}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        className="md:hidden"
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          minWidth: "100%",
-          minHeight: "100%",
-          width: "auto",
-          height: "auto",
-          objectFit: "cover",
-        }}
-      >
-        <source src="/reel-mobile.mp4" type="video/mp4" />
-        <source src="/reel-mobile.webm" type="video/webm" />
-      </video>
-    </div>
+    <main className="relative bg-[#003A45] text-[#f5f0e8]">
+      {/* ================================================================ */}
+      {/*  HERO — video, logo, H1, scroll hint                             */}
+      {/* ================================================================ */}
+      <section className="relative h-[100dvh] w-full overflow-hidden">
+        {/* Video background */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="hidden md:block"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              minWidth: "100%",
+              minHeight: "100%",
+              width: "auto",
+              height: "auto",
+              objectFit: "cover",
+            }}
+          >
+            <source src="/reel-desktop.webm" type="video/webm" />
+            <source src="/reel-desktop.mp4" type="video/mp4" />
+          </video>
+          <video
+            ref={mobileVideoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="md:hidden"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              minWidth: "100%",
+              minHeight: "100%",
+              width: "auto",
+              height: "auto",
+              objectFit: "cover",
+            }}
+          >
+            <source src="/reel-mobile.mp4" type="video/mp4" />
+            <source src="/reel-mobile.webm" type="video/webm" />
+          </video>
+          {/* Gradient veil for legibility */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-[#003A45]/70" />
+        </div>
 
-    {/* Content layer — sized to the visible viewport (h-dvh) so it stays out of the browser UI */}
-    <main className="fixed inset-0 h-dvh w-screen overflow-hidden">
+        {/* Content */}
+        <div className="relative z-10 flex h-full flex-col items-center justify-between px-6 py-10 text-center md:px-12 md:py-14">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.1 }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/wd-logo.svg"
+              alt="Wonderdog"
+              className="h-10 w-auto md:h-11"
+            />
+          </motion.div>
 
-      {/* === DESKTOP LAYOUT === */}
-      <div className="relative z-10 hidden md:flex h-full">
-        {/* Frosted glass left panel */}
-        <div className="relative w-[52%] h-full flex flex-col justify-between">
-          {/* Glass backdrop */}
-          <div className="absolute inset-0 backdrop-blur-[30px] bg-black/10" />
-
-          {/* Content */}
-          <div className="relative z-10 flex flex-col justify-between h-full px-10 lg:px-14 py-10">
-            {/* Logo */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
+          <div className="max-w-3xl">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif font-light text-[clamp(40px,6vw,80px)] leading-[1.04] tracking-[-0.02em] text-[#f5f0e8]"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/wd-logo.svg" alt="Wonderdog" className="h-11 w-auto" />
-            </motion.div>
+              Your dog is your
+              <br />
+              whole world.
+              <br />
+              Protect theirs.
+            </motion.h1>
 
-            {/* Headline + Form */}
-            <div>
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="font-serif font-light text-[clamp(40px,5vw,72px)] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8]"
-              >
-                Your dog is your
-                <br />
-                whole world.
-                <br />
-                Protect theirs.
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-4 text-[18px] leading-[1.4] text-white/80 max-w-md"
-              >
-                Early disease detection through at-home blood work. Now in private beta in LA & NYC.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-8 max-w-md"
-              >
-                <AnimatePresence mode="wait">
-                  {!submitted ? (
-                    <motion.form
-                      key="form"
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.25 }}
-                      onSubmit={handleSubmit}
-                      className="flex flex-col gap-3"
-                    >
-                      <div className="flex gap-3">
-                        <input
-                          type="text"
-                          placeholder="Name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Zip Code"
-                          value={zip}
-                          onChange={(e) => setZip(e.target.value)}
-                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                        />
-                      </div>
-                      <div className="flex gap-3">
-                        <input
-                          type="email"
-                          placeholder="Email Address"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                        />
-                        <input
-                          type="tel"
-                          placeholder="Phone Number"
-                          value={phone}
-                          onChange={(e) => setPhone(formatPhone(e.target.value))}
-                          className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
-                        />
-                      </div>
-                      {showSmsConsent && (
-                        <label className="flex items-start gap-3 cursor-pointer select-none">
-                          <input
-                            type="checkbox"
-                            checked={smsConsent}
-                            onChange={(e) => setSmsConsent(e.target.checked)}
-                            className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
-                          />
-                          <span className="text-[12px] text-white/60 leading-snug">
-                            I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
-                            <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Privacy Policy</Link>
-                            {" "}and{" "}
-                            <Link href="/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Terms</Link>
-                            . Consent is not required to join the waitlist or use our service.
-                          </span>
-                        </label>
-                      )}
-                      {inviteCode ? (
-                        <button
-                          type="submit"
-                          disabled={loading}
-                          className="mt-3 w-full rounded-2xl overflow-hidden cursor-pointer hover:brightness-105 transition-all disabled:opacity-60"
-                        >
-                          <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-1.5">
-                            <span className="text-[12px] font-mono uppercase tracking-wider text-[#D9FF66]">Invite Code:</span>
-                            <span className="text-[12px] font-mono uppercase tracking-wider text-white">{inviteCode}</span>
-                          </div>
-                          <div className="bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] h-12 flex items-center justify-center">
-                            {loading ? "..." : "Join Friends & Family Pilot"}
-                          </div>
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          disabled={loading}
-                          className="mt-3 h-12 w-48 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
-                        >
-                          {loading ? "..." : "Join Waitlist"}
-                        </button>
-                      )}
-                    </motion.form>
-                  ) : (
-                    <motion.p
-                      key="thanks"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="text-[17px] text-white"
-                    >
-                      Thank you! We&apos;ll be in touch very soon.
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </div>
-
-            {/* Footer */}
-            <motion.footer
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="flex gap-3 text-[11px] text-white/50"
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="mx-auto mt-5 max-w-xl text-[16px] leading-[1.5] text-white/80 md:text-[19px]"
             >
-              <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Privacy</Link>
-              <Link href="/terms" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Terms</Link>
-              <span>&copy; 2026 Wonderdog</span>
-            </motion.footer>
+              Early disease detection through at-home blood work. Now in private
+              beta in LA &amp; NYC.
+            </motion.p>
           </div>
-        </div>
-      </div>
 
-      {/* === MOBILE LAYOUT === */}
-      <div className="relative z-10 flex flex-col h-full md:hidden">
-        {/* Top logo */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="pt-7 pb-3 text-center"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/wd-logo.svg" alt="Wonderdog" className="h-9 w-auto inline-block" />
-        </motion.div>
-
-        {/* Spacer + headline in the middle-lower area */}
-        <div className="flex-1 flex flex-col justify-end px-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+          <motion.button
+            type="button"
+            onClick={scrollToWaitlist}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif font-light text-[44px] leading-[1.05] tracking-[-0.02em] text-[#f5f0e8] text-center"
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="group flex flex-col items-center gap-3 text-white/70 transition-colors hover:text-white cursor-pointer"
           >
-            Your dog is your
-            <br />
-            whole world.
-            <br />
-            Protect theirs.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-3 mb-6 text-[16px] leading-[1.4] text-white/80 text-center px-4"
-          >
-            Early disease detection through at-home blood work. Now in private beta in LA & NYC.
-          </motion.p>
+            <span className="text-[11px] font-mono uppercase tracking-[0.25em]">
+              Join the waitlist
+            </span>
+            <motion.span
+              animate={{ y: [0, 6, 0] }}
+              transition={{
+                duration: 1.8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="text-[22px] leading-none"
+              aria-hidden
+            >
+              ↓
+            </motion.span>
+          </motion.button>
         </div>
+      </section>
 
-        {/* Frosted glass bottom panel */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative"
-        >
-          <div className="absolute inset-0 backdrop-blur-[30px] bg-black/10" />
-          <div className="relative z-10 px-6 pt-7 pb-8">
+      {/* ================================================================ */}
+      {/*  WAITLIST — mysterious, understated                              */}
+      {/* ================================================================ */}
+      <section
+        ref={waitlistSectionRef}
+        className="relative overflow-hidden bg-[#003A45] px-6 pb-24 pt-20 md:pt-28"
+      >
+        {/* Soft decorative glow */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 0%, rgba(217,255,102,0.08), transparent 55%), radial-gradient(circle at 80% 80%, rgba(0,83,82,0.55), transparent 60%)",
+          }}
+        />
+
+        <div className="relative mx-auto max-w-xl">
+          <div className="text-center">
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.7 }}
+              className="text-[11px] font-mono uppercase tracking-[0.3em] text-[#D9FF66]"
+            >
+              Private beta · by invitation
+            </motion.p>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-5 font-serif font-light text-[clamp(40px,6.5vw,80px)] leading-[1.02] tracking-[-0.02em] text-[#f5f0e8]"
+            >
+              Join the waitlist.
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="mx-auto mt-6 max-w-md text-[16px] leading-[1.6] text-white/75 md:text-[17px]"
+            >
+              We&rsquo;re currently serving a small group of dogs in Los Angeles
+              &amp; New York City. Leave your details — we&rsquo;ll be in touch
+              when we have room for you.
+            </motion.p>
+          </div>
+
+          {/* Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-10"
+          >
             <AnimatePresence mode="wait">
               {!submitted ? (
                 <motion.form
@@ -405,112 +297,145 @@ export function HomeContent({ showSmsConsent = true }: { showSmsConsent?: boolea
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.25 }}
                   onSubmit={handleSubmit}
-                  className="flex flex-col gap-3"
+                  className="flex flex-col gap-3.5"
                 >
-                  <div className="flex gap-3">
+                  <div className="flex flex-col gap-3.5 md:flex-row">
                     <input
                       type="text"
                       placeholder="Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      className="h-12 w-full flex-[2] rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
                     />
                     <input
                       type="text"
-                      placeholder="Zip Code"
+                      inputMode="numeric"
+                      placeholder="Zip code"
                       value={zip}
-                      onChange={(e) => setZip(e.target.value)}
-                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      onChange={(e) =>
+                        setZip(e.target.value.replace(/\D/g, "").slice(0, 5))
+                      }
+                      className="h-12 w-full flex-1 rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
                     />
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex flex-col gap-3.5 md:flex-row">
                     <input
                       type="email"
-                      placeholder="Email"
+                      placeholder="Email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      className="h-12 w-full rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
                     />
                     <input
                       type="tel"
-                      placeholder="Phone"
+                      placeholder="Phone number"
                       value={phone}
                       onChange={(e) => setPhone(formatPhone(e.target.value))}
-                      className="flex-1 min-w-0 h-12 rounded-xl bg-white/15 border border-white/20 px-5 text-[16px] text-white placeholder:text-white/60 outline-none focus:border-white/40 transition-colors backdrop-blur-sm"
+                      className="h-12 w-full rounded-xl border border-white/25 bg-white/10 px-5 text-[16px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-[#D9FF66]/70 focus:bg-white/15"
                     />
                   </div>
-                  {showSmsConsent && (
-                    <label className="flex items-start gap-3 cursor-pointer select-none">
-                      <input
-                        type="checkbox"
-                        checked={smsConsent}
-                        onChange={(e) => setSmsConsent(e.target.checked)}
-                        className="mt-0.5 h-4 w-4 rounded accent-[#D9FF66] flex-shrink-0"
-                      />
-                      <span className="text-[11px] text-white/60 leading-snug">
-                        I consent to receive recurring SMS text messages from Wonder Dog regarding appointment scheduling, appointment reminders, lab and diagnostic results, account notifications, and customer support. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to unsubscribe, HELP for help. See our{" "}
-                        <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Privacy Policy</Link>
-                        {" "}and{" "}
-                        <Link href="/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/90">Terms</Link>
-                        . Consent is not required to join the waitlist or use our service.
-                      </span>
-                    </label>
-                  )}
-                  {inviteCode ? (
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="mt-2 w-full rounded-2xl overflow-hidden cursor-pointer hover:brightness-105 transition-all disabled:opacity-60"
-                    >
-                      <div className="bg-[#005352] px-4 py-2.5 flex items-center justify-center gap-1.5">
-                        <span className="text-[12px] font-mono uppercase tracking-wider text-[#D9FF66]">Invite Code:</span>
-                        <span className="text-[12px] font-mono uppercase tracking-wider text-white">{inviteCode}</span>
-                      </div>
-                      <div className="bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] h-12 flex items-center justify-center">
-                        {loading ? "..." : "Join Friends & Family Pilot"}
-                      </div>
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="mt-1 h-12 rounded-xl bg-[#D9FF66] text-[#003A45] font-semibold text-[15px] cursor-pointer hover:bg-[#e5ff8a] transition-colors disabled:opacity-60"
-                    >
-                      {loading ? "..." : "Join Waitlist"}
-                    </button>
-                  )}
+
+                  {/* Massive SMS consent — required for Twilio compliance */}
+                  <label className="mt-2 flex cursor-pointer select-none items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={smsConsent}
+                      onChange={(e) => setSmsConsent(e.target.checked)}
+                      className="mt-[3px] h-4 w-4 flex-shrink-0 rounded accent-[#D9FF66]"
+                    />
+                    <span className="text-[12px] leading-snug text-white/60">
+                      I consent to receive recurring SMS text messages from
+                      Wonder Dog regarding appointment scheduling, appointment
+                      reminders, lab and diagnostic results, account
+                      notifications, and customer support. Message frequency
+                      varies. Msg &amp; data rates may apply. Reply STOP to
+                      unsubscribe, HELP for help. See our{" "}
+                      <Link
+                        href="/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-white/90"
+                      >
+                        Privacy Policy
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-white/90"
+                      >
+                        Terms
+                      </Link>
+                      . Consent is not required to join the waitlist or use our
+                      service.
+                    </span>
+                  </label>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="mt-4 h-13 rounded-xl bg-[#D9FF66] py-3.5 text-[15px] font-semibold text-[#003A45] transition-all hover:bg-[#e5ff8a] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+                  >
+                    {loading ? "…" : "Join Waitlist"}
+                  </button>
                 </motion.form>
               ) : (
-                <motion.p
+                <motion.div
                   key="thanks"
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="text-[16px] text-white text-center py-4"
+                  transition={{ duration: 0.6 }}
+                  className="text-center"
                 >
-                  Thank you! We&apos;ll be in touch very soon.
-                </motion.p>
+                  <p className="text-[11px] font-mono uppercase tracking-[0.3em] text-[#D9FF66]">
+                    Thank you
+                  </p>
+                  <p className="mx-auto mt-5 max-w-md text-[17px] leading-[1.55] text-white/80">
+                    We&rsquo;ll be in touch very soon.
+                  </p>
+                </motion.div>
               )}
             </AnimatePresence>
+          </motion.div>
+        </div>
 
-            <div className="mt-5 flex justify-center gap-4 text-[12px] text-white/50">
-              <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Privacy</Link>
-              <Link href="/terms" target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">Terms</Link>
-              <span>&copy; 2026 Wonderdog</span>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+        {/* Footer */}
+        <div className="relative mx-auto mt-20 flex max-w-xl justify-center gap-5 text-[12px] text-white/45">
+          <Link
+            href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/75 transition-colors"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white/75 transition-colors"
+          >
+            Terms
+          </Link>
+          <span>&copy; 2026 Wonderdog</span>
+        </div>
+      </section>
     </main>
-    </>
   );
 }
 
 export default function Home() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <HomeContent />
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-[#003A45] text-white/70">
+          Loading…
+        </div>
+      }
+    >
+      <HomeInner />
     </Suspense>
   );
 }
