@@ -1,26 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// HTTP Basic Auth gate for the admin surface:
-//   - /waitlist-codes (the admin UI)
-//   - /api/codes (list/create) and /api/codes/:code (patch/delete)
-//   - /api/waitlist/list (signup list used by the admin UI)
+// Two-host setup on a single Vercel deploy:
+//   - wonder.dog        → marketing site + /waitlist-codes admin
+//   - spark.wonder.dog  → CRM (dashboard, customers, messages, etc.)
+// The subdomain is just a landing-UX convenience — routes are globally
+// reachable but the CRM section is Basic Auth'd regardless of host.
 //
-// The public invite lookup (/api/codes/lookup/:code) and the waitlist
-// submission endpoint (/api/waitlist POST) are intentionally NOT matched —
-// they're consumed by the customer-facing /wl and / pages.
-//
-// Credentials are intentionally obfuscated (base64-encoded "user:pass") so the
-// literal password doesn't appear in the source. This is casual deterrence for
-// a temp admin page, NOT real security — anyone can decode the string below.
-// Replace with proper auth (env var + stronger check) before sharing broadly.
+// Credentials for both admin surfaces are base64-encoded "jeff:jeff". Casual
+// deterrence only — replace with real auth before widening access.
 const EXPECTED_BASIC = "amVmZjpqZWZm";
 
-export function proxy(req: NextRequest) {
+// Paths that require auth. The public invite lookup (/api/codes/lookup/...)
+// and the public waitlist submission (/api/waitlist POST) are intentionally
+// NOT included — they're consumed by the customer-facing /wl and / pages.
+const AUTH_MATCHERS: RegExp[] = [
+  /^\/waitlist-codes(\/|$)/,
+  /^\/api\/codes(\/|$)/,
+  /^\/api\/waitlist\/list\/?$/,
+  /^\/(dashboard|customers|messages|blood-draws|vet-records|vet-review|settings|waitlist)(\/|$)/,
+  /^\/api\/crm\//,
+];
+
+function requireBasicAuth(req: NextRequest): NextResponse | null {
   const header = req.headers.get("authorization");
   if (header?.startsWith("Basic ") && header.slice(6) === EXPECTED_BASIC) {
-    return NextResponse.next();
+    return null;
   }
-
   return new NextResponse("Authentication required", {
     status: 401,
     headers: {
@@ -29,12 +34,53 @@ export function proxy(req: NextRequest) {
   });
 }
 
+export function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+  const host = (req.headers.get("host") || "").toLowerCase();
+  const isSpark = host.startsWith("spark.");
+
+  // Clean landing on spark.wonder.dog → go straight into the CRM.
+  if (isSpark && pathname === "/") {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
+  // Public invite lookup — used by /wl, never auth'd.
+  if (/^\/api\/codes\/lookup\//.test(pathname)) {
+    return NextResponse.next();
+  }
+
+  for (const rx of AUTH_MATCHERS) {
+    if (rx.test(pathname)) {
+      return requireBasicAuth(req) || NextResponse.next();
+    }
+  }
+
+  return NextResponse.next();
+}
+
 export const config = {
   matcher: [
+    "/",
     "/waitlist-codes",
     "/waitlist-codes/:path*",
+    "/dashboard",
+    "/dashboard/:path*",
+    "/customers",
+    "/customers/:path*",
+    "/waitlist",
+    "/messages",
+    "/messages/:path*",
+    "/blood-draws",
+    "/blood-draws/:path*",
+    "/vet-records",
+    "/vet-records/:path*",
+    "/vet-review",
+    "/vet-review/:path*",
+    "/settings",
+    "/settings/:path*",
     "/api/codes",
-    "/api/codes/:code",
+    "/api/codes/:path*",
     "/api/waitlist/list",
+    "/api/crm/:path*",
   ],
 };
