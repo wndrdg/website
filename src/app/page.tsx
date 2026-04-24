@@ -69,6 +69,7 @@ function HomeInner() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [smsConsent, setSmsConsent] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const mobileVideoRef = useVideoThemeColor();
@@ -253,14 +254,27 @@ function HomeInner() {
 
         <div className="relative mx-auto max-w-xl">
           <div className="text-center">
-            <motion.p
+            {/* Logo at the top of this section — balances it against the
+                logo in the hero. */}
+            <motion.div
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.7 }}
+              className="mb-10 flex justify-center"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/wd-logo.svg" alt="Wonderdog" className="h-10 w-auto md:h-11" />
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
               className="text-[11px] font-mono uppercase tracking-[0.3em] text-[#D9FF66]"
             >
-              Private beta · by invitation
+              Invitation only
             </motion.p>
 
             <motion.h2
@@ -360,33 +374,42 @@ function HomeInner() {
                     </span>
                   </label>
 
-                  {/* Terms & Privacy — separate from SMS consent per Twilio.
-                      Implicit acceptance via form submission, not a gate. */}
-                  <p className="text-[11px] leading-snug text-white/45">
-                    By joining the waitlist, you agree to our{" "}
-                    <Link
-                      href="/terms"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-white/70"
-                    >
-                      Terms
-                    </Link>{" "}
-                    and{" "}
-                    <Link
-                      href="/privacy"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-white/70"
-                    >
-                      Privacy Policy
-                    </Link>
-                    .
-                  </p>
+                  {/* Terms & Privacy — separate required checkbox,
+                      independent of the SMS opt-in above. */}
+                  <label className="flex cursor-pointer select-none items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                      required
+                      className="mt-[3px] h-4 w-4 flex-shrink-0 rounded accent-[#D9FF66]"
+                    />
+                    <span className="text-[12px] leading-snug text-white/60">
+                      I agree to the{" "}
+                      <Link
+                        href="/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-white/90"
+                      >
+                        Terms of Service
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-white/90"
+                      >
+                        Privacy Policy
+                      </Link>
+                      .
+                    </span>
+                  </label>
 
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !termsAccepted}
                     className="mt-4 h-13 rounded-xl bg-[#D9FF66] py-3.5 text-[15px] font-semibold text-[#003A45] transition-all hover:bg-[#e5ff8a] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
                   >
                     {loading ? "…" : "Join Waitlist"}
