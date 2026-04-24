@@ -267,16 +267,6 @@ function HomeInner() {
               <img src="/wd-logo.svg" alt="Wonderdog" className="h-10 w-auto md:h-11" />
             </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-[11px] font-mono uppercase tracking-[0.3em] text-[#D9FF66]"
-            >
-              Invitation only
-            </motion.p>
-
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -364,13 +354,20 @@ function HomeInner() {
                       className="mt-[3px] h-4 w-4 flex-shrink-0 rounded accent-[#D9FF66]"
                     />
                     <span className="text-[12px] leading-snug text-white/60">
-                      By checking, you agree to receive transactional and
-                      informational SMS messages from Wonderdog about
-                      appointment scheduling, appointment reminders, account
-                      notifications, and customer support. Message frequency
-                      varies. Msg &amp; data rates may apply. Reply HELP for
-                      help, STOP to opt out. Consent is not required to join
-                      the waitlist or use our service.
+                      By checking, you are allowing to receive{" "}
+                      <strong className="font-semibold text-white/80">
+                        transactional/informational SMS
+                      </strong>{" "}
+                      communications regarding account notifications, customer
+                      care, etc, from{" "}
+                      <strong className="font-semibold text-white/80">
+                        Wonderdog
+                      </strong>
+                      . Messages frequency may vary. Message and data rates
+                      may apply,{" "}
+                      <strong className="font-semibold text-white/80">
+                        reply HELP for help or STOP to opt-out.
+                      </strong>
                     </span>
                   </label>
 
