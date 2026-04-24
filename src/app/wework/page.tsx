@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 
 const fieldClass =
-  "h-11 rounded-md border-white/25 bg-white/10 px-4 text-[16px] text-white placeholder:text-white/50 shadow-none transition-colors focus-visible:border-[#D9FF66] focus-visible:bg-white/15 focus-visible:ring-[#D9FF66]/30 focus-visible:ring-2 md:text-[15px]";
+  "!h-11 rounded-md border-white/25 bg-white/10 px-4 text-[16px] text-white placeholder:text-white/50 shadow-none transition-colors focus-visible:border-[#D9FF66] focus-visible:bg-white/15 focus-visible:ring-[#D9FF66]/30 focus-visible:ring-2 md:text-[15px]";
 
 function formatPhone(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 10);
@@ -16,11 +16,17 @@ function formatPhone(value: string) {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
+function isValidPhone(value: string): boolean {
+  const digits = value.replace(/\D/g, "");
+  return digits.length === 0 || digits.length === 10;
+}
+
 function WeWorkInner() {
   const [name, setName] = useState("");
   const [zip, setZip] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState(false);
   const [smsConsent, setSmsConsent] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -29,6 +35,12 @@ function WeWorkInner() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+
+    // Validate phone if provided
+    if (phone && !isValidPhone(phone)) {
+      setPhoneError(true);
+      return;
+    }
 
     setLoading(true);
     try {
@@ -69,13 +81,20 @@ function WeWorkInner() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
-              className="mb-10 flex justify-center"
+              className="mb-10 flex items-center justify-center gap-5"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/wd-logo.svg"
                 alt="Wonderdog"
                 className="h-10 w-auto md:h-11"
+              />
+              <span className="text-[18px] font-light text-white/40">×</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/wework-logo.svg"
+                alt="WeWork"
+                className="h-5 w-auto opacity-80 md:h-6"
               />
             </motion.div>
 
@@ -145,13 +164,23 @@ function WeWorkInner() {
                       required
                       className={fieldClass}
                     />
-                    <Input
-                      type="tel"
-                      placeholder="Phone number"
-                      value={phone}
-                      onChange={(e) => setPhone(formatPhone(e.target.value))}
-                      className={fieldClass}
-                    />
+                    <div className="flex-1">
+                      <Input
+                        type="tel"
+                        placeholder="Phone number"
+                        value={phone}
+                        onChange={(e) => {
+                          setPhone(formatPhone(e.target.value));
+                          setPhoneError(false);
+                        }}
+                        className={`${fieldClass}${phoneError ? " !border-red-400 !ring-red-400/30" : ""}`}
+                      />
+                      {phoneError && (
+                        <p className="mt-1 text-[11px] text-red-400">
+                          Please enter a valid 10-digit phone number.
+                        </p>
+                      )}
+                    </div>
                   </div>
 
                   <div className="mt-2 flex flex-col gap-3">
