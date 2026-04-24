@@ -343,10 +343,10 @@ function HomeInner() {
                     />
                   </div>
 
-                  {/* SMS consent — Twilio A2P 10DLC compliance.
-                      Standalone checkbox: SMS only, no Terms/Privacy refs.
-                      Optional — submit button is NOT gated on this. */}
-                  <label className="mt-2 flex cursor-pointer select-none items-start gap-3">
+                  {/* Consent block: SMS opt-in (optional) + Terms (required).
+                      Both checkboxes share identical styling + alignment. */}
+                  <div className="mt-2 flex flex-col gap-3">
+                  <label className="grid cursor-pointer select-none grid-cols-[1rem_1fr] gap-3">
                     <input
                       type="checkbox"
                       checked={smsConsent}
@@ -373,7 +373,7 @@ function HomeInner() {
 
                   {/* Terms & Privacy — separate required checkbox,
                       independent of the SMS opt-in above. */}
-                  <label className="flex cursor-pointer select-none items-start gap-3">
+                  <label className="grid cursor-pointer select-none grid-cols-[1rem_1fr] gap-3">
                     <input
                       type="checkbox"
                       checked={termsAccepted}
@@ -403,6 +403,7 @@ function HomeInner() {
                       .
                     </span>
                   </label>
+                  </div>
 
                   <button
                     type="submit"
