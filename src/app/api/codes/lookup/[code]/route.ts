@@ -20,7 +20,7 @@ export async function GET(
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    const resp = await get(blobs[0].url, { access: "private" });
+    const resp = await get(blobs[0].url, { access: "public" });
     if (!resp) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
