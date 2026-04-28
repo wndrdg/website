@@ -407,7 +407,7 @@ function HomeInner() {
 
                   <button
                     type="submit"
-                    disabled={loading || !termsAccepted}
+                    disabled={loading}
                     className="mt-4 h-13 rounded-xl bg-[#D9FF66] py-3.5 text-[15px] font-semibold text-[#003A45] transition-all hover:bg-[#e5ff8a] disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
                   >
                     {loading ? "…" : "Join Waitlist"}
