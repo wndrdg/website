@@ -13,11 +13,10 @@ function generateCode(): string {
   return code;
 }
 
-async function readPrivateBlobJson(url: string) {
-  const resp = await get(url, { access: "private" });
-  if (!resp) return null;
-  const text = await new Response(resp.stream).text();
-  return JSON.parse(text);
+async function readBlobJson(url: string) {
+  const resp = await fetch(url);
+  if (!resp.ok) return null;
+  return resp.json();
 }
 
 async function getExistingCodes(): Promise<string[]> {
@@ -49,7 +48,7 @@ async function getCodesWithSignupCounts(): Promise<
       await Promise.all(
         codeBlobs.map(async (blob) => {
           try {
-            return await readPrivateBlobJson(blob.url);
+            return await readBlobJson(blob.url);
           } catch (error) {
             console.error(`Error reading code blob ${blob.pathname}:`, error);
             return null;
@@ -69,7 +68,7 @@ async function getCodesWithSignupCounts(): Promise<
       await Promise.all(
         signupBlobs.map(async (blob) => {
           try {
-            return await readPrivateBlobJson(blob.url);
+            return await readBlobJson(blob.url);
           } catch {
             return null;
           }
