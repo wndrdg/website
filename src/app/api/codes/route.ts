@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { put, list, get } from "@vercel/blob";
-import { invalidateInviteCodesCache } from "@/lib/crm/invite-codes";
+import { put, list } from "@vercel/blob";
+import { getAllInviteCodes, invalidateInviteCodesCache } from "@/lib/crm/invite-codes";
+import { createServerClient } from "@/lib/crm/supabase/server";
 
 // Alphabet for 4-character codes: no ambiguous characters (0/O, 1/I/L removed)
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -11,12 +12,6 @@ function generateCode(): string {
     code += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
   }
   return code;
-}
-
-async function readBlobJson(url: string) {
-  const resp = await fetch(url);
-  if (!resp.ok) return null;
-  return resp.json();
 }
 
 async function getExistingCodes(): Promise<string[]> {
@@ -42,56 +37,32 @@ async function getCodesWithSignupCounts(): Promise<
   }>
 > {
   try {
-    // Fetch all code metadata in parallel
-    const { blobs: codeBlobs } = await list({ prefix: "codes/" });
-    const codes = (
-      await Promise.all(
-        codeBlobs.map(async (blob) => {
-          try {
-            return await readBlobJson(blob.url);
-          } catch (error) {
-            console.error(`Error reading code blob ${blob.pathname}:`, error);
-            return null;
-          }
-        }),
-      )
-    ).filter(Boolean) as Array<{
-      code: string;
-      description: string;
-      note?: string;
-      created: string;
-    }>;
+    // 1. Code metadata — cached map keyed by code (Vercel Blob, 5-min TTL).
+    const codeMap = await getAllInviteCodes();
 
-    // List all signups once, then read each and tally by invite_code
-    const { blobs: signupBlobs } = await list({ prefix: "signups/" });
-    const signups = (
-      await Promise.all(
-        signupBlobs.map(async (blob) => {
-          try {
-            return await readBlobJson(blob.url);
-          } catch {
-            return null;
-          }
-        }),
-      )
-    ).filter(Boolean) as Array<{ invite_code?: string }>;
+    // 2. Signup counts — from Supabase crm_contacts where referral_code is
+    //    set. Replaces the old (broken on prod) "iterate every signups/* blob
+    //    and tally by invite_code" path. After the contact-centric migration,
+    //    the truth lives in Supabase.
+    const supabase = createServerClient();
+    const { data: contactsWithCode } = await supabase
+      .from("crm_contacts")
+      .select("referral_code")
+      .not("referral_code", "is", null);
 
     const countByCode = new Map<string, number>();
-    for (const signup of signups) {
-      if (signup.invite_code) {
-        countByCode.set(
-          signup.invite_code,
-          (countByCode.get(signup.invite_code) || 0) + 1,
-        );
-      }
+    for (const c of contactsWithCode || []) {
+      const code = (c as { referral_code: string | null }).referral_code;
+      if (!code) continue;
+      countByCode.set(code, (countByCode.get(code) || 0) + 1);
     }
 
-    return codes.map((c) => ({
-      code: c.code,
-      description: c.description,
-      note: c.note,
-      created: c.created,
-      signups: countByCode.get(c.code) || 0,
+    return Object.entries(codeMap).map(([code, meta]) => ({
+      code,
+      description: meta.description ?? "",
+      note: meta.note,
+      created: meta.created ?? "",
+      signups: countByCode.get(code) || 0,
     }));
   } catch (error) {
     console.error("Error getting codes with signup counts:", error);
