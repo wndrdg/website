@@ -679,16 +679,10 @@ export function WaitlistInviteInner({
                     placeholder="Start typing your home address…"
                   />
 
-                  <AnimatePresence initial={false}>
-                    {addressSelected ? (
-                      <motion.div
-                        key="addr-parts"
-                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                        animate={{ opacity: 1, height: "auto", marginTop: 0 }}
-                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden"
-                      >
+                  {/* Address fields are always visible. Picking a Google Places
+                      suggestion above pre-fills them; users can also edit /
+                      type in addresses Places doesn't recognize. */}
+                  <div>
                         <div className="flex flex-col gap-3.5 pt-1">
                           <div className="flex flex-col gap-3.5 md:flex-row">
                             <input
@@ -736,9 +730,7 @@ export function WaitlistInviteInner({
                             />
                           </div>
                         </div>
-                      </motion.div>
-                    ) : null}
-                  </AnimatePresence>
+                  </div>
 
                   {/* Dog count selector */}
                   <div className="mt-5">
