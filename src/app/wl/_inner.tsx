@@ -912,6 +912,7 @@ export function WaitlistInviteInner({
                       type="checkbox"
                       checked={agreedToTerms}
                       onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      required
                       className="mt-[3px] h-4 w-4 flex-shrink-0 rounded accent-[#D9FF66]"
                     />
                     <span className="text-[13px] leading-snug text-white/70">
@@ -939,7 +940,7 @@ export function WaitlistInviteInner({
 
                   <button
                     type="submit"
-                    disabled={submitting || !agreedToTerms}
+                    disabled={submitting}
                     className="mt-4 h-13 rounded-xl bg-[#D9FF66] py-3.5 text-[15px] font-semibold text-[#003A45] transition-all hover:bg-[#e5ff8a] disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                   >
                     {submitting ? "Sending…" : "Accept Invitation"}
