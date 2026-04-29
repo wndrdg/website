@@ -259,14 +259,21 @@ export function WaitlistInviteInner({
   };
 
   /* ---- Helpers ---- */
+  // Address is satisfied if Places gave us structured fields (addressSelected)
+  // OR the user has typed at least a few chars into the search box. Lets people
+  // proceed when Google doesn't match their address — we'll just save the raw
+  // query they typed.
+  const addressOk =
+    (street.trim().length > 0 &&
+      city.trim().length > 0 &&
+      stateCode.trim().length > 0 &&
+      zip.trim().length > 0) ||
+    addressQuery.trim().length >= 5;
   const step1Valid =
     name.trim().length > 0 &&
     email.trim().length > 0 &&
     phone.replace(/\D/g, "").length === 10 &&
-    street.trim().length > 0 &&
-    city.trim().length > 0 &&
-    stateCode.trim().length > 0 &&
-    zip.trim().length > 0 &&
+    addressOk &&
     dogCount >= 1;
 
   const updateDog = useCallback(
@@ -291,13 +298,21 @@ export function WaitlistInviteInner({
     e.preventDefault();
     if (submitting) return;
     setSubmitting(true);
-    const formattedAddress = [
+    const structuredAddress = [
       [street, apt].filter(Boolean).join(" "),
       city,
       [stateCode, zip].filter(Boolean).join(" "),
     ]
       .filter(Boolean)
       .join(", ");
+    // When Places didn't match, fall back to whatever the user typed in the
+    // search box so we don't drop their address entirely.
+    const formattedAddress = structuredAddress || addressQuery.trim();
+    // If the structured fields are empty, send the raw query as the street so
+    // there's at least one populated address field for downstream consumers.
+    const addressParts = street.trim()
+      ? { street, apt, city, state: stateCode, zip }
+      : { street: addressQuery.trim(), apt, city, state: stateCode, zip };
 
     try {
       await fetch("/api/waitlist", {
@@ -308,7 +323,7 @@ export function WaitlistInviteInner({
           email,
           phone,
           address: formattedAddress,
-          addressParts: { street, apt, city, state: stateCode, zip },
+          addressParts,
           invite_code: inviteCode || undefined,
           dogs,
           contactPreference,
@@ -679,10 +694,19 @@ export function WaitlistInviteInner({
                     placeholder="Start typing your home address…"
                   />
 
-                  {/* Address fields are always visible. Picking a Google Places
-                      suggestion above pre-fills them; users can also edit /
-                      type in addresses Places doesn't recognize. */}
-                  <div>
+                  {/* Manual address fields appear once Places autocomplete fires.
+                      If Places never matches, the user can still proceed with
+                      whatever they typed in the search box (see step1Valid). */}
+                  <AnimatePresence initial={false}>
+                    {addressSelected ? (
+                      <motion.div
+                        key="addr-parts"
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                        animate={{ opacity: 1, height: "auto", marginTop: 0 }}
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
                         <div className="flex flex-col gap-3.5 pt-1">
                           <div className="flex flex-col gap-3.5 md:flex-row">
                             <input
@@ -730,7 +754,9 @@ export function WaitlistInviteInner({
                             />
                           </div>
                         </div>
-                  </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
 
                   {/* Dog count selector */}
                   <div className="mt-5">
